@@ -17,10 +17,9 @@ public class SplashActivity extends AppCompatActivity {
 
         // read from SharedPreferences
         SharedPreferences sharedpreferences = getSharedPreferences("logindata", Context.MODE_PRIVATE);
-        String access_token = sharedpreferences.getString("access_token", "");
 
         // if token not exist, means not login so redirect to login page
-        if(access_token == null)
+        if(!sharedpreferences.contains("access_token"))
         {
             new Handler().postDelayed(new Runnable() {
                 @Override
