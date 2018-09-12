@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,7 +28,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button loginBut = (Button) findViewById(R.id.loginBut);
+        final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
+        final Button loginBut = (Button) findViewById(R.id.loginBut);
 
         loginBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
                 CheckBox remember_me = (CheckBox) findViewById(R.id.remember_me);
 
                 if(!TextUtils.isEmpty(username.getText()) && !TextUtils.isEmpty(password.getText())) {
+                    loginBut.setEnabled(false); // disable button
+                    loading.setVisibility(View.VISIBLE);// show loading progress bar
+
                     // Instantiate the RequestQueue.
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
@@ -55,12 +60,19 @@ public class LoginActivity extends AppCompatActivity {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
+                                    Toast.makeText(getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
                                     Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+
+                                    loginBut.setEnabled(true);
+                                    loading.setVisibility(View.GONE);
                                 }
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+
+                            loginBut.setEnabled(true);
+                            loading.setVisibility(View.GONE);
                         }
                     });
 
