@@ -1,6 +1,7 @@
 package com.afifzafri.backpacktrack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -87,6 +88,10 @@ public class LoginActivity extends AppCompatActivity {
                                             editor.commit();
 
                                             Toast.makeText(getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
+
+                                            Intent intentPage = new Intent(LoginActivity.this, HomeActivity.class);
+                                            startActivity(intentPage);
+                                            finish();
                                         }
                                         else if(code == 400)
                                         {
