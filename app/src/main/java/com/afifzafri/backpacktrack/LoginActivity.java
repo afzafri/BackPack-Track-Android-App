@@ -35,8 +35,6 @@ public class LoginActivity extends AppCompatActivity {
                 EditText password = (EditText) findViewById(R.id.password);
                 CheckBox remember_me = (CheckBox) findViewById(R.id.remember_me);
 
-                String baseurl ="http://178.128.97.69"; // base URL for API endpoint
-
                 // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
@@ -51,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 // Request a string response from the provided URL.
-                JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST, baseurl+"/api/login", loginParams,
+                JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl+"/api/login", loginParams,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
