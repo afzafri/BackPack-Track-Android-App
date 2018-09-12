@@ -8,6 +8,17 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
 
     @Override
@@ -24,7 +35,37 @@ public class LoginActivity extends AppCompatActivity {
                 EditText password = (EditText) findViewById(R.id.password);
                 CheckBox remember_me = (CheckBox) findViewById(R.id.remember_me);
 
-                Toast.makeText(getApplicationContext(), "Username: "+ username.getText().toString() + " Password: "+ password.getText().toString() + " Remember me: "+ (remember_me.isChecked() ? 1 : 0), Toast.LENGTH_SHORT).show();
+                String baseurl ="http://178.128.97.69"; // base URL for API endpoint
+
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
+                JSONObject loginParams = new JSONObject(); // login parameters
+
+                try {
+                    loginParams.put("login", username.getText().toString());
+                    loginParams.put("password", password.getText().toString());
+                    loginParams.put("remember_me", (remember_me.isChecked() ? 1 : 0));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // Request a string response from the provided URL.
+                JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST, baseurl+"/api/login", loginParams,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Add the request to the RequestQueue.
+                queue.add(loginRequest);
             }
         });
     }
