@@ -1,5 +1,7 @@
 package com.afifzafri.backpacktrack;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -68,13 +70,23 @@ public class LoginActivity extends AppCompatActivity {
 
                                         if(code == 200)
                                         {
+                                            // parse JSON response
                                             String token = response.getString("access_token");
                                             JSONObject result = response.getJSONObject("result");
                                             String id = result.getString("id");
                                             String name = result.getString("name");
                                             String username = result.getString("username");
 
-                                            Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
+                                            // store data into Android SharedPreferences
+                                            SharedPreferences sharedpreferences = getSharedPreferences("logindata", Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                                            editor.putString("access_token", token);
+                                            editor.putString("user_id", id);
+                                            editor.putString("name", name);
+                                            editor.putString("username", username);
+                                            editor.commit();
+
+                                            Toast.makeText(getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
                                         }
                                         else if(code == 400)
                                         {
