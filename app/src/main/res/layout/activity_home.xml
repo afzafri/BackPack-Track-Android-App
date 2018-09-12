@@ -28,6 +28,13 @@
             android:text="TextView"
             tools:layout_editor_absoluteX="196dp"
             tools:layout_editor_absoluteY="61dp" />
+
+        <Button
+            android:id="@+id/logoutBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Log Out" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
