@@ -18,6 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,11 +61,34 @@ public class LoginActivity extends AppCompatActivity {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    Toast.makeText(getApplicationContext(), "Login Success!", Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
 
-                                    loginBut.setEnabled(true);
-                                    loading.setVisibility(View.GONE);
+                                    try {
+
+                                        int code = Integer.parseInt(response.getString("code"));
+
+                                        if(code == 200)
+                                        {
+                                            String token = response.getString("access_token");
+                                            JSONObject result = response.getJSONObject("result");
+                                            String id = result.getString("id");
+                                            String name = result.getString("name");
+                                            String username = result.getString("username");
+
+                                            Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
+                                        }
+                                        else if(code == 400)
+                                        {
+                                            String errormsg = response.getString("message");
+                                            Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        loginBut.setEnabled(true);
+                                        loading.setVisibility(View.GONE);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
                                 }
                             }, new Response.ErrorListener() {
                         @Override
