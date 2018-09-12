@@ -2,6 +2,7 @@ package com.afifzafri.backpacktrack;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,35 +36,40 @@ public class LoginActivity extends AppCompatActivity {
                 EditText password = (EditText) findViewById(R.id.password);
                 CheckBox remember_me = (CheckBox) findViewById(R.id.remember_me);
 
-                // Instantiate the RequestQueue.
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                if(!TextUtils.isEmpty(username.getText()) && !TextUtils.isEmpty(password.getText())) {
+                    // Instantiate the RequestQueue.
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
-                JSONObject loginParams = new JSONObject(); // login parameters
+                    JSONObject loginParams = new JSONObject(); // login parameters
 
-                try {
-                    loginParams.put("login", username.getText().toString());
-                    loginParams.put("password", password.getText().toString());
-                    loginParams.put("remember_me", (remember_me.isChecked() ? 1 : 0));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                // Request a string response from the provided URL.
-                JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl+"/api/login", loginParams,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                    try {
+                        loginParams.put("login", username.getText().toString());
+                        loginParams.put("password", password.getText().toString());
+                        loginParams.put("remember_me", (remember_me.isChecked() ? 1 : 0));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
 
-                // Add the request to the RequestQueue.
-                queue.add(loginRequest);
+                    // Request a string response from the provided URL.
+                    JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl + "/api/login", loginParams,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // Add the request to the RequestQueue.
+                    queue.add(loginRequest);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please enter both Username/Email and Password!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
