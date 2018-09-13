@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
         final Button loginBut = (Button) findViewById(R.id.loginBut);
+        Button registerBut = (Button) findViewById(R.id.registerBut);
 
         loginBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +129,16 @@ public class LoginActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(getApplicationContext(), "Please enter both Username/Email and Password!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        // user click register button, show register page
+        registerBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentPage = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intentPage);
+                finish();
             }
         });
     }
