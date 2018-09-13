@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,6 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
@@ -28,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        final Spinner countryspinner = (Spinner)findViewById(R.id.country);
         Button registerBut = (Button) findViewById(R.id.registerBut);
         Button loginBut = (Button) findViewById(R.id.loginBut);
 
@@ -41,11 +47,29 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        // parse JSON response
-                        //String token = response.getString("access_token");
+                        // Countries Array
+                        ArrayList<StringWithTag> countrieslist = new ArrayList<StringWithTag>();
+                        countrieslist.add(new StringWithTag(null, "Select countries...")); // set default first element in the spinner
 
-                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
+                        for(int i=0;i<response.length();i++)
+                        {
+                            try {
+                                JSONObject country = response.getJSONObject(i);
+                                String id = country.getString("id");
+                                String name = country.getString("name");
+
+                                countrieslist.add(new StringWithTag(id, name));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // Populate the spinner with Array values
+                        ArrayAdapter<StringWithTag> countriesAdapter = new ArrayAdapter<StringWithTag>(getApplicationContext(),   android.R.layout.simple_spinner_item, countrieslist);
+                        countriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+                        countryspinner.setAdapter(countriesAdapter);
+
+                        Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
 
                     }
                 }, new Response.ErrorListener() {
