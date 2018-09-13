@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,8 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         final Spinner countryspinner = (Spinner)findViewById(R.id.country);
-        Button registerBut = (Button) findViewById(R.id.registerBut);
+        final Button registerBut = (Button) findViewById(R.id.registerBut);
         Button loginBut = (Button) findViewById(R.id.loginBut);
+        final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
 
         // Populate Countries spinner
         // Instantiate the RequestQueue.
@@ -101,17 +103,17 @@ public class RegisterActivity extends AppCompatActivity {
                         dialog.dismiss();
 
                         // get all input
-                        EditText nameIn = (EditText) findViewById(R.id.name);
-                        EditText usernameIn = (EditText) findViewById(R.id.username);
-                        EditText phoneIn = (EditText) findViewById(R.id.phone);
-                        EditText addressIn = (EditText) findViewById(R.id.address);
-                        Spinner countrySpinner = (Spinner) findViewById(R.id.country);
-                        EditText emailIn = (EditText) findViewById(R.id.email);
-                        EditText passwordIn = (EditText) findViewById(R.id.password);
-                        EditText password_confirmationIn = (EditText) findViewById(R.id.password_confirmation);
+                        final EditText nameIn = (EditText) findViewById(R.id.name);
+                        final EditText usernameIn = (EditText) findViewById(R.id.username);
+                        final EditText phoneIn = (EditText) findViewById(R.id.phone);
+                        final EditText addressIn = (EditText) findViewById(R.id.address);
+                        final Spinner countrySpinner = (Spinner) findViewById(R.id.country);
+                        final EditText emailIn = (EditText) findViewById(R.id.email);
+                        final EditText passwordIn = (EditText) findViewById(R.id.password);
+                        final EditText password_confirmationIn = (EditText) findViewById(R.id.password_confirmation);
 
                         String name = nameIn.getText().toString();
-                        String username = usernameIn.getText().toString();
+                        final String username = usernameIn.getText().toString();
                         String phone = phoneIn.getText().toString();
                         String address = addressIn.getText().toString();
                         StringWithTag country = (StringWithTag) countrySpinner.getSelectedItem();
@@ -121,10 +123,82 @@ public class RegisterActivity extends AppCompatActivity {
                         String password_confirmation = password_confirmationIn.getText().toString();
                         String role = "backpacker";
 
-                        if(name != null && username != null && phone != null && address != null
-                                && country_id != null && email != null && password != null && password_confirmation != null)
+                        if(name != null && username != null && phone != null && address != null && country_id != null && email != null && password != null && password_confirmation != null)
                         {
-                            Toast.makeText(getApplicationContext(), "Register Success!", Toast.LENGTH_SHORT).show();
+                            registerBut.setEnabled(false); // disable button
+                            loading.setVisibility(View.VISIBLE);// show loading progress bar
+
+                            // Instantiate the RequestQueue.
+                            RequestQueue registerQueue = Volley.newRequestQueue(getApplicationContext());
+
+                            JSONObject registerParams = new JSONObject(); // login parameters
+
+                            try {
+                                registerParams.put("name", name);
+                                registerParams.put("username", username);
+                                registerParams.put("phone", phone);
+                                registerParams.put("address", address);
+                                registerParams.put("country", country_id);
+                                registerParams.put("email", email);
+                                registerParams.put("password", password);
+                                registerParams.put("password_confirmation", password_confirmation);
+                                registerParams.put("role", role);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Request a string response from the provided URL.
+                            JsonObjectRequest registerRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl + "/api/register", registerParams,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+
+                                                int code = Integer.parseInt(response.getString("code"));
+
+                                                if(code == 200)
+                                                {
+                                                    // parse JSON response
+                                                    String message = response.getString("message");
+                                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                                                    // empty all input
+                                                    nameIn.setText("");
+                                                    usernameIn.setText("");
+                                                    phoneIn.setText("");
+                                                    addressIn.setText("");
+                                                    countrySpinner.setSelection(0);
+                                                    emailIn.setText("");
+                                                    passwordIn.setText("");
+                                                    password_confirmationIn.setText("");
+                                                }
+                                                else if(code == 400)
+                                                {
+                                                    String message = response.getString("message");
+                                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                registerBut.setEnabled(true);
+                                                loading.setVisibility(View.GONE);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
+
+                                    registerBut.setEnabled(true);
+                                    loading.setVisibility(View.GONE);
+                                }
+                            });
+
+                            // Add the request to the RequestQueue.
+                            registerQueue.add(registerRequest);
                         }
                         else
                         {
