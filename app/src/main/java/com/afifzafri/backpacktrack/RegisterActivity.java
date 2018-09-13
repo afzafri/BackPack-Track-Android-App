@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         dialog.dismiss();
-                        
+
                         // get all input
                         EditText nameIn = (EditText) findViewById(R.id.name);
                         EditText usernameIn = (EditText) findViewById(R.id.username);
@@ -119,6 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                         String email = emailIn.getText().toString();
                         String password = passwordIn.getText().toString();
                         String password_confirmation = password_confirmationIn.getText().toString();
+                        String role = "backpacker";
 
                         if(name != null && username != null && phone != null && address != null
                                 && country_id != null && email != null && password != null && password_confirmation != null)
