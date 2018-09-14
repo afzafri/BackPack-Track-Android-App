@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -116,8 +117,8 @@ public class RegisterActivity extends AppCompatActivity {
                         final String username = usernameIn.getText().toString();
                         String phone = phoneIn.getText().toString();
                         String address = addressIn.getText().toString();
-                        StringWithTag country = (StringWithTag) countrySpinner.getSelectedItem();
-                        String country_id = (String) country.key;
+                        final StringWithTag country = (StringWithTag) countrySpinner.getSelectedItem();
+                        final String country_id = (String) country.key;
                         String email = emailIn.getText().toString();
                         String password = passwordIn.getText().toString();
                         String password_confirmation = password_confirmationIn.getText().toString();
@@ -175,8 +176,50 @@ public class RegisterActivity extends AppCompatActivity {
                                                 }
                                                 else if(code == 400)
                                                 {
-                                                    String message = response.getString("message");
-                                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                    String errormsg = response.getString("message");
+
+                                                    // check if response contain errors messages
+                                                    if(response.has("error"))
+                                                    {
+                                                        JSONObject errors = response.getJSONObject("error");
+                                                        if(errors.has("name"))
+                                                        {
+                                                            String err = errors.getJSONArray("name").getString(0);
+                                                            nameIn.setError(err);
+                                                        }
+                                                        if(errors.has("username"))
+                                                        {
+                                                            String err = errors.getJSONArray("username").getString(0);
+                                                            usernameIn.setError(err);
+                                                        }
+                                                        if(errors.has("phone"))
+                                                        {
+                                                            String err = errors.getJSONArray("phone").getString(0);
+                                                            phoneIn.setError(err);
+                                                        }
+                                                        if(errors.has("address"))
+                                                        {
+                                                            String err = errors.getJSONArray("address").getString(0);
+                                                            addressIn.setError(err);
+                                                        }
+                                                        if(errors.has("country"))
+                                                        {
+                                                            String err = errors.getJSONArray("country").getString(0);
+                                                            ((TextView)countrySpinner.getSelectedView()).setError(err);
+                                                        }
+                                                        if(errors.has("email"))
+                                                        {
+                                                            String err = errors.getJSONArray("email").getString(0);
+                                                            emailIn.setError(err);
+                                                        }
+                                                        if(errors.has("password"))
+                                                        {
+                                                            String err = errors.getJSONArray("password").getString(0);
+                                                            passwordIn.setError(err);
+                                                        }
+                                                    }
+
+                                                    Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
                                                 }
 
                                                 registerBut.setEnabled(true);
