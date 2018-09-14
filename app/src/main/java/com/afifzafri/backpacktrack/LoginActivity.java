@@ -44,8 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         loginBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText username = (EditText) findViewById(R.id.username);
-                EditText password = (EditText) findViewById(R.id.password);
+                final EditText username = (EditText) findViewById(R.id.username);
+                final EditText password = (EditText) findViewById(R.id.password);
                 CheckBox remember_me = (CheckBox) findViewById(R.id.remember_me);
 
                 if(!TextUtils.isEmpty(username.getText()) && !TextUtils.isEmpty(password.getText())) {
@@ -102,6 +102,23 @@ public class LoginActivity extends AppCompatActivity {
                                         else if(code == 400)
                                         {
                                             String errormsg = response.getString("message");
+
+                                            // check if response contain errors messages
+                                            if(response.has("error"))
+                                            {
+                                                JSONObject errors = response.getJSONObject("error");
+                                                if(errors.has("password"))
+                                                {
+                                                    String err = errors.getJSONArray("password").getString(0);
+                                                    password.setError(err);
+                                                }
+                                                if(errors.has("email"))
+                                                {
+                                                    String err = errors.getJSONArray("email").getString(0);
+                                                    username.setError(err);
+                                                }
+                                            }
+
                                             Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
                                         }
 
