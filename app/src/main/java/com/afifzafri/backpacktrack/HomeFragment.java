@@ -35,15 +35,7 @@ public class HomeFragment extends Fragment {
 
         TextView user_name = (TextView) view.findViewById(R.id.user_name);
         user_name.setText(name);
-
-        Button logoutBut = (Button) view.findViewById(R.id.logoutBut);
-        logoutBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sharedpreferences.edit().clear().commit();
-            }
-        });
-
+        
         return view;
     }
 
