@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
 
         TextView user_name = (TextView) view.findViewById(R.id.user_name);
         user_name.setText(name);
-        
+
         return view;
     }
 
