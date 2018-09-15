@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                     setTitle(getString(R.string.title_create));
                     break;
                 case R.id.navigation_profile:
-                    fragment = new HomeFragment();
+                    fragment = new ProfileFragment();
                     setTitle(getString(R.string.title_profile));
                     break;
             }
