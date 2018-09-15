@@ -1,7 +1,9 @@
 package com.afifzafri.backpacktrack;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,11 +56,13 @@ public class ProfileFragment extends Fragment {
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textPhone = (TextView) view.findViewById(R.id.textPhone);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
+        final Button logoutBtn = (Button) view.findViewById(R.id.logoutBtn);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
 
+        // ----- Fetch user data and display the profile -----
         // Instantiate the RequestQueue.
         RequestQueue profileQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -116,6 +121,83 @@ public class ProfileFragment extends Fragment {
 
         // Add the request to the RequestQueue.
         profileQueue.add(profileRequest);
+
+        // ----- Log Out of app -----
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Log Out");
+                alert.setMessage("Are you sure you want to log out of the application?");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Instantiate the RequestQueue.
+                        RequestQueue logoutQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+
+                        // Request a string response from the provided URL.
+                        JsonObjectRequest logoutRequest = new JsonObjectRequest(Request.Method.GET, AppConstants.baseurl + "/api/logout", null,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+
+                                        try {
+
+                                            // parse JSON response
+                                            String message = response.getString("message");
+                                            Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                                            // clear SharedPreferences
+                                            sharedpreferences.edit().clear().commit();
+
+                                            // redirect to log in page
+                                            Intent intentPage = new Intent(getActivity(), LoginActivity.class);
+                                            startActivity(intentPage);
+                                            getActivity().finish();
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getActivity().getApplicationContext(), "Log out failed!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String>  params = new HashMap<String, String>();
+                                params.put("Authorization", "Bearer "+access_token);
+
+                                return params;
+                            }
+                        };
+
+                        // Add the request to the RequestQueue.
+                        logoutQueue.add(logoutRequest);
+
+                        dialog.dismiss();
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
+
+            }
+        });
+
 
         return view;
     }
