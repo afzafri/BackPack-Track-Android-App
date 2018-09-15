@@ -1,11 +1,15 @@
 package com.afifzafri.backpacktrack;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 /**
@@ -23,7 +27,24 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        final View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // read from SharedPreferences
+        final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+        String name = sharedpreferences.getString("name", "");
+
+        TextView user_name = (TextView) view.findViewById(R.id.user_name);
+        user_name.setText(name);
+
+        Button logoutBut = (Button) view.findViewById(R.id.logoutBut);
+        logoutBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sharedpreferences.edit().clear().commit();
+            }
+        });
+
+        return view;
     }
 
 }
