@@ -87,7 +87,9 @@ public class ProfileFragment extends Fragment {
                             textEmail.setText(email);
                             textCountry.setText(country_name);
                             // set avatar image using Picasso library
-                            Picasso.get().load(avatar_url).into(avatar_pic);
+                            if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
+                                Picasso.get().load(avatar_url).into(avatar_pic);
+                            }
 
                             Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
 
