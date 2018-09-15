@@ -22,12 +22,24 @@
             android:text="Edit profile"
             android:backgroundTint="#ea7e27"/>
 
-        <ImageView
-            android:id="@+id/avatar_pic"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/avatar" />
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/avatar_pic"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:src="@drawable/avatar" />
+
+            <ImageView
+                android:id="@+id/circle_mask"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/circle_mask" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textName"
