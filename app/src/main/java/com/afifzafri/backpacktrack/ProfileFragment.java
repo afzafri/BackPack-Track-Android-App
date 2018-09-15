@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +52,7 @@ public class ProfileFragment extends Fragment {
         final TextView textCountry = (TextView) view.findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textPhone = (TextView) view.findViewById(R.id.textPhone);
+        final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -83,6 +86,8 @@ public class ProfileFragment extends Fragment {
                             textPhone.setText(phone);
                             textEmail.setText(email);
                             textCountry.setText(country_name);
+                            // set avatar image using Picasso library
+                            Picasso.get().load(avatar_url).into(avatar_pic);
 
                             Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
 
