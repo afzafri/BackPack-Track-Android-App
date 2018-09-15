@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">BackPack Track</string>
     <string name="forgotPassword"><a href="http://178.128.97.69/password/reset">Forgot password?</a></string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_itineraries">Itineraries</string>
+    <string name="title_create">Create Itinerary</string>
+    <string name="title_profile">Profile</string>
 </resources>
