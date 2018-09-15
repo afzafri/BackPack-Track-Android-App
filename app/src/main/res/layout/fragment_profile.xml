@@ -13,14 +13,33 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/editProfileBtn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:drawableLeft="@drawable/ic_edit_black_24dp"
-            android:text="Edit profile"
-            android:backgroundTint="#ea7e27"/>
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/editProfileBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#ea7e27"
+                android:drawableLeft="@drawable/ic_edit_black_24dp"
+                android:text="Edit profile" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/logoutBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
+                android:text="Log Out" />
+
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -96,6 +115,37 @@
                 android:text="Phone" />
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:background="?android:attr/listDivider" />
+
+        <Button
+            android:id="@+id/myItinerariesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:drawableLeft="@drawable/ic_view_list_white_24dp"
+            android:text="My Itineraries"
+            android:textColor="@android:color/background_light" />
+
+        <Button
+            android:id="@+id/myCommentsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/colorPrimaryDark"
+            android:drawableLeft="@drawable/ic_comment_white_24dp"
+            android:text="My Comments"
+            android:textColor="@android:color/background_light" />
 
     </LinearLayout>
 
