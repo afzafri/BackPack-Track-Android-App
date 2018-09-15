@@ -38,10 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         forgotpass.setMovementMethod(LinkMovementMethod.getInstance()); // create forgot pass link
 
         final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
-        final Button loginBut = (Button) findViewById(R.id.loginBut);
-        Button registerBut = (Button) findViewById(R.id.registerBut);
+        final Button loginBtn = (Button) findViewById(R.id.loginBtn);
+        Button registerBtn = (Button) findViewById(R.id.registerBtn);
 
-        loginBut.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EditText username = (EditText) findViewById(R.id.username);
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 CheckBox remember_me = (CheckBox) findViewById(R.id.remember_me);
 
                 if(!TextUtils.isEmpty(username.getText()) && !TextUtils.isEmpty(password.getText())) {
-                    loginBut.setEnabled(false); // disable button
+                    loginBtn.setEnabled(false); // disable button
                     loading.setVisibility(View.VISIBLE);// show loading progress bar
 
                     // Instantiate the RequestQueue.
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
                                         }
 
-                                        loginBut.setEnabled(true);
+                                        loginBtn.setEnabled(true);
                                         loading.setVisibility(View.GONE);
 
                                     } catch (JSONException e) {
@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
 
-                            loginBut.setEnabled(true);
+                            loginBtn.setEnabled(true);
                             loading.setVisibility(View.GONE);
                         }
                     });
@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // user click register button, show register page
-        registerBut.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentPage = new Intent(LoginActivity.this, RegisterActivity.class);

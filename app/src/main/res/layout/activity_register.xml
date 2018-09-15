@@ -127,7 +127,7 @@
                 android:inputType="textPassword" />
 
             <Button
-                android:id="@+id/registerBut"
+                android:id="@+id/registerBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -180,7 +180,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/loginBut"
+                android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

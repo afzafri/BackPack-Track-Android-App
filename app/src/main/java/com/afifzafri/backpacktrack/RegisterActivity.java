@@ -39,8 +39,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         final Spinner countryspinner = (Spinner)findViewById(R.id.country);
-        final Button registerBut = (Button) findViewById(R.id.registerBut);
-        Button loginBut = (Button) findViewById(R.id.loginBut);
+        final Button registerBtn = (Button) findViewById(R.id.registerBtn);
+        Button loginBtn = (Button) findViewById(R.id.loginBtn);
         final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
 
         // Populate Countries spinner
@@ -89,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
         queueCountries.add(countriesListRequest);
 
         // Register button clicked
-        registerBut.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create dialog box, ask confirmation before proceed
@@ -126,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                         if(name != null && username != null && phone != null && address != null && country_id != null && email != null && password != null && password_confirmation != null)
                         {
-                            registerBut.setEnabled(false); // disable button
+                            registerBtn.setEnabled(false); // disable button
                             loading.setVisibility(View.VISIBLE);// show loading progress bar
 
                             // Instantiate the RequestQueue.
@@ -222,7 +222,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
                                                 }
 
-                                                registerBut.setEnabled(true);
+                                                registerBtn.setEnabled(true);
                                                 loading.setVisibility(View.GONE);
 
                                             } catch (JSONException e) {
@@ -235,7 +235,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getApplicationContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
 
-                                    registerBut.setEnabled(true);
+                                    registerBtn.setEnabled(true);
                                     loading.setVisibility(View.GONE);
                                 }
                             });
@@ -263,7 +263,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         // if click login, show login page
-        loginBut.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentPage = new Intent(RegisterActivity.this, LoginActivity.class);
