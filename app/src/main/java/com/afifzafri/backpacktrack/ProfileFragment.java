@@ -58,6 +58,7 @@ public class ProfileFragment extends Fragment {
         final TextView textPhone = (TextView) view.findViewById(R.id.textPhone);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
         final Button logoutBtn = (Button) view.findViewById(R.id.logoutBtn);
+        final Button editProfileBtn = (Button) view.findViewById(R.id.editProfileBtn);
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
         // show loading spinner
@@ -129,6 +130,16 @@ public class ProfileFragment extends Fragment {
 
         // Add the request to the RequestQueue.
         profileQueue.add(profileRequest);
+
+        // ----- Clicked Edit Profile button -----
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // redirect to edit profile page
+                Intent intentPage = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intentPage);
+            }
+        });
 
         // ----- Log Out of app -----
         logoutBtn.setOnClickListener(new View.OnClickListener() {

@@ -28,7 +28,10 @@
             android:label="Register" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"></activity>
+            android:label="@string/title_activity_main" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:label="Edit Profile"/>
     </application>
 
 </manifest>
