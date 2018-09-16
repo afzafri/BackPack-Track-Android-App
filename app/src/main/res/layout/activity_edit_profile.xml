@@ -245,18 +245,17 @@
                         <TextView
                             android:id="@+id/labelChoose"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
                             android:text="Choose picture" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/chooseBtn"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:backgroundTint="@color/colorAccent"
-                            android:paddingBottom="2dp"
-                            android:paddingTop="2dp"
-                            android:text="Browse" />
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="4dp"
+                            app:srcCompat="@drawable/ic_add_a_photo_black_24dp"
+                            android:backgroundTint="@color/colorAccent"/>
                     </LinearLayout>
 
                     <ImageView
