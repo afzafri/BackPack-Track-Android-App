@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView forgotpass = (TextView) findViewById(R.id.forgotpass);
         forgotpass.setMovementMethod(LinkMovementMethod.getInstance()); // create forgot pass link
 
-        final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
+        final FrameLayout loadingFrame = (FrameLayout)findViewById(R.id.loadingFrame);
         final Button loginBtn = (Button) findViewById(R.id.loginBtn);
         Button registerBtn = (Button) findViewById(R.id.registerBtn);
 
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(!TextUtils.isEmpty(username.getText()) && !TextUtils.isEmpty(password.getText())) {
                     loginBtn.setEnabled(false); // disable button
-                    loading.setVisibility(View.VISIBLE);// show loading progress bar
+                    loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
 
                     // Instantiate the RequestQueue.
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -123,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                                         }
 
                                         loginBtn.setEnabled(true);
-                                        loading.setVisibility(View.GONE);
+                                        loadingFrame.setVisibility(View.GONE);
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -136,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
 
                             loginBtn.setEnabled(true);
-                            loading.setVisibility(View.GONE);
+                            loadingFrame.setVisibility(View.GONE);
                         }
                     });
 
