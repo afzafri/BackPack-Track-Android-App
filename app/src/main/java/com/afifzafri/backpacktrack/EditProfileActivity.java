@@ -1,15 +1,19 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -49,6 +53,7 @@ public class EditProfileActivity extends AppCompatActivity {
         final Spinner countryspinner = (Spinner) findViewById(R.id.countryspinner);
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
         final List<String> countrieslist2 = new ArrayList<String>(); // need 2nd array, for getting position of country
+        final Button updAccountBtn = (Button) findViewById(R.id.updAccountBtn);
 
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
@@ -170,6 +175,156 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         profileQueue.add(profileRequest);
+
+        // ----- Clicked save button, update into server -----
+        updAccountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(EditProfileActivity.this);
+                alert.setTitle("Update");
+                alert.setMessage("Are you sure you want to update your account details?");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        // get all input
+                        String name = editName.getText().toString();
+                        final String username = editUsername.getText().toString();
+                        String phone = editPhone.getText().toString();
+                        String address = editAddress.getText().toString();
+                        final StringWithTag country = (StringWithTag) countryspinner.getSelectedItem();
+                        final String country_id = (String) country.key;
+                        String email = editEmail.getText().toString();
+
+                        if(name != null && username != null && phone != null && address != null && country_id != null && email != null)
+                        {
+                            loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
+
+                            // Instantiate the RequestQueue.
+                            RequestQueue updateQueue = Volley.newRequestQueue(getApplicationContext());
+
+                            JSONObject updateParams = new JSONObject(); // login parameters
+
+                            try {
+                                updateParams.put("name", name);
+                                updateParams.put("username", username);
+                                updateParams.put("phone", phone);
+                                updateParams.put("address", address);
+                                updateParams.put("country_id", country_id);
+                                updateParams.put("email", email);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Request a string response from the provided URL.
+                            JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl + "/api/updateProfile", updateParams,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+
+                                                int code = Integer.parseInt(response.getString("code"));
+
+                                                if(code == 200)
+                                                {
+                                                    // parse JSON response
+                                                    String message = response.getString("message");
+                                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                }
+                                                else if(code == 400)
+                                                {
+                                                    String errormsg = response.getString("message");
+
+                                                    // check if response contain errors messages
+                                                    if(response.has("error"))
+                                                    {
+                                                        JSONObject errors = response.getJSONObject("error");
+                                                        if(errors.has("name"))
+                                                        {
+                                                            String err = errors.getJSONArray("name").getString(0);
+                                                            editName.setError(err);
+                                                        }
+                                                        if(errors.has("username"))
+                                                        {
+                                                            String err = errors.getJSONArray("username").getString(0);
+                                                            editUsername.setError(err);
+                                                        }
+                                                        if(errors.has("phone"))
+                                                        {
+                                                            String err = errors.getJSONArray("phone").getString(0);
+                                                            editPhone.setError(err);
+                                                        }
+                                                        if(errors.has("address"))
+                                                        {
+                                                            String err = errors.getJSONArray("address").getString(0);
+                                                            editAddress.setError(err);
+                                                        }
+                                                        if(errors.has("country"))
+                                                        {
+                                                            String err = errors.getJSONArray("country").getString(0);
+                                                            ((TextView)countryspinner.getSelectedView()).setError(err);
+                                                        }
+                                                        if(errors.has("email"))
+                                                        {
+                                                            String err = errors.getJSONArray("email").getString(0);
+                                                            editEmail.setError(err);
+                                                        }
+                                                    }
+
+                                                    Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                loadingFrame.setVisibility(View.GONE);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Update failed!", Toast.LENGTH_SHORT).show();
+
+                                    loadingFrame.setVisibility(View.GONE);
+                                }
+                            })
+                            {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String>  params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer "+access_token);
+
+                                    return params;
+                                }
+                            };
+
+                            // Add the request to the RequestQueue.
+                            updateQueue.add(updateRequest);
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Please fill in all the input!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
+            }
+        });
 
     }
 
