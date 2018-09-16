@@ -3,7 +3,9 @@ package com.afifzafri.backpacktrack;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +62,8 @@ public class EditProfileActivity extends AppCompatActivity {
         final EditText editPassword = (EditText) findViewById(R.id.editPassword);
         final EditText editPasswordConfirm = (EditText) findViewById(R.id.editPasswordConfirm);
         final Button chgPasswordBtn = (Button) findViewById(R.id.chgPasswordBtn);
+
+        final ImageButton chooseBtn = (ImageButton) findViewById(R.id.chooseBtn);
 
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
@@ -455,6 +460,17 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
 
                 alert.show(); // show alert message
+            }
+        });
+
+        // ----- Choose image button, open gallery -----
+        chooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open media chooser
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, 1);
             }
         });
 
