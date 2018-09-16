@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,7 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
         final Spinner countryspinner = (Spinner)findViewById(R.id.country);
         final Button registerBtn = (Button) findViewById(R.id.registerBtn);
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
-        final ProgressBar loading = (ProgressBar)findViewById(R.id.loading);
+        final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
+
+        // show progress bar
+        loadingFrame.setVisibility(View.VISIBLE);
 
         // Populate Countries spinner
         // Instantiate the RequestQueue.
@@ -76,12 +80,14 @@ public class RegisterActivity extends AppCompatActivity {
                         countryspinner.setAdapter(countriesAdapter);
 
                         Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
+                        loadingFrame.setVisibility(View.GONE);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Load Countries Failed!", Toast.LENGTH_SHORT).show();
+                loadingFrame.setVisibility(View.GONE);
             }
         });
 
@@ -127,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if(name != null && username != null && phone != null && address != null && country_id != null && email != null && password != null && password_confirmation != null)
                         {
                             registerBtn.setEnabled(false); // disable button
-                            loading.setVisibility(View.VISIBLE);// show loading progress bar
+                            loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
 
                             // Instantiate the RequestQueue.
                             RequestQueue registerQueue = Volley.newRequestQueue(getApplicationContext());
@@ -223,7 +229,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 }
 
                                                 registerBtn.setEnabled(true);
-                                                loading.setVisibility(View.GONE);
+                                                loadingFrame.setVisibility(View.GONE);
 
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
@@ -236,7 +242,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
 
                                     registerBtn.setEnabled(true);
-                                    loading.setVisibility(View.GONE);
+                                    loadingFrame.setVisibility(View.GONE);
                                 }
                             });
 
