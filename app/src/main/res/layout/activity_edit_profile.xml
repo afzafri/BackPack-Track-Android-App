@@ -97,6 +97,12 @@
                         android:hint="Address"
                         android:inputType="textMultiLine" />
 
+                    <Spinner
+                        android:id="@+id/countryspinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
+
                     <EditText
                         android:id="@+id/editEmail"
                         android:layout_width="match_parent"
