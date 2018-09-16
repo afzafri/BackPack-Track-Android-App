@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +58,10 @@ public class ProfileFragment extends Fragment {
         final TextView textPhone = (TextView) view.findViewById(R.id.textPhone);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
         final Button logoutBtn = (Button) view.findViewById(R.id.logoutBtn);
+        final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
+
+        // show loading spinner
+        loadingFrame.setVisibility(View.VISIBLE);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -97,9 +102,11 @@ public class ProfileFragment extends Fragment {
                             }
 
                             Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
+                            loadingFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            loadingFrame.setVisibility(View.GONE);
                         }
 
                     }
@@ -107,6 +114,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getActivity().getApplicationContext(), "Profile data not loaded!", Toast.LENGTH_SHORT).show();
+                loadingFrame.setVisibility(View.GONE);
             }
         })
         {
@@ -135,6 +143,8 @@ public class ProfileFragment extends Fragment {
                 alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        loadingFrame.setVisibility(View.VISIBLE);
+
                         // Instantiate the RequestQueue.
                         RequestQueue logoutQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
@@ -149,6 +159,7 @@ public class ProfileFragment extends Fragment {
                                             // parse JSON response
                                             String message = response.getString("message");
                                             Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                            loadingFrame.setVisibility(View.GONE);
 
                                             // clear SharedPreferences
                                             sharedpreferences.edit().clear().commit();
@@ -160,6 +171,7 @@ public class ProfileFragment extends Fragment {
 
                                         } catch (JSONException e) {
                                             e.printStackTrace();
+                                            loadingFrame.setVisibility(View.GONE);
                                         }
 
                                     }
@@ -167,6 +179,7 @@ public class ProfileFragment extends Fragment {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Toast.makeText(getActivity().getApplicationContext(), "Log out failed!", Toast.LENGTH_SHORT).show();
+                                loadingFrame.setVisibility(View.GONE);
                             }
                         })
                         {
