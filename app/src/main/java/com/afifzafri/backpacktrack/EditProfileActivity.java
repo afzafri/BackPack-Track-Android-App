@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
 
@@ -73,5 +76,21 @@ public class EditProfileActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         profileQueue.add(profileRequest);
 
+    }
+
+    // override default back navigation action
+    // need finish(), to destroy the current activity so that it go back to last activity with last fragment
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // todo: goto back activity from here
+
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
