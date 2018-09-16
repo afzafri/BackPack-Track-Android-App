@@ -55,6 +55,11 @@ public class EditProfileActivity extends AppCompatActivity {
         final List<String> countrieslist2 = new ArrayList<String>(); // need 2nd array, for getting position of country
         final Button updAccountBtn = (Button) findViewById(R.id.updAccountBtn);
 
+        final EditText editOldPassword = (EditText) findViewById(R.id.editOldPasword);
+        final EditText editPassword = (EditText) findViewById(R.id.editPassword);
+        final EditText editPasswordConfirm = (EditText) findViewById(R.id.editPasswordConfirm);
+        final Button chgPasswordBtn = (Button) findViewById(R.id.chgPasswordBtn);
+
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
 
@@ -306,6 +311,133 @@ public class EditProfileActivity extends AppCompatActivity {
 
                             // Add the request to the RequestQueue.
                             updateQueue.add(updateRequest);
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Please fill in all the input!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
+            }
+        });
+
+        // ----- Change Password -----
+        chgPasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(EditProfileActivity.this);
+                alert.setTitle("Change Password");
+                alert.setMessage("Are you sure you want to change your password?");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        // get all input
+                        String oldpassword = editOldPassword.getText().toString();
+                        String newpassword = editPassword.getText().toString();
+                        String newpasswordconfirm = editPasswordConfirm.getText().toString();
+
+                        if(oldpassword != null && newpassword != null && newpasswordconfirm != null)
+                        {
+                            loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
+
+                            // Instantiate the RequestQueue.
+                            RequestQueue passwordQueue = Volley.newRequestQueue(getApplicationContext());
+
+                            JSONObject passwordParams = new JSONObject(); // login parameters
+
+                            try {
+                                passwordParams.put("old_password", oldpassword);
+                                passwordParams.put("password", newpassword);
+                                passwordParams.put("password_confirmation", newpasswordconfirm);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Request a string response from the provided URL.
+                            JsonObjectRequest passwordRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl + "/api/updatePassword", passwordParams,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+
+                                                int code = Integer.parseInt(response.getString("code"));
+
+                                                if(code == 200)
+                                                {
+                                                    // parse JSON response
+                                                    String message = response.getString("message");
+                                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                                                    editOldPassword.setText("");
+                                                    editPassword.setText("");
+                                                    editPasswordConfirm.setText("");
+                                                }
+                                                else if(code == 400)
+                                                {
+                                                    String errormsg = response.getString("message");
+
+                                                    // check if response contain errors messages
+                                                    if(response.has("error"))
+                                                    {
+                                                        JSONObject errors = response.getJSONObject("error");
+                                                        if(errors.has("password"))
+                                                        {
+                                                            String err = errors.getJSONArray("password").getString(0);
+                                                            editPassword.setError(err);
+                                                        }
+                                                        if(errors.has("old_password"))
+                                                        {
+                                                            String err = errors.getJSONArray("old_password").getString(0);
+                                                            editOldPassword.setError(err);
+                                                        }
+                                                    }
+
+                                                    Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                loadingFrame.setVisibility(View.GONE);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Password change failed!", Toast.LENGTH_SHORT).show();
+
+                                    loadingFrame.setVisibility(View.GONE);
+                                }
+                            })
+                            {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String>  params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer "+access_token);
+
+                                    return params;
+                                }
+                            };
+
+                            // Add the request to the RequestQueue.
+                            passwordQueue.add(passwordRequest);
                         }
                         else
                         {
