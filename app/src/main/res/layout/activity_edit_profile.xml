@@ -135,7 +135,7 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/cardPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="5dp"
@@ -203,6 +203,83 @@
                         android:backgroundTint="@color/colorPrimaryDark"
                         android:drawableLeft="@drawable/ic_security_white_24dp"
                         android:text="Change Password"
+                        android:textColor="@android:color/background_light" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/labelAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Upload New Profile Picture"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/divider4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp">
+
+                        <TextView
+                            android:id="@+id/labelChoose"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Choose picture" />
+
+                        <Button
+                            android:id="@+id/chooseBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:backgroundTint="@color/colorAccent"
+                            android:paddingBottom="2dp"
+                            android:paddingTop="2dp"
+                            android:text="Browse" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/avatarPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
+
+                    <View
+                        android:id="@+id/divider4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <Button
+                        android:id="@+id/upAvatarBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:drawableLeft="@drawable/ic_file_upload_white_24dp"
+                        android:text="Upload"
                         android:textColor="@android:color/background_light" />
                 </LinearLayout>
 
