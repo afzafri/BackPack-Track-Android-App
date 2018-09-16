@@ -159,7 +159,6 @@ public class ProfileFragment extends Fragment {
                                             // parse JSON response
                                             String message = response.getString("message");
                                             Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                                            loadingFrame.setVisibility(View.GONE);
 
                                             // clear SharedPreferences
                                             sharedpreferences.edit().clear().commit();
