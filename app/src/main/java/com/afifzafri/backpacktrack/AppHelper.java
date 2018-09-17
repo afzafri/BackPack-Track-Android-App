@@ -43,11 +43,11 @@ public class AppHelper {
         return byteArrayOutputStream.toByteArray();
     }
 
-    public static byte[] getFileDataFromDrawableAvatar(Context context, Drawable drawable) {
+    public static byte[] getFileDataFromDrawableAvatar(Context context, Drawable drawable, int newWidth, int newHeight) {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         AppHelper resize = new AppHelper();
-        bitmap = resize.getResizedBitmap(bitmap, 250, 0);
+        bitmap = resize.getResizedBitmap(bitmap, newWidth, newHeight);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
