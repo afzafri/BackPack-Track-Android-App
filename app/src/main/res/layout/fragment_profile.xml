@@ -53,11 +53,6 @@
                 android:layout_gravity="center"
                 android:src="@drawable/avatar" />
 
-            <ImageView
-                android:id="@+id/circle_mask"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/circle_mask" />
         </FrameLayout>
 
         <TextView

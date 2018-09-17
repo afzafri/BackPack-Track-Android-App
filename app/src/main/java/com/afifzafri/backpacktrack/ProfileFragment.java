@@ -32,6 +32,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,7 +101,8 @@ public class ProfileFragment extends Fragment {
                             textCountry.setText(country_name);
                             // set avatar image using Picasso library
                             if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
-                                Picasso.get().load(avatar_url).into(avatar_pic);
+                                Picasso.get().load(avatar_url)
+                                        .transform(new CropCircleTransformation()).into(avatar_pic);
                             }
 
                             Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
