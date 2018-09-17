@@ -5,9 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,14 +22,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -33,8 +45,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +79,7 @@ public class EditProfileActivity extends AppCompatActivity {
         final Button chgPasswordBtn = (Button) findViewById(R.id.chgPasswordBtn);
 
         final ImageButton chooseBtn = (ImageButton) findViewById(R.id.chooseBtn);
+        final Button upAvatarBtn = (Button) findViewById(R.id.upAvatarBtn);
 
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
@@ -468,12 +484,153 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // open media chooser
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, 1);
+                Intent pickImageIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickImageIntent.setType("image/*");
+                startActivityForResult(pickImageIntent, 1);
             }
         });
 
+        // ----- Click upload button, upload image to server -----
+        upAvatarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(EditProfileActivity.this);
+                alert.setTitle("Upload new profile picture");
+                alert.setMessage("Are you sure you want to upload new picture? This will replace the current one.");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        // get all input
+                        final ImageView avatarPreview = (ImageView) findViewById(R.id.avatarPreview);
+
+                        if(hasImage(avatarPreview))
+                        {
+                            loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
+
+                            // VolleyMultipartRequest library by Angga Ari Wijaya https://gist.github.com/anggadarkprince/a7c536da091f4b26bb4abf2f92926594
+                            VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppConstants.baseurl + "/api/uploadAvatar", new Response.Listener<NetworkResponse>() {
+                                @Override
+                                public void onResponse(NetworkResponse response) {
+                                    String resultResponse = new String(response.data);
+                                    try {
+                                        JSONObject result = new JSONObject(resultResponse);
+                                        int code = Integer.parseInt(result.getString("code"));
+
+                                        if(code == 200)
+                                        {
+                                            // parse JSON response
+                                            String message = result.getString("message");
+                                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                        }
+                                        else if(code == 400)
+                                        {
+                                            String errormsg = result.getString("message");
+
+                                            // check if response contain errors messages
+                                            if(result.has("error"))
+                                            {
+                                                JSONObject errors = result.getJSONObject("error");
+                                                if(errors.has("avatar"))
+                                                {
+                                                    String err = errors.getJSONArray("avatar").getString(0);
+                                                    Toast.makeText(getApplicationContext(), errormsg + err, Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }
+
+                                        loadingFrame.setVisibility(View.GONE);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Upload picture failed!" + error.toString(), Toast.LENGTH_SHORT).show();
+                                    loadingFrame.setVisibility(View.GONE);
+                                }
+                            }) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String>  params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer "+access_token);
+
+                                    return params;
+                                }
+
+                                @Override
+                                protected Map<String, DataPart> getByteData() {
+                                    Map<String, DataPart> params = new HashMap<>();
+                                    // file name could found file base or direct access from real path
+                                    // for now just get bitmap data from ImageView
+                                    params.put("avatar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), avatarPreview.getDrawable()), "image/jpeg"));
+
+                                    return params;
+                                }
+                            };
+
+                            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
+
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Please choose a picture first!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath);
+
+                //displaying selected image to imageview
+                ImageView avatarPreview = (ImageView) findViewById(R.id.avatarPreview);
+                avatarPreview.setImageBitmap(bitmap);
+
+                avatarPreview.getLayoutParams().height = 400;
+                avatarPreview.requestLayout();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // method for checking if and ImageView have a drawable attached to it
+    // credit: https://stackoverflow.com/a/32066539/5784900
+    private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
+
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        }
+
+        return hasImage;
     }
 
     // override default back navigation action
