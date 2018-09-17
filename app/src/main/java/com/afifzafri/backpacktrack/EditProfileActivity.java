@@ -570,7 +570,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                     Map<String, DataPart> params = new HashMap<>();
                                     // file name could found file base or direct access from real path
                                     // for now just get bitmap data from ImageView
-                                    params.put("avatar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), avatarPreview.getDrawable()), "image/jpeg"));
+                                    params.put("avatar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawableAvatar(getBaseContext(), avatarPreview.getDrawable()), "image/jpeg"));
 
                                     return params;
                                 }
