@@ -47,7 +47,7 @@ public class AppHelper {
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         AppHelper resize = new AppHelper();
-        bitmap = resize.getResizedBitmap(bitmap, 250, 250);
+        bitmap = resize.getResizedBitmap(bitmap, 250, 0);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
@@ -61,10 +61,14 @@ public class AppHelper {
      * @return
      */
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        // get new width and height for maintaining aspect ratio
+        int widthAspect = aspectRatio(bm, newWidth, newHeight)[0];
+        int heightAspect = aspectRatio(bm, newWidth, newHeight)[1];
+
         int width = bm.getWidth();
         int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
+        float scaleWidth = ((float) widthAspect) / width;
+        float scaleHeight = ((float) heightAspect) / height;
         // CREATE A MATRIX FOR THE MANIPULATION
         Matrix matrix = new Matrix();
         // RESIZE THE BIT MAP
@@ -74,5 +78,41 @@ public class AppHelper {
         Bitmap resizedBitmap = Bitmap.createBitmap(
                 bm, 0, 0, width, height, matrix, false);
         return resizedBitmap;
+    }
+
+    /**
+     * Return width and height of an image that maintained the aspect ratio
+     *
+     * @param bm
+     * @param width
+     * @param height
+     * @return
+     */
+    public int[] aspectRatio(Bitmap bm, int width, int height)
+    {
+        int[] newSize = new int[2];
+
+        float aspectRatio = bm.getWidth() /
+                (float) bm.getHeight();
+
+        if(width != 0 && height == 0)
+        {
+            // by width
+            newSize[0] = width;
+            newSize[1] = Math.round(width / aspectRatio);;
+        }
+        else if(height != 0 && width == 0)
+        {
+            // by heigth
+            newSize[0] = Math.round(height * aspectRatio);
+            newSize[1] = height;
+        }
+        else if(width != 0 && height != 0)
+        {
+            newSize[0] = width;
+            newSize[1] = height;
+        }
+
+        return newSize;
     }
 }
