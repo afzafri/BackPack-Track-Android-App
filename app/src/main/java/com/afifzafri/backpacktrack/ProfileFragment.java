@@ -71,8 +71,6 @@ public class ProfileFragment extends Fragment {
         final String access_token = sharedpreferences.getString("access_token", "");
 
         // ----- Fetch user data and display the profile -----
-        // Instantiate the RequestQueue.
-        RequestQueue profileQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         // Request a string response from the provided URL.
         JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET, AppConstants.baseurl + "/api/user", null,
@@ -131,8 +129,8 @@ public class ProfileFragment extends Fragment {
             }
         };
 
-        // Add the request to the RequestQueue.
-        profileQueue.add(profileRequest);
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(profileRequest);
 
         // ----- Clicked Edit Profile button -----
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
@@ -158,9 +156,6 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         loadingFrame.setVisibility(View.VISIBLE);
-
-                        // Instantiate the RequestQueue.
-                        RequestQueue logoutQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
                         // Request a string response from the provided URL.
                         JsonObjectRequest logoutRequest = new JsonObjectRequest(Request.Method.GET, AppConstants.baseurl + "/api/logout", null,
@@ -205,8 +200,8 @@ public class ProfileFragment extends Fragment {
                             }
                         };
 
-                        // Add the request to the RequestQueue.
-                        logoutQueue.add(logoutRequest);
+                        // Add the request to the VolleySingleton.
+                        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(logoutRequest);
 
                         dialog.dismiss();
                     }

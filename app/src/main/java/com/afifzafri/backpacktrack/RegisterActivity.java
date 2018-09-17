@@ -48,8 +48,6 @@ public class RegisterActivity extends AppCompatActivity {
         loadingFrame.setVisibility(View.VISIBLE);
 
         // Populate Countries spinner
-        // Instantiate the RequestQueue.
-        RequestQueue queueCountries = Volley.newRequestQueue(getApplicationContext());
 
         // Request a string response from the provided URL.
         JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppConstants.baseurl + "/api/listCountries", null,
@@ -91,8 +89,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // Add the request to the RequestQueue.
-        queueCountries.add(countriesListRequest);
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(countriesListRequest);
 
         // Register button clicked
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -134,9 +132,6 @@ public class RegisterActivity extends AppCompatActivity {
                         {
                             registerBtn.setEnabled(false); // disable button
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
-
-                            // Instantiate the RequestQueue.
-                            RequestQueue registerQueue = Volley.newRequestQueue(getApplicationContext());
 
                             JSONObject registerParams = new JSONObject(); // login parameters
 
@@ -246,8 +241,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 }
                             });
 
-                            // Add the request to the RequestQueue.
-                            registerQueue.add(registerRequest);
+                            // Add the request to the VolleySingleton.
+                            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(registerRequest);
                         }
                         else
                         {

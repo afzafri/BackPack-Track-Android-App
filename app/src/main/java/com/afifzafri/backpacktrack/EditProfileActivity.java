@@ -89,8 +89,6 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         loadingFrame.setVisibility(View.VISIBLE);
 
         // Populate Countries spinner
-        // Instantiate the RequestQueue.
-        RequestQueue queueCountries = Volley.newRequestQueue(getApplicationContext());
 
         // Request a string response from the provided URL.
         JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppConstants.baseurl + "/api/listCountries", null,
@@ -134,17 +132,14 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
             }
         });
 
-        // Add the request to the RequestQueue.
-        queueCountries.add(countriesListRequest);
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(countriesListRequest);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
 
         // ----- Fetch user data and display the profile -----
-        // Instantiate the RequestQueue.
-        RequestQueue profileQueue = Volley.newRequestQueue(getApplicationContext());
-
         // Request a string response from the provided URL.
         JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET, AppConstants.baseurl + "/api/user", null,
                 new Response.Listener<JSONObject>() {
@@ -203,8 +198,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
             }
         };
 
-        // Add the request to the RequestQueue.
-        profileQueue.add(profileRequest);
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(profileRequest);
 
         // ----- Clicked save button, update into server -----
         updAccountBtn.setOnClickListener(new View.OnClickListener() {
@@ -233,9 +228,6 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         if(name != null && username != null && phone != null && address != null && country_id != null && email != null)
                         {
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
-
-                            // Instantiate the RequestQueue.
-                            RequestQueue updateQueue = Volley.newRequestQueue(getApplicationContext());
 
                             JSONObject updateParams = new JSONObject(); // login parameters
 
@@ -334,8 +326,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                 }
                             };
 
-                            // Add the request to the RequestQueue.
-                            updateQueue.add(updateRequest);
+                            // Add the request to the VolleySingleton.
+                            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(updateRequest);
                         }
                         else
                         {
@@ -379,9 +371,6 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         if(oldpassword != null && newpassword != null && newpasswordconfirm != null)
                         {
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
-
-                            // Instantiate the RequestQueue.
-                            RequestQueue passwordQueue = Volley.newRequestQueue(getApplicationContext());
 
                             JSONObject passwordParams = new JSONObject(); // login parameters
 
@@ -461,8 +450,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                 }
                             };
 
-                            // Add the request to the RequestQueue.
-                            passwordQueue.add(passwordRequest);
+                            // Add the request to the VolleySingleton.
+                            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(passwordRequest);
                         }
                         else
                         {

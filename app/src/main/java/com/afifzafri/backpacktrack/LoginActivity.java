@@ -53,9 +53,6 @@ public class LoginActivity extends AppCompatActivity {
                     loginBtn.setEnabled(false); // disable button
                     loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
 
-                    // Instantiate the RequestQueue.
-                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-
                     JSONObject loginParams = new JSONObject(); // login parameters
 
                     try {
@@ -141,8 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
 
-                    // Add the request to the RequestQueue.
-                    queue.add(loginRequest);
+                    // Add the request to the VolleySingleton.
+                    VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(loginRequest);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Please enter both Username/Email and Password!", Toast.LENGTH_SHORT).show();
