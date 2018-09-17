@@ -9,11 +9,17 @@ import android.support.v4.content.ContextCompat;
 
 import java.io.ByteArrayOutputStream;
 
-/**
- * Sketch Project Studio
- * Created by Angga on 12/04/2016 14.27.
- */
 public class AppHelper {
+
+    /**
+     * RESTFul API Endpoint
+     */
+    public static final String baseurl = "http://178.128.97.69";
+
+    /**
+     *  private Constructor to avoid instanciating this class
+     */
+    private AppHelper() {}
 
     /**
      * Turn drawable resource into byte array.
