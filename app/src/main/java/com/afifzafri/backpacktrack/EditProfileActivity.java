@@ -40,6 +40,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +57,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements IPickResult {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -483,11 +487,7 @@ public class EditProfileActivity extends AppCompatActivity {
         chooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // open media chooser
-                Intent pickImageIntent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                pickImageIntent.setType("image/*");
-                startActivityForResult(pickImageIntent, 1);
+                PickImageDialog.build(new PickSetup()).show(EditProfileActivity.this);
             }
         });
 
@@ -601,22 +601,18 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), filePath);
+    public void onPickResult(PickResult r) {
+        if (r.getError() == null) {
+            //If you want the Bitmap.
+            ImageView avatarPreview = (ImageView) findViewById(R.id.avatarPreview);
+            avatarPreview.setImageBitmap(r.getBitmap());
 
-                //displaying selected image to imageview
-                ImageView avatarPreview = (ImageView) findViewById(R.id.avatarPreview);
-                avatarPreview.setImageBitmap(bitmap);
-
-                avatarPreview.getLayoutParams().height = 400;
-                avatarPreview.requestLayout();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //Image path
+            //r.getPath();
+        } else {
+            //Handle possible errors
+            //TODO: do what you have to do with r.getError();
+            Toast.makeText(this, r.getError().getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
