@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -100,7 +101,7 @@ public class ProfileFragment extends Fragment {
                             // set avatar image using Picasso library
                             if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
                                 Picasso.get().load(avatar_url)
-                                        .transform(new CropCircleTransformation()).into(avatar_pic);
+                                        .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5)).into(avatar_pic);
                             }
 
                             Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
