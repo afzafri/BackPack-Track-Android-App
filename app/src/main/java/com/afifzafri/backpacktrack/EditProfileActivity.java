@@ -91,7 +91,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         // Populate Countries spinner
 
         // Request a string response from the provided URL.
-        JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppConstants.baseurl + "/api/listCountries", null,
+        JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listCountries", null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -141,7 +141,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
 
         // ----- Fetch user data and display the profile -----
         // Request a string response from the provided URL.
-        JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET, AppConstants.baseurl + "/api/user", null,
+        JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/user", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -243,7 +243,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             }
 
                             // Request a string response from the provided URL.
-                            JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl + "/api/updateProfile", updateParams,
+                            JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/updateProfile", updateParams,
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
@@ -383,7 +383,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             }
 
                             // Request a string response from the provided URL.
-                            JsonObjectRequest passwordRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl + "/api/updatePassword", passwordParams,
+                            JsonObjectRequest passwordRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/updatePassword", passwordParams,
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {
@@ -503,7 +503,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
 
                             // VolleyMultipartRequest library by Angga Ari Wijaya https://gist.github.com/anggadarkprince/a7c536da091f4b26bb4abf2f92926594
-                            VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppConstants.baseurl + "/api/uploadAvatar", new Response.Listener<NetworkResponse>() {
+                            VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppHelper.baseurl + "/api/uploadAvatar", new Response.Listener<NetworkResponse>() {
                                 @Override
                                 public void onResponse(NetworkResponse response) {
                                     String resultResponse = new String(response.data);

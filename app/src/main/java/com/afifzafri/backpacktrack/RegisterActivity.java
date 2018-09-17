@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Populate Countries spinner
 
         // Request a string response from the provided URL.
-        JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppConstants.baseurl + "/api/listCountries", null,
+        JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listCountries", null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -150,7 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
                             }
 
                             // Request a string response from the provided URL.
-                            JsonObjectRequest registerRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl + "/api/register", registerParams,
+                            JsonObjectRequest registerRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/register", registerParams,
                                     new Response.Listener<JSONObject>() {
                                         @Override
                                         public void onResponse(JSONObject response) {

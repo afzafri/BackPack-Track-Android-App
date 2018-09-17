@@ -73,7 +73,7 @@ public class ProfileFragment extends Fragment {
         // ----- Fetch user data and display the profile -----
 
         // Request a string response from the provided URL.
-        JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET, AppConstants.baseurl + "/api/user", null,
+        JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/user", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -158,7 +158,7 @@ public class ProfileFragment extends Fragment {
                         loadingFrame.setVisibility(View.VISIBLE);
 
                         // Request a string response from the provided URL.
-                        JsonObjectRequest logoutRequest = new JsonObjectRequest(Request.Method.GET, AppConstants.baseurl + "/api/logout", null,
+                        JsonObjectRequest logoutRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/logout", null,
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {

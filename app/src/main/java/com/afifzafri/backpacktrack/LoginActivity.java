@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     // Request a string response from the provided URL.
-                    JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST, AppConstants.baseurl + "/api/login", loginParams,
+                    JsonObjectRequest loginRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/login", loginParams,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
