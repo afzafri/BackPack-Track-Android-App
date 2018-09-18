@@ -22,6 +22,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/picker_provider_paths" />
         </provider>
+
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -42,7 +43,11 @@
             android:label="@string/title_activity_main" />
         <activity
             android:name=".EditProfileActivity"
-            android:label="Edit Profile"/>
+            android:label="Edit Profile" />
+        <activity
+            android:name=".ImageFullscreenActivity"
+            android:label="View Image"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

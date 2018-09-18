@@ -220,6 +220,15 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        // ----- Click avatar, show full screen image -----
+        avatar_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open fullscreen image activity
+                Intent intentPage = new Intent(getActivity(), ImageFullscreenActivity.class);
+                startActivity(intentPage);
+            }
+        });
 
         return view;
     }
