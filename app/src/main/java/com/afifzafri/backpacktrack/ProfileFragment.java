@@ -102,6 +102,7 @@ public class ProfileFragment extends Fragment {
                             if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
                                 Picasso.get().load(avatar_url)
                                         .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5)).into(avatar_pic);
+                                avatar_pic.setTag(avatar_url); // store url into tag, used for retrieve later
                             }
 
                             Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
@@ -226,6 +227,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 // open fullscreen image activity
                 Intent intentPage = new Intent(getActivity(), ImageFullscreenActivity.class);
+                intentPage.putExtra("image_url", avatar_pic.getTag().toString());
                 startActivity(intentPage);
             }
         });

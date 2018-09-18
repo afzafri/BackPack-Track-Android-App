@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 public class ImageFullscreenActivity extends AppCompatActivity {
 
@@ -17,6 +20,16 @@ public class ImageFullscreenActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false); // remove title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
+
+        ImageView imageFullscreen = (ImageView) findViewById(R.id.imageFullscreen);
+
+        // get url from intent, and set to imageview if not null
+        Bundle extras = getIntent().getExtras();
+        if(extras != null)
+        {
+            String image_url = extras.getString("image_url");
+            Picasso.get().load(image_url).into(imageFullscreen);
+        }
     }
 
     // override default back navigation action
