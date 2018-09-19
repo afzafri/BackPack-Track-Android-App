@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -39,11 +40,11 @@ import java.util.Map;
  */
 public class ProfileFragment extends Fragment {
 
+    //private View view;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -142,83 +143,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // ----- Log Out of app -----
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // Create dialog box, ask confirmation before proceed
-                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                alert.setTitle("Log Out");
-                alert.setMessage("Are you sure you want to log out of the application?");
-                // set positive button, yes etc
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        loadingFrame.setVisibility(View.VISIBLE);
-
-                        // Request a string response from the provided URL.
-                        JsonObjectRequest logoutRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/logout", null,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-
-                                        try {
-
-                                            // parse JSON response
-                                            String message = response.getString("message");
-                                            Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-
-                                            // clear SharedPreferences
-                                            sharedpreferences.edit().clear().commit();
-
-                                            // redirect to log in page
-                                            Intent intentPage = new Intent(getActivity(), LoginActivity.class);
-                                            startActivity(intentPage);
-                                            getActivity().finish();
-
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                            loadingFrame.setVisibility(View.GONE);
-                                        }
-
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getActivity().getApplicationContext(), "Log out failed!", Toast.LENGTH_SHORT).show();
-                                loadingFrame.setVisibility(View.GONE);
-                            }
-                        })
-                        {
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String, String>  params = new HashMap<String, String>();
-                                params.put("Authorization", "Bearer "+access_token);
-
-                                return params;
-                            }
-                        };
-
-                        // Add the request to the VolleySingleton.
-                        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(logoutRequest);
-
-                        dialog.dismiss();
-                    }
-                });
-                // set negative button, no etc
-                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                alert.show(); // show alert message
-
-            }
-        });
-
         // ----- Click avatar, show full screen image -----
         avatar_pic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,6 +167,96 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.profile_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // ----- Log Out of App -----
+            case R.id.action_logout:
+
+                View view = getView();
+
+                if (view != null) {
+                    final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
+
+                    // read from SharedPreferences
+                    final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+                    final String access_token = sharedpreferences.getString("access_token", "");
+
+                    // Create dialog box, ask confirmation before proceed
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                    alert.setTitle("Log Out");
+                    alert.setMessage("Are you sure you want to log out of the application?");
+                    // set positive button, yes etc
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            loadingFrame.setVisibility(View.VISIBLE);
+
+                            // Request a string response from the provided URL.
+                            JsonObjectRequest logoutRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/logout", null,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+
+                                                // parse JSON response
+                                                String message = response.getString("message");
+                                                Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                                                // clear SharedPreferences
+                                                sharedpreferences.edit().clear().commit();
+
+                                                // redirect to log in page
+                                                Intent intentPage = new Intent(getActivity(), LoginActivity.class);
+                                                startActivity(intentPage);
+                                                getActivity().finish();
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                                loadingFrame.setVisibility(View.GONE);
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getActivity().getApplicationContext(), "Log out failed!", Toast.LENGTH_SHORT).show();
+                                    loadingFrame.setVisibility(View.GONE);
+                                }
+                            }) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer " + access_token);
+
+                                    return params;
+                                }
+                            };
+
+                            // Add the request to the VolleySingleton.
+                            VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(logoutRequest);
+
+                            dialog.dismiss();
+                        }
+                    });
+                    // set negative button, no etc
+                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    alert.show(); // show alert message
+                }
+
+                return true;
+        }
+        return false;
     }
 
 }
