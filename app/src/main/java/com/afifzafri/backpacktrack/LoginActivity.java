@@ -118,11 +118,10 @@ public class LoginActivity extends AppCompatActivity {
                                             }
 
                                             Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+
+                                            loginBtn.setEnabled(true);
+                                            loadingFrame.setVisibility(View.GONE);
                                         }
-
-                                        loginBtn.setEnabled(true);
-                                        loadingFrame.setVisibility(View.GONE);
-
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
