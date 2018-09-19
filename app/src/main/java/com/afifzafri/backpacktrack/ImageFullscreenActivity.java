@@ -10,7 +10,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.URLUtil;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ public class ImageFullscreenActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false); // remove title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
+        FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
         ImageView imageFullscreen = (ImageView) findViewById(R.id.imageFullscreen);
         TextView textCaption = (TextView) findViewById(R.id.textCaption);
 
@@ -43,6 +46,8 @@ public class ImageFullscreenActivity extends AppCompatActivity {
 
             Picasso.get().load(image_url).into(imageFullscreen);
             textCaption.setText(caption);
+
+            loadingFrame.setVisibility(View.GONE);
         }
     }
 

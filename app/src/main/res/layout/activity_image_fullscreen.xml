@@ -18,6 +18,7 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/imageLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -31,6 +32,7 @@
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/captionFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteY="658dp">
@@ -44,6 +46,22 @@
             android:gravity="bottom|center_horizontal"
             android:text="Caption"
             android:textColor="@android:color/background_light" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/loadingFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/circleLoading"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:theme="@style/AppTheme" />
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
