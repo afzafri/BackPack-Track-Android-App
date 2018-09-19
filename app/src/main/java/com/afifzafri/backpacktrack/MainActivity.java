@@ -1,5 +1,7 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -66,13 +68,33 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Check if press hardware back button on fragments other than home, redirect to home fragment
-     * else if pressed at home, exit app
+     * else if pressed at home, prompt confirm message to exit app
      */
     @Override
     public void onBackPressed() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         if (bottomNavigationView.getSelectedItemId() == R.id.navigation_home) {
-            super.onBackPressed();
+            // Create dialog box, ask confirmation before proceed
+            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+            alert.setTitle("Exit");
+            alert.setMessage("Are you sure you want to exit the application?");
+            // set positive button, yes etc
+            alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish(); // close app
+                    dialog.dismiss();
+                }
+            });
+            // set negative button, no etc
+            alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alert.show(); // show alert message
         } else {
             bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         }
