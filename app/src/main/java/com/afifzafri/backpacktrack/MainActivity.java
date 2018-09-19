@@ -64,4 +64,18 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Check if press hardware back button on fragments other than home, redirect to home fragment
+     * else if pressed at home, exit app
+     */
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        if (bottomNavigationView.getSelectedItemId() == R.id.navigation_home) {
+            super.onBackPressed();
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
+    }
+
 }
