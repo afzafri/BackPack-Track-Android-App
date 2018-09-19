@@ -59,7 +59,6 @@ public class ProfileFragment extends Fragment {
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textPhone = (TextView) view.findViewById(R.id.textPhone);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
-        final Button logoutBtn = (Button) view.findViewById(R.id.logoutBtn);
         final Button editProfileBtn = (Button) view.findViewById(R.id.editProfileBtn);
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 

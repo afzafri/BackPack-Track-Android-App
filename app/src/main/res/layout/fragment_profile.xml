@@ -13,33 +13,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/editProfileBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/editProfileBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#ea7e27"
-                android:drawableLeft="@drawable/ic_edit_black_24dp"
-                android:text="Edit profile" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/logoutBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
-                android:text="Log Out" />
-
-        </LinearLayout>
+            android:layout_gravity="right"
+            android:backgroundTint="#ea7e27"
+            android:drawableLeft="@drawable/ic_edit_black_24dp"
+            android:text="Edit"
+            style="?android:attr/buttonStyleSmall" />
 
         <FrameLayout
             android:layout_width="wrap_content"
