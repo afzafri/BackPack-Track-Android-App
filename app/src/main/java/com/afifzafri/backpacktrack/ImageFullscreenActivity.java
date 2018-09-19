@@ -1,14 +1,22 @@
 package com.afifzafri.backpacktrack;
 
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 public class ImageFullscreenActivity extends AppCompatActivity {
 
@@ -44,10 +52,20 @@ public class ImageFullscreenActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            // close
             case android.R.id.home:
                 // todo: goto back activity from here
 
                 finish();
+                return true;
+
+            // save image
+            case R.id.action_save_image:
+                String image_url = getIntent().getExtras().getString("image_url");
+                ImageView imageFullscreen = (ImageView) findViewById(R.id.imageFullscreen);
+                Picasso.get().load(image_url).into(new PhotoDownloader(getApplicationContext(), image_url , imageFullscreen));
+
                 return true;
 
             default:
