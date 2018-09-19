@@ -559,7 +559,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                     Map<String, DataPart> params = new HashMap<>();
                                     // file name could found file base or direct access from real path
                                     // for now just get bitmap data from ImageView
-                                    params.put("avatar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawableAvatar(getBaseContext(), avatarPreview.getDrawable(), 250, 0), "image/jpeg"));
+                                    params.put("avatar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawableAvatar(getBaseContext(), avatarPreview.getDrawable(), 500, 0), "image/jpeg"));
 
                                     return params;
                                 }
