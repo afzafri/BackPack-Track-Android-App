@@ -9,8 +9,13 @@
         android:title="Refresh"
         app:showAsAction="always"></item>
     <item
+        android:id="@+id/action_edit_profile"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="Edit Profile"
+        app:showAsAction="always"></item>
+    <item
         android:id="@+id/action_logout"
         android:icon="@drawable/ic_exit_to_app_white_24dp"
-        android:title="Refresh"
+        android:title="Log Out"
         app:showAsAction="always"></item>
 </menu>

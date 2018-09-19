@@ -13,20 +13,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/editProfileBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:backgroundTint="#ea7e27"
-            android:drawableLeft="@drawable/ic_edit_black_24dp"
-            android:text="Edit"
-            style="?android:attr/buttonStyleSmall" />
-
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp">
 
             <ImageView
                 android:id="@+id/avatar_pic"

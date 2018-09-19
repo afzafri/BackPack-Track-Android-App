@@ -59,7 +59,6 @@ public class ProfileFragment extends Fragment {
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textPhone = (TextView) view.findViewById(R.id.textPhone);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
-        final Button editProfileBtn = (Button) view.findViewById(R.id.editProfileBtn);
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
         // show loading spinner
@@ -132,16 +131,6 @@ public class ProfileFragment extends Fragment {
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(profileRequest);
 
-        // ----- Clicked Edit Profile button -----
-        editProfileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // redirect to edit profile page
-                Intent intentPage = new Intent(getActivity(), EditProfileActivity.class);
-                startActivity(intentPage);
-            }
-        });
-
         // ----- Click avatar, show full screen image -----
         avatar_pic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,9 +157,24 @@ public class ProfileFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * For handling the menu items on click event for the Profile fragment
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            // ----- Edit Profile -----
+            case R.id.action_edit_profile:
+
+                // redirect to edit profile page
+                Intent intentPage = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intentPage);
+
+                return true;
+
 
             // ----- Log Out of App -----
             case R.id.action_logout:
