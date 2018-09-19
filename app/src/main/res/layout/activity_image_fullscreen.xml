@@ -25,7 +25,25 @@
         <ImageView
             android:id="@+id/imageFullscreen"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:adjustViewBounds="false" />
+
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="658dp">
+
+        <TextView
+            android:id="@+id/textCaption"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="bottom|center_horizontal"
+            android:text="Caption"
+            android:textColor="@android:color/background_light" />
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

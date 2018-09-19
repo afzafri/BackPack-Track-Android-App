@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -31,13 +32,17 @@ public class ImageFullscreenActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
         ImageView imageFullscreen = (ImageView) findViewById(R.id.imageFullscreen);
+        TextView textCaption = (TextView) findViewById(R.id.textCaption);
 
         // get url from intent, and set to imageview if not null
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
             String image_url = extras.getString("image_url");
+            String caption = extras.getString("caption");
+
             Picasso.get().load(image_url).into(imageFullscreen);
+            textCaption.setText(caption);
         }
     }
 

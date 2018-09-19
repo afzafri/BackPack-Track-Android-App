@@ -139,6 +139,7 @@ public class ProfileFragment extends Fragment {
                 // open fullscreen image activity
                 Intent intentPage = new Intent(getActivity(), ImageFullscreenActivity.class);
                 intentPage.putExtra("image_url", avatar_pic.getTag().toString());
+                intentPage.putExtra("caption", textName.getText().toString());
                 startActivity(intentPage);
             }
         });
