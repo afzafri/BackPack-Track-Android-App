@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -30,6 +31,13 @@ public class ImageFullscreenActivity extends AppCompatActivity {
             String image_url = extras.getString("image_url");
             Picasso.get().load(image_url).into(imageFullscreen);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.view_image_menu, menu);
+        return true;
     }
 
     // override default back navigation action
