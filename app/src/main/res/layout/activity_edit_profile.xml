@@ -97,11 +97,12 @@
                         android:hint="Address"
                         android:inputType="textMultiLine" />
 
-                    <Spinner
-                        android:id="@+id/countryspinner"
+                    <AutoCompleteTextView
+                        android:id="@+id/countries_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp" />
+                        android:layout_margin="8dp"
+                        android:hint="Country" />
 
                     <EditText
                         android:id="@+id/editEmail"

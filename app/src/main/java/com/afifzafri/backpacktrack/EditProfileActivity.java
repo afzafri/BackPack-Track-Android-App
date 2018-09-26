@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -72,9 +73,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         final EditText editPhone = (EditText) findViewById(R.id.editPhone);
         final EditText editAddress = (EditText) findViewById(R.id.editAddress);
         final EditText editEmail = (EditText) findViewById(R.id.editEmail);
-        final Spinner countryspinner = (Spinner) findViewById(R.id.countryspinner);
+        final AutoCompleteTextView countryselect = (AutoCompleteTextView) findViewById(R.id.countries_list);
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
-        final List<String> countrieslist2 = new ArrayList<String>(); // need 2nd array, for getting position of country
         final Button updAccountBtn = (Button) findViewById(R.id.updAccountBtn);
 
         final EditText editOldPassword = (EditText) findViewById(R.id.editOldPasword);
@@ -84,6 +84,9 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
 
         final ImageButton chooseBtn = (ImageButton) findViewById(R.id.chooseBtn);
         final Button upAvatarBtn = (Button) findViewById(R.id.upAvatarBtn);
+
+        // Countries Array
+        final List<String> countrieslist = new ArrayList<String>();
 
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
@@ -96,10 +99,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        // Countries Array
-                        ArrayList<StringWithTag> countrieslist = new ArrayList<StringWithTag>();
-                        countrieslist.add(new StringWithTag(null, "Select countries...")); // set default first element in the spinner
-                        countrieslist2.add("Select countries..."); // also insert into 2nd list
+                        countrieslist.add("Select countries..."); // set default first element in the spinner
 
                         for(int i=0;i<response.length();i++)
                         {
@@ -108,19 +108,17 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                 String id = country.getString("id");
                                 String name = country.getString("name");
 
-                                countrieslist.add(new StringWithTag(id, name));
-                                countrieslist2.add(name);
+                                countrieslist.add(name);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
                         // Populate the spinner with Array values
-                        ArrayAdapter<StringWithTag> countriesAdapter = new ArrayAdapter<StringWithTag>(getApplicationContext(),   android.R.layout.simple_spinner_item, countrieslist);
-                        countriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-                        countryspinner.setAdapter(countriesAdapter);
+                        ArrayAdapter<String> countriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, countrieslist);
+                        countryselect.setAdapter(countriesAdapter);
 
-                        Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
                         loadingFrame.setVisibility(View.GONE);
 
                     }
@@ -164,13 +162,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             editUsername.setText(username);
                             editPhone.setText(phone);
                             editAddress.setText(address);
+                            countryselect.setText(country_name);
                             editEmail.setText(email);
-
-                            // set spinner selection to match current country
-                            if (country_name != null && !country_name.isEmpty() && country_name != "null") {
-                                int pos = countrieslist2.indexOf(country_name);
-                                countryspinner.setSelection(pos);
-                            }
 
                             Toast.makeText(getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
@@ -221,8 +214,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         final String username = editUsername.getText().toString();
                         String phone = editPhone.getText().toString();
                         String address = editAddress.getText().toString();
-                        final StringWithTag country = (StringWithTag) countryspinner.getSelectedItem();
-                        final String country_id = (String) country.key;
+                        final String country_name = countryselect.getText().toString();
+                        String country_id = Integer.toString(countrieslist.indexOf(country_name));
                         String email = editEmail.getText().toString();
 
                         if(name != null && username != null && phone != null && address != null && country_id != null && email != null)
@@ -289,7 +282,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                                         if(errors.has("country"))
                                                         {
                                                             String err = errors.getJSONArray("country").getString(0);
-                                                            ((TextView)countryspinner.getSelectedView()).setError(err);
+                                                            countryselect.setError(err);
                                                         }
                                                         if(errors.has("email"))
                                                         {
