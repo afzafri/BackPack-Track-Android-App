@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -39,10 +41,13 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        final Spinner countryspinner = (Spinner)findViewById(R.id.country);
+        final AutoCompleteTextView countryselect = (AutoCompleteTextView) findViewById(R.id.countries_list);
         final Button registerBtn = (Button) findViewById(R.id.registerBtn);
         Button loginBtn = (Button) findViewById(R.id.loginBtn);
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
+
+        // Countries Array
+        final List<String> countrieslist = new ArrayList<String>();
 
         // show progress bar
         loadingFrame.setVisibility(View.VISIBLE);
@@ -55,27 +60,23 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
 
-                        // Countries Array
-                        ArrayList<StringWithTag> countrieslist = new ArrayList<StringWithTag>();
-                        countrieslist.add(new StringWithTag(null, "Select countries...")); // set default first element in the spinner
+                        countrieslist.add("Select countries..."); // set default first element in the spinner
 
                         for(int i=0;i<response.length();i++)
                         {
                             try {
                                 JSONObject country = response.getJSONObject(i);
-                                String id = country.getString("id");
                                 String name = country.getString("name");
 
-                                countrieslist.add(new StringWithTag(id, name));
+                                countrieslist.add(name);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
-                        // Populate the spinner with Array values
-                        ArrayAdapter<StringWithTag> countriesAdapter = new ArrayAdapter<StringWithTag>(getApplicationContext(),   android.R.layout.simple_spinner_item, countrieslist);
-                        countriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-                        countryspinner.setAdapter(countriesAdapter);
+                        // Populate the AutoCompleteTextView with Array values
+                        ArrayAdapter<String> countriesAdapter = new ArrayAdapter<String>(getApplicationContext(),   android.R.layout.simple_dropdown_item_1line, countrieslist);
+                        countryselect.setAdapter(countriesAdapter);
 
                         Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
                         loadingFrame.setVisibility(View.GONE);
@@ -112,7 +113,6 @@ public class RegisterActivity extends AppCompatActivity {
                         final EditText usernameIn = (EditText) findViewById(R.id.username);
                         final EditText phoneIn = (EditText) findViewById(R.id.phone);
                         final EditText addressIn = (EditText) findViewById(R.id.address);
-                        final Spinner countrySpinner = (Spinner) findViewById(R.id.country);
                         final EditText emailIn = (EditText) findViewById(R.id.email);
                         final EditText passwordIn = (EditText) findViewById(R.id.password);
                         final EditText password_confirmationIn = (EditText) findViewById(R.id.password_confirmation);
@@ -121,8 +121,8 @@ public class RegisterActivity extends AppCompatActivity {
                         final String username = usernameIn.getText().toString();
                         String phone = phoneIn.getText().toString();
                         String address = addressIn.getText().toString();
-                        final StringWithTag country = (StringWithTag) countrySpinner.getSelectedItem();
-                        final String country_id = (String) country.key;
+                        final String country_name = countryselect.getText().toString();
+                        String country_id = Integer.toString(countrieslist.indexOf(country_name));
                         String email = emailIn.getText().toString();
                         String password = passwordIn.getText().toString();
                         String password_confirmation = password_confirmationIn.getText().toString();
@@ -170,7 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     usernameIn.setText("");
                                                     phoneIn.setText("");
                                                     addressIn.setText("");
-                                                    countrySpinner.setSelection(0);
+                                                    countryselect.setText("");
                                                     emailIn.setText("");
                                                     passwordIn.setText("");
                                                     password_confirmationIn.setText("");
@@ -206,7 +206,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                         if(errors.has("country"))
                                                         {
                                                             String err = errors.getJSONArray("country").getString(0);
-                                                            ((TextView)countrySpinner.getSelectedView()).setError(err);
+                                                            countryselect.setError(err);
                                                         }
                                                         if(errors.has("email"))
                                                         {
