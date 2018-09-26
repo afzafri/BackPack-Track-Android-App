@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
 
                         // Populate the AutoCompleteTextView with Array values
-                        ArrayAdapter<String> countriesAdapter = new ArrayAdapter<String>(getApplicationContext(),   android.R.layout.simple_dropdown_item_1line, countrieslist);
+                        ArrayAdapter<String> countriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, countrieslist);
                         countryselect.setAdapter(countriesAdapter);
 
                         Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
