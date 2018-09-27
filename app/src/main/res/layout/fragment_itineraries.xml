@@ -7,6 +7,11 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/countries_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <FrameLayout
         android:id="@+id/loadingFrame"
         android:layout_width="match_parent"

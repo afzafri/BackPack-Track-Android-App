@@ -1,18 +1,43 @@
 package com.afifzafri.backpacktrack;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ItinerariesFragment extends Fragment {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
 
     public ItinerariesFragment() {
@@ -31,6 +56,69 @@ public class ItinerariesFragment extends Fragment {
 
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
+
+        // read from SharedPreferences
+        final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+        final String access_token = sharedpreferences.getString("access_token", "");
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.countries_list);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // Countries Array
+        final List<String> countrieslist = new ArrayList<String>();
+
+        // Request a string response from the provided URL.
+        JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listVisitedCountries", null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        for(int i=0;i<response.length();i++)
+                        {
+                            try {
+                                JSONObject country = response.getJSONObject(i);
+                                String name = country.getString("name");
+
+                                countrieslist.add(name);
+                        } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // specify an adapter (see also next example)
+                        mAdapter = new ListCountriesAdapter(countrieslist);
+                        mRecyclerView.setAdapter(mAdapter);
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
+                        loadingFrame.setVisibility(View.GONE);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity().getApplicationContext(), "Load Countries Failed!", Toast.LENGTH_SHORT).show();
+                loadingFrame.setVisibility(View.GONE);
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(countriesListRequest);
 
         return view;
     }
