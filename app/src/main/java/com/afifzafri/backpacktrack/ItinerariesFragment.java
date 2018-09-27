@@ -75,6 +75,8 @@ public class ItinerariesFragment extends Fragment {
         final List<String> countrieslist = new ArrayList<String>();
         // Countries code Array
         final List<String> countriescode = new ArrayList<String>();
+        // Countries id Array
+        final List<String> countriesid = new ArrayList<String>();
 
         // Request a string response from the provided URL.
         JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listVisitedCountries", null,
@@ -88,16 +90,18 @@ public class ItinerariesFragment extends Fragment {
                                 JSONObject country = response.getJSONObject(i);
                                 String name = country.getString("name");
                                 String code = country.getString("code");
+                                String id = country.getString("id");
 
                                 countrieslist.add(name);
                                 countriescode.add(code);
+                                countriesid.add(id);
                         } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
                         // specify an adapter (see also next example)
-                        mAdapter = new ListCountriesAdapter(countrieslist, countriescode);
+                        mAdapter = new ListCountriesAdapter(countrieslist, countriescode, countriesid);
                         mRecyclerView.setAdapter(mAdapter);
 
                         Toast.makeText(getActivity().getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();

@@ -15,6 +15,7 @@ import java.util.List;
 public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdapter.MyViewHolder> {
     private List<String> cname = new ArrayList<String>();
     private List<String> ccode = new ArrayList<String>();
+    private List<String> cid = new ArrayList<String>();
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -34,9 +35,10 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListCountriesAdapter(List<String> countrylist, List<String> countriescode) {
+    public ListCountriesAdapter(List<String> countrylist, List<String> countriescode, List<String> countriesid) {
         cname = countrylist;
         ccode = countriescode;
+        cid = countriesid;
     }
 
     // Create new views (invoked by the layout manager)
@@ -62,6 +64,9 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
 
         // Set country name
         holder.mTextView.setText(cname.get(position));
+
+        // Hide country id into image
+        holder.mImageView.setTag(cid.get(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
