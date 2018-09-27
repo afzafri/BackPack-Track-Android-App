@@ -113,17 +113,6 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/myItinerariesBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="@color/colorPrimaryDark"
-                android:drawableLeft="@drawable/ic_view_list_white_24dp"
-                android:text="My Itineraries"
-                android:textColor="@android:color/background_light"
-                tools:layout_editor_absoluteX="13dp" />
-
-            <Button
                 android:id="@+id/myCommentsBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
