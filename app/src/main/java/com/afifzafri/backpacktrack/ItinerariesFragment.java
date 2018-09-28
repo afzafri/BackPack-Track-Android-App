@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -19,7 +18,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
@@ -47,12 +45,15 @@ public class ItinerariesFragment extends Fragment {
 
     // initialize adapter and data structure here
     private ListCountriesAdapter mAdapter;
+    // Countries list Array
+    private List<VisitedCountriesModel> countriesList;
+
     // Countries names Array
-    private List<String> countrieslist;
+    /*private List<String> countrieslist;
     // Countries code Array
     private List<String> countriescode;
     // Countries id Array
-    private List<String> countriesid;
+    private List<String> countriesid;*/
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager  mLayoutManager;
@@ -70,10 +71,11 @@ public class ItinerariesFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_itineraries, container, false);
 
         // you must assign all objects to avoid nullPointerException
-        countrieslist = new ArrayList<String>();
+        countriesList = new ArrayList<>();
+        /*countrieslist = new ArrayList<String>();
         countriescode = new ArrayList<String>();
-        countriesid = new ArrayList<String>();
-        mAdapter = new ListCountriesAdapter(countrieslist, countriescode, countriesid);
+        countriesid = new ArrayList<String>();*/
+        mAdapter = new ListCountriesAdapter(countriesList);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.countries_list);
         // use a linear layout manager
@@ -161,9 +163,8 @@ public class ItinerariesFragment extends Fragment {
                                 String code = country.getString("code");
                                 String id = country.getString("id");
 
-                                countrieslist.add(name);
-                                countriescode.add(code);
-                                countriesid.add(id);
+                                // insert data into array
+                                countriesList.add(new VisitedCountriesModel(name, code, id));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -243,9 +244,8 @@ public class ItinerariesFragment extends Fragment {
                                 String code = country.getString("code");
                                 String id = country.getString("id");
 
-                                countrieslist.add(name);
-                                countriescode.add(code);
-                                countriesid.add(id);
+                                // insert data into array
+                                countriesList.add(new VisitedCountriesModel(name, code, id));
 
                                 mAdapter.notifyDataSetChanged();
                             }

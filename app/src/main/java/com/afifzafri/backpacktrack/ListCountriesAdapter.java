@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdapter.MyViewHolder> {
-    private List<String> cname = new ArrayList<String>();
+    /*private List<String> cname = new ArrayList<String>();
     private List<String> ccode = new ArrayList<String>();
-    private List<String> cid = new ArrayList<String>();
+    private List<String> cid = new ArrayList<String>();*/
+
+    private List<VisitedCountriesModel> countriesList;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -35,10 +37,8 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListCountriesAdapter(List<String> countrylist, List<String> countriescode, List<String> countriesid) {
-        cname = countrylist;
-        ccode = countriescode;
-        cid = countriesid;
+    public ListCountriesAdapter(List<VisitedCountriesModel> countriesList) {
+        this.countriesList = countriesList;
     }
 
     // Create new views (invoked by the layout manager)
@@ -59,19 +59,19 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
         // - replace the contents of the view with that element
 
         // Set country flag
-        String flagurl = "https://www.countryflags.io/"+ccode.get(position)+"/flat/64.png";
+        String flagurl = "https://www.countryflags.io/"+countriesList.get(position).getCode()+"/flat/64.png";
         Picasso.get().load(flagurl).into(holder.mImageView);
 
         // Set country name
-        holder.mTextView.setText(cname.get(position));
+        holder.mTextView.setText(countriesList.get(position).getName());
 
         // Hide country id into image
-        holder.mImageView.setTag(cid.get(position));
+        holder.mImageView.setTag(countriesList.get(position).getId());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return cname.size();
+        return countriesList.size();
     }
 }
