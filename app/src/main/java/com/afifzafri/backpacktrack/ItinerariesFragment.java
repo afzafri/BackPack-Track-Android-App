@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +36,9 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class ItinerariesFragment extends Fragment {
+
+    // for swipe to refresh widget
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // define last page, need for API to load next page. Will be increase by each request
     private int lastPage = 1;
@@ -115,6 +120,22 @@ public class ItinerariesFragment extends Fragment {
                 }
             }
         });
+
+        // refresh fragment when perform swipe to refresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(currentFragment).attach(currentFragment).commit();
+                        mSwipeRefreshLayout.setRefreshing(false);
+
+                        lastPage = 1; // reset back current page to first page
+                    }
+                }
+        );
 
         return view;
     }
