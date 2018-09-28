@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,15 +80,17 @@ public class ItinerariesFragment extends Fragment {
         final List<String> countriesid = new ArrayList<String>();
 
         // Request a string response from the provided URL.
-        JsonArrayRequest countriesListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listVisitedCountries", null,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listVisitedCountries", null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
 
-                        for(int i=0;i<response.length();i++)
-                        {
-                            try {
-                                JSONObject country = response.getJSONObject(i);
+                        try {
+                            JSONArray countries = response.getJSONArray("data");
+
+                            for(int i=0;i<countries.length();i++)
+                            {
+                                JSONObject country = countries.getJSONObject(i);
                                 String name = country.getString("name");
                                 String code = country.getString("code");
                                 String id = country.getString("id");
@@ -95,9 +98,9 @@ public class ItinerariesFragment extends Fragment {
                                 countrieslist.add(name);
                                 countriescode.add(code);
                                 countriesid.add(id);
-                        } catch (JSONException e) {
-                                e.printStackTrace();
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
                         // specify an adapter (see also next example)
@@ -111,7 +114,7 @@ public class ItinerariesFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Load Countries Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Load Countries Failed!"+error, Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
             }
         })
