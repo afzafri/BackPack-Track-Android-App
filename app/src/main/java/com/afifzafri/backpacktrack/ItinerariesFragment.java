@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,7 +37,8 @@ import java.util.Map;
  */
 public class ItinerariesFragment extends Fragment {
 
-    private int lastPage = 1; // this will issued to php page, so no harm make it string
+    // define last page, need for API to load next page. Will be increase by each request
+    private int lastPage = 1;
 
     // we need this variable to lock and unlock loading more
     // e.g we should not load more when volley is already loading,
@@ -176,8 +178,9 @@ public class ItinerariesFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Load Countries Failed!"+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Load Countries Failed!", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
+                itShouldLoadMore = true; // even if volley failed, set true so we can retry again
             }
         })
         {
@@ -197,6 +200,11 @@ public class ItinerariesFragment extends Fragment {
     }
 
     private void loadMore(View view) {
+        // get UI elements
+        final ProgressBar loadMoreSpin = (ProgressBar) view.findViewById(R.id.loadMoreSpin);
+
+        // show loading spinner
+        loadMoreSpin.setVisibility(View.VISIBLE);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -222,8 +230,9 @@ public class ItinerariesFragment extends Fragment {
                             if (countries.length() <= 0) {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
-                                Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity().getApplicationContext(), "No more countries available", Toast.LENGTH_SHORT).show();
                                 itShouldLoadMore = false;
+                                loadMoreSpin.setVisibility(View.GONE);
                                 return; // return will end the program at this point
                             }
 
@@ -239,20 +248,21 @@ public class ItinerariesFragment extends Fragment {
                                 countriesid.add(id);
 
                                 mAdapter.notifyDataSetChanged();
-
-                                lastPage++; // increment the page
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                         Toast.makeText(getActivity().getApplicationContext(), "Load more countries success!", Toast.LENGTH_SHORT).show();
-
+                        loadMoreSpin.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Load more countries failed!"+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Load more countries failed!", Toast.LENGTH_SHORT).show();
+                loadMoreSpin.setVisibility(View.GONE);
+
+                itShouldLoadMore = true; // even if volley failed, set true so we can retry again
             }
         })
         {
@@ -268,6 +278,7 @@ public class ItinerariesFragment extends Fragment {
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(countriesListRequest);
 
+        lastPage++; // increment the page number
     }
 
 }
