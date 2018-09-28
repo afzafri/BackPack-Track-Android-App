@@ -36,9 +36,24 @@ import java.util.Map;
  */
 public class ItinerariesFragment extends Fragment {
 
+    private int lastPage = 1; // this will issued to php page, so no harm make it string
+
+    // we need this variable to lock and unlock loading more
+    // e.g we should not load more when volley is already loading,
+    // loading will be activated when volley completes loading
+    private boolean itShouldLoadMore = true;
+
+    // initialize adapter and data structure here
+    private ListCountriesAdapter mAdapter;
+    // Countries names Array
+    private List<String> countrieslist;
+    // Countries code Array
+    private List<String> countriescode;
+    // Countries id Array
+    private List<String> countriesid;
+
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager  mLayoutManager;
 
 
     public ItinerariesFragment() {
@@ -52,6 +67,55 @@ public class ItinerariesFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_itineraries, container, false);
 
+        // you must assign all objects to avoid nullPointerException
+        countrieslist = new ArrayList<String>();
+        countriescode = new ArrayList<String>();
+        countriesid = new ArrayList<String>();
+        mAdapter = new ListCountriesAdapter(countrieslist, countriescode, countriesid);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.countries_list);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // specify an adapter (see also next example)
+        mRecyclerView.setAdapter(mAdapter);
+
+        // create a function for the first load
+        firstLoadData(view);
+
+        // here add a recyclerView listener, to listen to scrolling,
+        // we don't care when user scrolls upwards, will only be careful when user scrolls downwards
+        // this listener is freely provided for by android, no external library
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            // for this tutorial, this is the ONLY method that we need, ignore the rest
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    // Recycle view scrolling downwards...
+                    // this if statement detects when user reaches the end of recyclerView, this is only time we should load more
+                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                        // remember "!" is the same as "== false"
+                        // here we are now allowed to load more, but we need to be careful
+                        // we must check if itShouldLoadMore variable is true [unlocked]
+                        if (itShouldLoadMore) {
+                            loadMore(view);
+                        }
+                    }
+
+                }
+            }
+        });
+
+        return view;
+    }
+
+    private void firstLoadData(View view) {
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
@@ -62,22 +126,9 @@ public class ItinerariesFragment extends Fragment {
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.countries_list);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // Countries names Array
-        final List<String> countrieslist = new ArrayList<String>();
-        // Countries code Array
-        final List<String> countriescode = new ArrayList<String>();
-        // Countries id Array
-        final List<String> countriesid = new ArrayList<String>();
+        itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
+        // user will not load more when volley is processing another request
+        // only load more when  volley is free
 
         // Request a string response from the provided URL.
         JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listVisitedCountries", null,
@@ -85,8 +136,21 @@ public class ItinerariesFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
 
+                        // remember here we are in the main thread, that means,
+                        //volley has finished processing request, and we have our response.
+                        // What else are you waiting for? update itShouldLoadMore = true;
+                        itShouldLoadMore = true;
+
                         try {
                             JSONArray countries = response.getJSONArray("data");
+
+                            if (countries.length() <= 0) {
+                                // we need to check this, to make sure, our dataStructure JSonArray contains
+                                // something
+                                Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                itShouldLoadMore = false;
+                                return; // return will end the program at this point
+                            }
 
                             for(int i=0;i<countries.length();i++)
                             {
@@ -98,14 +162,12 @@ public class ItinerariesFragment extends Fragment {
                                 countrieslist.add(name);
                                 countriescode.add(code);
                                 countriesid.add(id);
+
+                                mAdapter.notifyDataSetChanged();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-                        // specify an adapter (see also next example)
-                        mAdapter = new ListCountriesAdapter(countrieslist, countriescode, countriesid);
-                        mRecyclerView.setAdapter(mAdapter);
 
                         Toast.makeText(getActivity().getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
                         loadingFrame.setVisibility(View.GONE);
@@ -131,7 +193,81 @@ public class ItinerariesFragment extends Fragment {
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(countriesListRequest);
 
-        return view;
+        lastPage++; // increment the page number
+    }
+
+    private void loadMore(View view) {
+
+        // read from SharedPreferences
+        final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+        final String access_token = sharedpreferences.getString("access_token", "");
+
+        itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
+        // user will not load more when volley is processing another request
+        // only load more when  volley is free
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listVisitedCountries?page="+lastPage, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        // since volley has completed and it has our response, now let's update
+                        // itShouldLoadMore
+                        itShouldLoadMore = true;
+
+                        try {
+                            JSONArray countries = response.getJSONArray("data");
+
+                            if (countries.length() <= 0) {
+                                // we need to check this, to make sure, our dataStructure JSonArray contains
+                                // something
+                                Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                itShouldLoadMore = false;
+                                return; // return will end the program at this point
+                            }
+
+                            for(int i=0;i<countries.length();i++)
+                            {
+                                JSONObject country = countries.getJSONObject(i);
+                                String name = country.getString("name");
+                                String code = country.getString("code");
+                                String id = country.getString("id");
+
+                                countrieslist.add(name);
+                                countriescode.add(code);
+                                countriesid.add(id);
+
+                                mAdapter.notifyDataSetChanged();
+
+                                lastPage++; // increment the page
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Load more countries success!", Toast.LENGTH_SHORT).show();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity().getApplicationContext(), "Load more countries failed!"+error, Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(countriesListRequest);
+
     }
 
 }
