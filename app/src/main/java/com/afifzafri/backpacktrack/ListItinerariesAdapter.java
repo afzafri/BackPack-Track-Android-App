@@ -87,7 +87,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         holder.itinerary_totalbudget.setText(itinerariesList.get(position).getTotalBudget());
 
         // Set itinerary user name
-        holder.itinerary_user.setText("by " + itinerariesList.get(position).getUser());
+        holder.itinerary_user.setText(itinerariesList.get(position).getUser());
 
         // get current position item data
         holder.currentItem = itinerariesList.get(position);
