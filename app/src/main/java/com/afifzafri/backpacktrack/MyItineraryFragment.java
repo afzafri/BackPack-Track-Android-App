@@ -51,7 +51,7 @@ public class MyItineraryFragment extends Fragment {
     private boolean itShouldLoadMore = true;
 
     // initialize adapter and data structure here
-    private ListItinerariesAdapter mAdapter;
+    private ListMyItinerariesAdapter mAdapter;
     // Countries list Array
     private List<ItinerariesModel> itinerariesList;
 
@@ -75,7 +75,7 @@ public class MyItineraryFragment extends Fragment {
 
         // you must assign all objects to avoid nullPointerException
         itinerariesList = new ArrayList<>();
-        mAdapter = new ListItinerariesAdapter(itinerariesList);
+        mAdapter = new ListMyItinerariesAdapter(itinerariesList);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.itineraries_list);
         // use a linear layout manager
