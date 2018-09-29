@@ -4,7 +4,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_itineraries">Itineraries</string>
-    <string name="title_create">Create Itinerary</string>
+    <string name="title_create">My Itinerary</string>
     <string name="title_profile">Profile</string>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
                     setTitle(getString(R.string.title_itineraries));
                     break;
                 case R.id.navigation_create:
-                    fragment = new HomeFragment();
+                    fragment = new MyItineraryFragment();
                     setTitle(getString(R.string.title_create));
                     break;
                 case R.id.navigation_profile:
