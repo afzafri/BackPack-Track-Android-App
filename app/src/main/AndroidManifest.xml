@@ -49,6 +49,9 @@
             android:name=".ImageFullscreenActivity"
             android:label="View Image"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".CountryItinerariesActivity"
+            android:label="Itineraries" />
     </application>
 
 </manifest>
