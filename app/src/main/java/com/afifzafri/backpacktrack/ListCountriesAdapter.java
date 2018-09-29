@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdapter.MyViewHolder> {
-    /*private List<String> cname = new ArrayList<String>();
-    private List<String> ccode = new ArrayList<String>();
-    private List<String> cid = new ArrayList<String>();*/
 
     private List<VisitedCountriesModel> countriesList;
 
