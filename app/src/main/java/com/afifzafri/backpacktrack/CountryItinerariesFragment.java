@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItinerariesFragment extends Fragment {
+public class CountryItinerariesFragment extends Fragment {
 
     // for swipe to refresh widget
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -57,7 +57,7 @@ public class ItinerariesFragment extends Fragment {
     private LinearLayoutManager  mLayoutManager;
 
 
-    public ItinerariesFragment() {
+    public CountryItinerariesFragment() {
         // Required empty public constructor
     }
 
