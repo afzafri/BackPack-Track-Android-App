@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 public class CountryItinerariesActivity extends AppCompatActivity {
 
@@ -12,6 +13,14 @@ public class CountryItinerariesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_country_itineraries);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
+
+        // get data pass through intent
+        Bundle extras = getIntent().getExtras();
+        String country_id = extras.getString("country_id");
+        String country_name = extras.getString("country_name");
+
+        // set activity title
+        setTitle("Itineraries for " + country_name);
     }
 
     // override default back navigation action

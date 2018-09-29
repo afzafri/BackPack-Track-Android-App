@@ -1,6 +1,7 @@
 package com.afifzafri.backpacktrack;
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,7 +45,11 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     // item clicked
-                    Toast.makeText(v.getContext(), currentItem.getName(), Toast.LENGTH_SHORT).show();
+                    // redirect to list itinerary page
+                    Intent intentPage = new Intent(v.getContext(), CountryItinerariesActivity.class);
+                    intentPage.putExtra("country_id", currentItem.getId());
+                    intentPage.putExtra("country_name", currentItem.getName());
+                    v.getContext().startActivity(intentPage);
                 }
             });
         }
