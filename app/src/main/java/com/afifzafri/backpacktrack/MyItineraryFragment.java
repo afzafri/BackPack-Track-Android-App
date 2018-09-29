@@ -188,11 +188,12 @@ public class MyItineraryFragment extends Fragment {
                                 JSONObject user = itinerary.getJSONObject("user");
                                 String user_name = user.getString("name");
                                 JSONObject country = itinerary.getJSONObject("country");
+                                String country_name = country.getString("name");
                                 String country_currency = country.getString("currency");
                                 String totalbudget = country_currency + " " + itinerary.getString("totalbudget");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_name, title, duration, totalbudget));
+                                itinerariesList.add(new ItinerariesModel(id, user_name, title, country_name, duration, totalbudget));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -271,11 +272,12 @@ public class MyItineraryFragment extends Fragment {
                                 JSONObject user = itinerary.getJSONObject("user");
                                 String user_name = user.getString("name");
                                 JSONObject country = itinerary.getJSONObject("country");
+                                String country_name = country.getString("name");
                                 String country_currency = country.getString("currency");
                                 String totalbudget = country_currency + " " + itinerary.getString("totalbudget");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_name, title, duration, totalbudget));
+                                itinerariesList.add(new ItinerariesModel(id, user_name, title, country_name, duration, totalbudget));
 
                                 mAdapter.notifyDataSetChanged();
                             }
