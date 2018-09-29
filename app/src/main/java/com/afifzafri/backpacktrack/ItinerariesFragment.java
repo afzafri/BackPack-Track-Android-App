@@ -53,13 +53,6 @@ public class ItinerariesFragment extends Fragment {
     // Countries list Array
     private List<VisitedCountriesModel> countriesList;
 
-    // Countries names Array
-    /*private List<String> countrieslist;
-    // Countries code Array
-    private List<String> countriescode;
-    // Countries id Array
-    private List<String> countriesid;*/
-
     private RecyclerView mRecyclerView;
     private LinearLayoutManager  mLayoutManager;
 
@@ -75,11 +68,12 @@ public class ItinerariesFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_itineraries, container, false);
 
+        // read from SharedPreferences
+        final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+        final String access_token = sharedpreferences.getString("access_token", "");
+
         // you must assign all objects to avoid nullPointerException
         countriesList = new ArrayList<>();
-        /*countrieslist = new ArrayList<String>();
-        countriescode = new ArrayList<String>();
-        countriesid = new ArrayList<String>();*/
         mAdapter = new ListCountriesAdapter(countriesList);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.countries_list);
@@ -94,7 +88,7 @@ public class ItinerariesFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         // create a function for the first load
-        firstLoadData(view);
+        firstLoadData(view, access_token);
 
         // here add a recyclerView listener, to listen to scrolling,
         // we don't care when user scrolls upwards, will only be careful when user scrolls downwards
@@ -113,7 +107,7 @@ public class ItinerariesFragment extends Fragment {
                         // here we are now allowed to load more, but we need to be careful
                         // we must check if itShouldLoadMore variable is true [unlocked]
                         if (itShouldLoadMore) {
-                            loadMore(view);
+                            loadMore(view, access_token);
                         }
                     }
 
@@ -140,16 +134,12 @@ public class ItinerariesFragment extends Fragment {
         return view;
     }
 
-    private void firstLoadData(View view) {
+    private void firstLoadData(View view, final String access_token) {
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
-
-        // read from SharedPreferences
-        final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
-        final String access_token = sharedpreferences.getString("access_token", "");
 
         itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
         // user will not load more when volley is processing another request
@@ -221,16 +211,12 @@ public class ItinerariesFragment extends Fragment {
         lastPage++; // increment the page number
     }
 
-    private void loadMore(View view) {
+    private void loadMore(View view, final String access_token) {
         // get UI elements
         final ProgressBar loadMoreSpin = (ProgressBar) view.findViewById(R.id.loadMoreSpin);
 
         // show loading spinner
         loadMoreSpin.setVisibility(View.VISIBLE);
-
-        // read from SharedPreferences
-        final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
-        final String access_token = sharedpreferences.getString("access_token", "");
 
         itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
         // user will not load more when volley is processing another request
