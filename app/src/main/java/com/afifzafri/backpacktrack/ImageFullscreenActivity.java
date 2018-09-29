@@ -1,25 +1,16 @@
 package com.afifzafri.backpacktrack;
 
-import android.content.Intent;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
 
 public class ImageFullscreenActivity extends AppCompatActivity {
 
