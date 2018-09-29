@@ -1,5 +1,9 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,17 +15,21 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CreateItineraryActivity extends AppCompatActivity {
 
@@ -32,8 +40,12 @@ public class CreateItineraryActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
+        // read from SharedPreferences
+        final SharedPreferences sharedpreferences = getSharedPreferences("logindata", Context.MODE_PRIVATE);
+        final String access_token = sharedpreferences.getString("access_token", "");
+
         // Get all elements
-        final EditText title = (EditText) findViewById(R.id.title);
+        final EditText itinerary_title = (EditText) findViewById(R.id.title);
         final AutoCompleteTextView countryselect = (AutoCompleteTextView) findViewById(R.id.countries_list);
         final Button createBtn = (Button) findViewById(R.id.createBtn);
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
@@ -84,6 +96,132 @@ public class CreateItineraryActivity extends AppCompatActivity {
 
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(countriesListRequest);
+
+        // Create new itinerary when button create is clicked
+        createBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(CreateItineraryActivity.this);
+                alert.setTitle("Create new Itinerary");
+                alert.setMessage("Are you sure you want to create this itinerary?");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        String title = itinerary_title.getText().toString();
+                        String country_name = countryselect.getText().toString();
+                        String country_id = Integer.toString(countrieslist.indexOf(country_name));
+
+                        if(title != null && country_name != null && country_id != null)
+                        {
+                            createBtn.setEnabled(false); // disable button
+                            loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
+
+                            JSONObject createParams = new JSONObject(); // login parameters
+
+                            try {
+                                createParams.put("title", title);
+                                createParams.put("country_id", country_id);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Request a string response from the provided URL.
+                            JsonObjectRequest createRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/newItinerary", createParams,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+
+                                                int code = Integer.parseInt(response.getString("code"));
+
+                                                if(code == 200)
+                                                {
+                                                    // parse JSON response
+                                                    String message = response.getString("message");
+                                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                                                    // empty all input
+                                                    itinerary_title.setText("");
+                                                    countryselect.setText("");
+                                                }
+                                                else if(code == 400)
+                                                {
+                                                    String errormsg = response.getString("message");
+
+                                                    // check if response contain errors messages
+                                                    if(response.has("error"))
+                                                    {
+                                                        JSONObject errors = response.getJSONObject("error");
+                                                        if(errors.has("title"))
+                                                        {
+                                                            String err = errors.getJSONArray("title").getString(0);
+                                                            itinerary_title.setError(err);
+                                                        }
+                                                        if(errors.has("country"))
+                                                        {
+                                                            String err = errors.getJSONArray("country").getString(0);
+                                                            countryselect.setError(err);
+                                                        }
+                                                    }
+
+                                                    Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                createBtn.setEnabled(true);
+                                                loadingFrame.setVisibility(View.GONE);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Create new itinerary failed!", Toast.LENGTH_SHORT).show();
+
+                                    createBtn.setEnabled(true);
+                                    loadingFrame.setVisibility(View.GONE);
+                                }
+                            })
+                            {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String>  params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer "+access_token);
+
+                                    return params;
+                                }
+                            };
+
+                            // Add the request to the VolleySingleton.
+                            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(createRequest);
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Please fill in all the input!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
+            }
+        });
+
     }
 
     // override default back navigation action
