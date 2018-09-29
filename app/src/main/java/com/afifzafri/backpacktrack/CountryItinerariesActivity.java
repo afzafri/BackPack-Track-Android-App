@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -57,7 +58,7 @@ public class CountryItinerariesActivity extends AppCompatActivity {
 
         // get data pass through intent
         Bundle extras = getIntent().getExtras();
-        String country_id = extras.getString("country_id");
+        final String country_id = extras.getString("country_id");
         String country_name = extras.getString("country_name");
 
         // set activity title
@@ -85,6 +86,30 @@ public class CountryItinerariesActivity extends AppCompatActivity {
         // create a function for the first load
         firstLoadData(country_id, access_token);
 
+        // here add a recyclerView listener, to listen to scrolling,
+        // we don't care when user scrolls upwards, will only be careful when user scrolls downwards
+        // this listener is freely provided for by android, no external library
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            // for this tutorial, this is the ONLY method that we need, ignore the rest
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    // Recycle view scrolling downwards...
+                    // this if statement detects when user reaches the end of recyclerView, this is only time we should load more
+                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                        // remember "!" is the same as "== false"
+                        // here we are now allowed to load more, but we need to be careful
+                        // we must check if itShouldLoadMore variable is true [unlocked]
+                        if (itShouldLoadMore) {
+                            loadMore(country_id, access_token);
+                        }
+                    }
+
+                }
+            }
+        });
 
         // refresh fragment when perform swipe to refresh
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
@@ -167,6 +192,89 @@ public class CountryItinerariesActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Load itineraries Failed!", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
+                itShouldLoadMore = true; // even if volley failed, set true so we can retry again
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(countriesListRequest);
+
+        lastPage++; // increment the page number
+    }
+
+    private void loadMore(String country_id, final String access_token) {
+        // get UI elements
+        final ProgressBar loadMoreSpin = (ProgressBar) findViewById(R.id.loadMoreSpin);
+
+        // show loading spinner
+        loadMoreSpin.setVisibility(View.VISIBLE);
+
+        itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
+        // user will not load more when volley is processing another request
+        // only load more when  volley is free
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listItinerariesByCountry/"+country_id+"?page="+lastPage, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        // since volley has completed and it has our response, now let's update
+                        // itShouldLoadMore
+                        itShouldLoadMore = true;
+
+                        try {
+                            JSONArray itineraries = response.getJSONArray("data");
+
+                            if (itineraries.length() <= 0) {
+                                // we need to check this, to make sure, our dataStructure JSonArray contains
+                                // something
+                                Toast.makeText(getApplicationContext(), "No more itineraries available", Toast.LENGTH_SHORT).show();
+                                itShouldLoadMore = false;
+                                loadMoreSpin.setVisibility(View.GONE);
+                                return; // return will end the program at this point
+                            }
+
+
+                            for(int i=0;i<itineraries.length();i++)
+                            {
+                                JSONObject itinerary = itineraries.getJSONObject(i);
+                                String id = itinerary.getString("id");
+                                String title = itinerary.getString("title");
+                                String duration = itinerary.getString("duration");
+                                JSONObject user = itinerary.getJSONObject("user");
+                                String user_name = user.getString("name");
+                                JSONObject country = itinerary.getJSONObject("country");
+                                String country_currency = country.getString("currency");
+                                String totalbudget = country_currency + " " + itinerary.getString("totalbudget");
+
+                                // insert data into array
+                                itinerariesList.add(new ItinerariesModel(id, user_name, title, duration, totalbudget));
+
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Toast.makeText(getApplicationContext(), "Load more itineraries success!", Toast.LENGTH_SHORT).show();
+                        loadMoreSpin.setVisibility(View.GONE);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Load more itineraries failed!", Toast.LENGTH_SHORT).show();
+                loadMoreSpin.setVisibility(View.GONE);
+
                 itShouldLoadMore = true; // even if volley failed, set true so we can retry again
             }
         })
