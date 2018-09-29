@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     // item clicked
-                    // redirect to list itinerary page
+                    Toast.makeText(v.getContext(), "ID: "+ currentItem.getId(), Toast.LENGTH_SHORT).show();
+
                 }
             });
         }
