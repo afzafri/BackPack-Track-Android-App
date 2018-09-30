@@ -6,14 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyViewHolder> {
+public class ListArticlesAdapter extends RecyclerView.Adapter<ListArticlesAdapter.MyViewHolder> {
 
     private List<ArticlesModel> articlesList;
 
@@ -49,14 +46,14 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.MyView
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ArticlesAdapter(List<ArticlesModel> articlesList) {
+    public ListArticlesAdapter(List<ArticlesModel> articlesList) {
         this.articlesList = articlesList;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ArticlesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                           int viewType) {
+    public ListArticlesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                               int viewType) {
         // create a new view
         View v= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_articles, parent, false);

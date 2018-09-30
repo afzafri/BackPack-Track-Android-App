@@ -1,6 +1,8 @@
 package com.afifzafri.backpacktrack;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,8 +11,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -49,8 +66,109 @@ public class ArticlesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_articles, container, false);
 
+        // read from SharedPreferences
+        final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+        final String access_token = sharedpreferences.getString("access_token", "");
+
+        // you must assign all objects to avoid nullPointerException
+        articlesList = new ArrayList<>();
+        mAdapter = new ListArticlesAdapter(articlesList);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.articles_list);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // specify an adapter (see also next example)
+        mRecyclerView.setAdapter(mAdapter);
+
+        // create a function for the first load
+        firstLoadData(view, access_token);
+
 
         return view;
+    }
+
+    private void firstLoadData(View view, final String access_token) {
+        // get UI elements
+        final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
+
+        // show loading spinner
+        loadingFrame.setVisibility(View.VISIBLE);
+
+        itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
+        // user will not load more when volley is processing another request
+        // only load more when  volley is free
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest articlesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listArticlesPaginated", null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        // remember here we are in the main thread, that means,
+                        //volley has finished processing request, and we have our response.
+                        // What else are you waiting for? update itShouldLoadMore = true;
+                        itShouldLoadMore = true;
+
+                        try {
+                            JSONArray articles = response.getJSONArray("data");
+
+                            if (articles.length() <= 0) {
+                                // we need to check this, to make sure, our dataStructure JSonArray contains
+                                // something
+                                Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                itShouldLoadMore = false;
+                                return; // return will end the program at this point
+                            }
+
+                            for(int i=0;i<articles.length();i++)
+                            {
+                                JSONObject article = articles.getJSONObject(i);
+                                String id = article.getString("id");
+                                String title = article.getString("title");
+                                String author = article.getString("author");
+                                String date = article.getString("date");
+                                String summary = article.getString("summary");
+
+                                // insert data into array
+                                articlesList.add(new ArticlesModel(id, title, author, date, summary));
+
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Load Articles Success!", Toast.LENGTH_SHORT).show();
+                        loadingFrame.setVisibility(View.GONE);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity().getApplicationContext(), "Load Articles Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                loadingFrame.setVisibility(View.GONE);
+                itShouldLoadMore = true; // even if volley failed, set true so we can retry again
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(articlesListRequest);
+
+        lastPage++; // increment the page number
     }
 
 }
