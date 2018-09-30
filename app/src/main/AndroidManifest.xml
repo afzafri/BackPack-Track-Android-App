@@ -55,6 +55,7 @@
         <activity
             android:name=".CreateItineraryActivity"
             android:label="Create new Itinerary" />
+        <activity android:name=".MyActivitiesActivity"></activity>
     </application>
 
 </manifest>

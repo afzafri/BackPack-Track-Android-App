@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -144,11 +145,22 @@ public class CreateItineraryActivity extends AppCompatActivity {
                                                 {
                                                     // parse JSON response
                                                     String message = response.getString("message");
+                                                    JSONObject result = response.getJSONObject("result");
+                                                    String resitinerary_id = result.getString("id");
+                                                    String resitinerary_title = result.getString("title");
                                                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
                                                     // empty all input
                                                     itinerary_title.setText("");
                                                     countryselect.setText("");
+
+                                                    // redirect to create activity page
+                                                    Intent intentPage = new Intent(getApplicationContext(), MyActivitiesActivity.class);
+                                                    intentPage.putExtra("itinerary_id", resitinerary_id);
+                                                    intentPage.putExtra("itinerary_title", resitinerary_title);
+                                                    startActivity(intentPage);
+
+                                                    finish();
                                                 }
                                                 else if(code == 400)
                                                 {
@@ -171,10 +183,9 @@ public class CreateItineraryActivity extends AppCompatActivity {
                                                     }
 
                                                     Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                                    createBtn.setEnabled(true);
+                                                    loadingFrame.setVisibility(View.GONE);
                                                 }
-
-                                                createBtn.setEnabled(true);
-                                                loadingFrame.setVisibility(View.GONE);
 
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
