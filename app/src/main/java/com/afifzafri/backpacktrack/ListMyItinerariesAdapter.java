@@ -1,8 +1,10 @@
 package com.afifzafri.backpacktrack;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -73,54 +75,6 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
             deleteBtn = (ImageButton) v.findViewById(R.id.deleteBtn);
             this.deleteBtn = deleteBtn;
-
-            // activity button clicked
-            activityBtn.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    // item clicked
-                    Toast.makeText(v.getContext(), "ACTIVITY ID: "+ currentItem.getId(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-            // edit button clicked
-            editBtn.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    // item clicked
-                    Toast.makeText(v.getContext(), "EDIT ID: "+ currentItem.getId(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-            // delete button clicked
-            deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(final View v) {
-                    // Create dialog box, ask confirmation before proceed
-                    AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                    alert.setTitle("Delete this Itinerary");
-                    alert.setMessage("Are you sure you want to delete this itinerary?");
-                    // set positive button, yes etc
-                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            dialog.dismiss();
-                            Toast.makeText(v.getContext(), "DELETE ID: "+ currentItem.getId(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-                    // set negative button, no etc
-                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    alert.show(); // show alert message
-
-                }
-            });
         }
     }
 
@@ -142,7 +96,7 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -163,6 +117,29 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
         // get current position item data
         holder.currentItem = itinerariesList.get(position);
+
+        // add activity button clicked, open add activity
+        holder.activityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                // item clicked
+                Toast.makeText(v.getContext(), "ACTIVITY ID: "+ itinerariesList.get(position).getId(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // when edit button clicked, open edit activity
+        holder.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                // item clicked
+                Toast.makeText(v.getContext(), "EDIT ID: "+ itinerariesList.get(position).getId(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // delete button clicked
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(final View v) {
+                Toast.makeText(v.getContext(), "DELETE ID: "+ itinerariesList.get(position).getId(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
