@@ -23,9 +23,9 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new HomeFragment();
                     setTitle(getString(R.string.title_home));
                     break;
-                case R.id.navigation_news:
+                case R.id.navigation_articles:
                     fragment = new HomeFragment();
-                    setTitle(getString(R.string.title_news));
+                    setTitle(getString(R.string.title_articles));
                     break;
                 case R.id.navigation_itineraries:
                     fragment = new CountryItinerariesFragment();

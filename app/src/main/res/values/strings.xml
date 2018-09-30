@@ -3,7 +3,7 @@
     <string name="forgotPassword"><a href="http://178.128.97.69/password/reset">Forgot password?</a></string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_news">News</string>
+    <string name="title_articles">Articles</string>
     <string name="title_itineraries">Itineraries by Country</string>
     <string name="title_create">My Itinerary</string>
     <string name="title_profile">Profile</string>
