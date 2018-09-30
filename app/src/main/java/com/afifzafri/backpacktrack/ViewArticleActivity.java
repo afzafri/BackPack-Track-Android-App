@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -45,7 +46,7 @@ public class ViewArticleActivity extends AppCompatActivity {
         final TextView article_title = (TextView) findViewById(R.id.article_title);
         final TextView article_author = (TextView) findViewById(R.id.article_author);
         final TextView article_date = (TextView) findViewById(R.id.article_date);
-        final TextView article_content = (TextView) findViewById(R.id.article_content);
+        final WebView webview_content = (WebView) findViewById(R.id.webview_content);
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
 
         // show loading spinner
@@ -70,13 +71,8 @@ public class ViewArticleActivity extends AppCompatActivity {
                             article_title.setText(title);
                             article_author.setText(author);
                             article_date.setText(date);
-
-                            // display HTML
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                article_content.setText(Html.fromHtml(content,Html.FROM_HTML_MODE_LEGACY));
-                            } else {
-                                article_content.setText(Html.fromHtml(content));
-                            }
+                            // to display HTML content, use webview
+                            webview_content.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
 
                             Toast.makeText(getApplicationContext(), "Article loaded!", Toast.LENGTH_SHORT).show();
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
