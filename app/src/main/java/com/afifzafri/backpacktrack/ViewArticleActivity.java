@@ -48,6 +48,9 @@ public class ViewArticleActivity extends AppCompatActivity {
         final TextView article_content = (TextView) findViewById(R.id.article_content);
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
 
+        // show loading spinner
+        loadingFrame.setVisibility(View.VISIBLE);
+
         // ----- Fetch article data and display -----
         // Request a string response from the provided URL.
         JsonObjectRequest articleRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/viewArticle/" + article_id, null,
