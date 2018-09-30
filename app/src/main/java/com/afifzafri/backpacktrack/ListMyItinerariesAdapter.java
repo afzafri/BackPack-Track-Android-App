@@ -1,5 +1,8 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +12,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinerariesAdapter.MyViewHolder> {
 
@@ -80,9 +94,30 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
             // delete button clicked
             deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    // item clicked
-                    Toast.makeText(v.getContext(), "DELETE ID: "+ currentItem.getId(), Toast.LENGTH_SHORT).show();
+                @Override public void onClick(final View v) {
+                    // Create dialog box, ask confirmation before proceed
+                    AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                    alert.setTitle("Delete this Itinerary");
+                    alert.setMessage("Are you sure you want to delete this itinerary?");
+                    // set positive button, yes etc
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                            Toast.makeText(v.getContext(), "DELETE ID: "+ currentItem.getId(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                    // set negative button, no etc
+                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    alert.show(); // show alert message
 
                 }
             });
