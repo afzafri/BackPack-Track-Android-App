@@ -76,7 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_place_black_24dp"
+                        android:drawableStart="@drawable/ic_place_black_24dp"
                         android:gravity="center"
                         android:text="Country" />
 
@@ -85,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_email_black_24dp"
+                        android:drawableStart="@drawable/ic_email_black_24dp"
                         android:gravity="center"
                         android:text="Email" />
 
@@ -94,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_local_phone_black_24dp"
+                        android:drawableStart="@drawable/ic_local_phone_black_24dp"
                         android:gravity="center"
                         android:text="Phone" />
 
@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
-                android:drawableLeft="@drawable/ic_comment_white_24dp"
+                android:drawableStart="@drawable/ic_comment_white_24dp"
                 android:text="My Comments"
                 android:textColor="@android:color/background_light"
                 tools:layout_editor_absoluteX="13dp" />
