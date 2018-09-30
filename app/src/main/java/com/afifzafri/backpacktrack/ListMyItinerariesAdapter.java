@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +47,7 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         public ImageButton activityBtn;
         public ImageButton editBtn;
         public ImageButton deleteBtn;
+        public FrameLayout deleteFrame;
         public ItinerariesModel currentItem;
 
         public MyViewHolder(View v) {
@@ -75,6 +78,9 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
             deleteBtn = (ImageButton) v.findViewById(R.id.deleteBtn);
             this.deleteBtn = deleteBtn;
+
+            deleteFrame = (FrameLayout) v.findViewById(R.id.deleteFrame);
+            this.deleteFrame = deleteFrame;
         }
     }
 
@@ -96,7 +102,7 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -151,6 +157,9 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
                         dialog.dismiss();
 
+                        // show loading
+                        holder.deleteFrame.setVisibility(View.VISIBLE);
+
                         JSONObject deleteParams = new JSONObject(); // login parameters
 
                         try {
@@ -185,7 +194,7 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
                                                 Toast.makeText(v.getContext(), errormsg, Toast.LENGTH_SHORT).show();
                                             }
 
-                                            //loadingFrame.setVisibility(View.GONE);
+                                            holder.deleteFrame.setVisibility(View.GONE);
 
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -197,7 +206,7 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
                             public void onErrorResponse(VolleyError error) {
                                 Toast.makeText(v.getContext(), "Delete itinerary failed! Please check your connection.", Toast.LENGTH_SHORT).show();
 
-                                //loadingFrame.setVisibility(View.GONE);
+                                holder.deleteFrame.setVisibility(View.GONE);
                             }
                         })
                         {
