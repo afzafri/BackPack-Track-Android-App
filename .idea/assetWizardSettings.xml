@@ -79,9 +79,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_playlist_add_white_24dp" />
-                            <entry key="sourceFile" value="C:\Users\zafri" />
+                            <entry key="outputName" value="ic_news_black_24dp" />
+                            <entry key="sourceFile" value="D:\Desktop\UiTM Tapah\Development\Other Files and Documents\svg\News-595b40b75ba036ed117d81af.svg" />
                           </map>
                         </option>
                       </PersistentState>
