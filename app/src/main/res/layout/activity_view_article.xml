@@ -36,7 +36,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:text="Title"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -51,7 +51,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:drawableStart="@drawable/ic_person_black_24dp"
-                            android:text="author" />
+                            android:text="author"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/article_date"
@@ -59,8 +60,17 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:drawableStart="@drawable/ic_date_range_black_24dp"
-                            android:text="date" />
+                            android:text="date"
+                            android:textSize="16sp" />
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/article_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="summary"
+                        android:textStyle="italic" />
 
                     <WebView
                         android:id="@+id/webview_content"
