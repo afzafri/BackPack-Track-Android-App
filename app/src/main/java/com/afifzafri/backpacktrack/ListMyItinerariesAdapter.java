@@ -137,7 +137,90 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         // delete button clicked
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(final View v) {
-                Toast.makeText(v.getContext(), "DELETE ID: "+ itinerariesList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                final SharedPreferences sharedpreferences = v.getContext().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+                final String access_token = sharedpreferences.getString("access_token", "");
+
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                alert.setTitle("Delete this Itinerary");
+                alert.setMessage("Are you sure you want to delete this itinerary?");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        JSONObject deleteParams = new JSONObject(); // login parameters
+
+                        try {
+                            deleteParams.put("itinerary_id", itinerariesList.get(position).getId());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        // Request a string response from the provided URL.
+                        JsonObjectRequest deleteRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/deleteItinerary", deleteParams,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+
+                                        try {
+
+                                            int code = Integer.parseInt(response.getString("code"));
+
+                                            if(code == 200)
+                                            {
+                                                // parse JSON response
+                                                String message = response.getString("message");
+                                                Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
+                                            }
+                                            else if(code == 400)
+                                            {
+                                                String errormsg = response.getString("message");
+                                                Toast.makeText(v.getContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            //loadingFrame.setVisibility(View.GONE);
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(v.getContext(), "Delete itinerary failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+
+                                //loadingFrame.setVisibility(View.GONE);
+                            }
+                        })
+                        {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String>  params = new HashMap<String, String>();
+                                params.put("Authorization", "Bearer "+access_token);
+
+                                return params;
+                            }
+                        };
+
+                        // Add the request to the VolleySingleton.
+                        VolleySingleton.getInstance(v.getContext()).addToRequestQueue(deleteRequest);
+
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
+
             }
         });
     }

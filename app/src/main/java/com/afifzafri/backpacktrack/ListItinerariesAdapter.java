@@ -46,15 +46,6 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
             mCardView = (CardView) v.findViewById(R.id.itinerary_card);
             this.mCardView = mCardView;
-
-            // when card is clicked, get id
-            mCardView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    // item clicked
-                    Toast.makeText(v.getContext(), "ID: "+ currentItem.getId(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
         }
     }
 
@@ -76,7 +67,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -97,6 +88,15 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
         // get current position item data
         holder.currentItem = itinerariesList.get(position);
+
+        // when card is clicked, get id
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                // item clicked
+                Toast.makeText(v.getContext(), "ID: "+ itinerariesList.get(position).getId(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -37,18 +37,6 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
 
             mCardView = (CardView) v.findViewById(R.id.country_card);
             this.mCardView = mCardView;
-
-            // when card is clicked, get id
-            mCardView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    // item clicked
-                    // redirect to list itinerary page
-                    Intent intentPage = new Intent(v.getContext(), CountryItinerariesActivity.class);
-                    intentPage.putExtra("country_id", currentItem.getId());
-                    intentPage.putExtra("country_name", currentItem.getName());
-                    v.getContext().startActivity(intentPage);
-                }
-            });
         }
     }
 
@@ -70,7 +58,7 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -86,6 +74,18 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
 
         // get current position item data
         holder.currentItem = countriesList.get(position);
+
+        // when card is clicked, get id
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                // item clicked
+                // redirect to list itinerary page
+                Intent intentPage = new Intent(v.getContext(), CountryItinerariesActivity.class);
+                intentPage.putExtra("country_id", countriesList.get(position).getId());
+                intentPage.putExtra("country_name", countriesList.get(position).getName());
+                v.getContext().startActivity(intentPage);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
