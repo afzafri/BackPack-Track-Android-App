@@ -56,7 +56,9 @@
             android:name=".CreateItineraryActivity"
             android:label="Create new Itinerary" />
         <activity android:name=".MyActivitiesActivity" />
-        <activity android:name=".ViewArticleActivity"></activity>
+        <activity
+            android:name=".ViewArticleActivity"
+            android:label="View Article" />
     </application>
 
 </manifest>
