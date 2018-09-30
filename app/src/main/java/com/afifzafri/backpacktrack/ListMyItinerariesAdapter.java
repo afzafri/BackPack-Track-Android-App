@@ -174,6 +174,10 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
                                                 // parse JSON response
                                                 String message = response.getString("message");
                                                 Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
+
+                                                // remove item from array and recyclerview
+                                                itinerariesList.remove(position);
+                                                notifyItemRemoved(position);
                                             }
                                             else if(code == 400)
                                             {
