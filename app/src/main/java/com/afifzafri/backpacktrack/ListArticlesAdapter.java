@@ -74,7 +74,7 @@ public class ListArticlesAdapter extends RecyclerView.Adapter<ListArticlesAdapte
         holder.article_author.setText(articlesList.get(position).getAuthor());
 
         // Set article date
-        holder.article_date.setText(articlesList.get(position).getDate());
+        holder.article_date.setText(new AppHelper().convertDate(articlesList.get(position).getDate()));
 
         // Set article summary
         holder.article_summary.setText(articlesList.get(position).getSummary());

@@ -8,6 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AppHelper {
 
@@ -16,10 +19,7 @@ public class AppHelper {
      */
     public static final String baseurl = "http://178.128.97.69";
 
-    /**
-     *  private Constructor to avoid instanciating this class
-     */
-    private AppHelper() {}
+    public AppHelper() {}
 
     /**
      * Turn drawable resource into byte array.
@@ -120,5 +120,20 @@ public class AppHelper {
         }
 
         return newSize;
+    }
+
+    public String convertDate(String currentDate) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        Date newDate = null;
+        try {
+            newDate = format.parse(currentDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        format = new SimpleDateFormat("dd-mm-yyyy");
+        String date = format.format(newDate);
+
+        return date;
     }
 }
