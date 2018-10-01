@@ -122,6 +122,11 @@ public class AppHelper {
         return newSize;
     }
 
+    /**
+     * Method to convert String date format
+     * @param currentDate
+     * @return
+     */
     public String convertDate(String currentDate) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
         Date newDate = null;
