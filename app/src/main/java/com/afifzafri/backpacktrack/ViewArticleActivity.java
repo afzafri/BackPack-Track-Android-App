@@ -70,7 +70,7 @@ public class ViewArticleActivity extends AppCompatActivity {
                             // set values to the elements
                             article_title.setText(title);
                             article_author.setText(author);
-                            article_date.setText(date);
+                            article_date.setText(new AppHelper().convertDate(date));
                             article_summary.setText(summary);
                             // to display HTML content, use webview
                             webview_content.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
