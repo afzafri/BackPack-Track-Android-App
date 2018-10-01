@@ -117,7 +117,7 @@ public class CreateItineraryActivity extends AppCompatActivity {
                         String country_name = countryselect.getText().toString();
                         String country_id = Integer.toString(countrieslist.indexOf(country_name));
 
-                        if(title != null && country_name != null && country_id != null)
+                        if(title != null && country_name != null && !country_id.equals("-1"))
                         {
                             createBtn.setEnabled(false); // disable button
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
@@ -217,6 +217,10 @@ public class CreateItineraryActivity extends AppCompatActivity {
                         else
                         {
                             Toast.makeText(getApplicationContext(), "Please fill in all the input!", Toast.LENGTH_SHORT).show();
+
+                            // if the country id is -1, which means not found in the countries list, then show error
+                            String err = "Please only choose the available country in the list";
+                            countryselect.setError(err);
                         }
 
                     }

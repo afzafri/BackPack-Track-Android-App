@@ -120,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity {
                         String password_confirmation = password_confirmationIn.getText().toString();
                         String role = "backpacker";
 
-                        if(name != null && username != null && phone != null && address != null && country_id != null && email != null && password != null && password_confirmation != null)
+                        if(name != null && username != null && phone != null && address != null && !country_id.equals("-1") && email != null && password != null && password_confirmation != null)
                         {
                             registerBtn.setEnabled(false); // disable button
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
@@ -239,6 +239,10 @@ public class RegisterActivity extends AppCompatActivity {
                         else
                         {
                             Toast.makeText(getApplicationContext(), "Please fill in all the input!", Toast.LENGTH_SHORT).show();
+
+                            // if the country id is -1, which means not found in the countries list, then show error
+                            String err = "Please only choose the available country in the list";
+                            countryselect.setError(err);
                         }
 
                     }

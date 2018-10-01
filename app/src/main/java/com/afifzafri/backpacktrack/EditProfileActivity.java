@@ -201,7 +201,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         String country_id = Integer.toString(countrieslist.indexOf(country_name));
                         String email = editEmail.getText().toString();
 
-                        if(name != null && username != null && phone != null && address != null && country_id != null && email != null)
+                        if(name != null && username != null && phone != null && address != null && !country_id.equals("-1") && email != null)
                         {
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
 
@@ -308,6 +308,10 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         else
                         {
                             Toast.makeText(getApplicationContext(), "Please fill in all the input!", Toast.LENGTH_SHORT).show();
+
+                            // if the country id is -1, which means not found in the countries list, then show error
+                            String err = "Please only choose the available country in the list";
+                            countryselect.setError(err);
                         }
 
                     }
