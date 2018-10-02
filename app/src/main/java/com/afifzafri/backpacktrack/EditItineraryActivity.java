@@ -1,6 +1,8 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -49,6 +52,7 @@ public class EditItineraryActivity extends AppCompatActivity {
         // get UI elements
         final EditText editItineraryTitle = (EditText) findViewById(R.id.title);
         final AutoCompleteTextView countryselect = (AutoCompleteTextView) findViewById(R.id.countries_list);
+        final Button saveBtn = (Button) findViewById(R.id.saveBtn);
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
 
         // Countries Array
@@ -143,6 +147,130 @@ public class EditItineraryActivity extends AppCompatActivity {
 
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(itineraryRequest);
+
+        // ----- Clicked save button, update into server -----
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(EditItineraryActivity.this);
+                alert.setTitle("Update");
+                alert.setMessage("Are you sure you want to update this itinerary details?");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        // get all input
+                        String title = editItineraryTitle.getText().toString();
+                        final String country_name = countryselect.getText().toString();
+                        String country_id = Integer.toString(countrieslist.indexOf(country_name));
+
+                        if(title != null && !country_id.equals("-1"))
+                        {
+                            loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
+
+                            JSONObject updateParams = new JSONObject(); // login parameters
+
+                            try {
+                                updateParams.put("title", title);
+                                updateParams.put("country_id", country_id);
+                                updateParams.put("itinerary_id", itinerary_id);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Request a string response from the provided URL.
+                            JsonObjectRequest updateRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/updateItinerary", updateParams,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+
+                                                int code = Integer.parseInt(response.getString("code"));
+
+                                                if(code == 200)
+                                                {
+                                                    // parse JSON response
+                                                    String message = response.getString("message");
+                                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                }
+                                                else if(code == 400)
+                                                {
+                                                    String errormsg = response.getString("message");
+
+                                                    // check if response contain errors messages
+                                                    if(response.has("error"))
+                                                    {
+                                                        JSONObject errors = response.getJSONObject("title");
+                                                        if(errors.has("title"))
+                                                        {
+                                                            String err = errors.getJSONArray("title").getString(0);
+                                                            editItineraryTitle.setError(err);
+                                                        }
+                                                        if(errors.has("country_id"))
+                                                        {
+                                                            String err = errors.getJSONArray("country_id").getString(0);
+                                                            countryselect.setError(err);
+                                                        }
+                                                    }
+
+                                                    Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                loadingFrame.setVisibility(View.GONE);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Update failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+
+                                    loadingFrame.setVisibility(View.GONE);
+                                }
+                            })
+                            {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String>  params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer "+access_token);
+
+                                    return params;
+                                }
+                            };
+
+                            // Add the request to the VolleySingleton.
+                            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(updateRequest);
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Please fill in all the input!", Toast.LENGTH_SHORT).show();
+
+                            // if the country id is -1, which means not found in the countries list, then show error
+                            String err = "Please only choose the available country in the list";
+                            countryselect.setError(err);
+                        }
+
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
+            }
+        });
     }
 
     // override default back navigation action
