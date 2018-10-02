@@ -97,12 +97,18 @@ public class ProfileFragment extends Fragment {
                             textCountry.setText(country_name);
                             // set avatar image using Picasso library
                             if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
-                                Picasso.get().load(avatar_url)
-                                        .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5)).into(avatar_pic);
+                                // check if activity have been attach to the fragment
+                                if(isAdded()) {
+                                    Picasso.get().load(avatar_url)
+                                            .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5)).into(avatar_pic);
+                                }
                                 avatar_pic.setTag(avatar_url); // store url into tag, used for retrieve later
                             }
 
-                            Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
+                            // check if activity have been attach to the fragment
+                            if(isAdded()) {
+                                Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
+                            }
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {
@@ -114,7 +120,10 @@ public class ProfileFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Profile data not loaded! Please check your connection.", Toast.LENGTH_SHORT).show();
+                // check if activity have been attach to the fragment
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Profile data not loaded! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
                 loadingFrame.setVisibility(View.GONE);
             }
         })
@@ -136,10 +145,13 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // open fullscreen image activity
-                Intent intentPage = new Intent(getActivity(), ImageFullscreenActivity.class);
-                intentPage.putExtra("image_url", avatar_pic.getTag().toString());
-                intentPage.putExtra("caption", textName.getText().toString());
-                startActivity(intentPage);
+                // check if activity have been attach to the fragment
+                if(isAdded()) {
+                    Intent intentPage = new Intent(getActivity(), ImageFullscreenActivity.class);
+                    intentPage.putExtra("image_url", avatar_pic.getTag().toString());
+                    intentPage.putExtra("caption", textName.getText().toString());
+                    startActivity(intentPage);
+                }
             }
         });
 
@@ -217,15 +229,21 @@ public class ProfileFragment extends Fragment {
 
                                                 // parse JSON response
                                                 String message = response.getString("message");
-                                                Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                // check if activity have been attach to the fragment
+                                                if(isAdded()) {
+                                                    Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                                }
 
                                                 // clear SharedPreferences
                                                 sharedpreferences.edit().clear().commit();
 
                                                 // redirect to log in page
-                                                Intent intentPage = new Intent(getActivity(), LoginActivity.class);
-                                                startActivity(intentPage);
-                                                getActivity().finish();
+                                                // check if activity have been attach to the fragment
+                                                if(isAdded()) {
+                                                    Intent intentPage = new Intent(getActivity(), LoginActivity.class);
+                                                    startActivity(intentPage);
+                                                    getActivity().finish();
+                                                }
 
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
@@ -236,7 +254,10 @@ public class ProfileFragment extends Fragment {
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "Log out failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                                    // check if activity have been attach to the fragment
+                                    if(isAdded()) {
+                                        Toast.makeText(getActivity().getApplicationContext(), "Log out failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                                    }
                                     loadingFrame.setVisibility(View.GONE);
                                 }
                             }) {
