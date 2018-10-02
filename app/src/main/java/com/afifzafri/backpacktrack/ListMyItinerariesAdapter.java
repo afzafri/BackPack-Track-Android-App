@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -125,8 +126,11 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         // add activity button clicked, open add activity
         holder.activityBtn.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                // item clicked
-                Toast.makeText(v.getContext(), "ACTIVITY ID: "+ itinerariesList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                // redirect to create activity page
+                Intent intentPage = new Intent(v.getContext(), MyActivitiesActivity.class);
+                intentPage.putExtra("itinerary_id", itinerariesList.get(position).getId());
+                intentPage.putExtra("itinerary_title", itinerariesList.get(position).getTitle());
+                v.getContext().startActivity(intentPage);
             }
         });
 
