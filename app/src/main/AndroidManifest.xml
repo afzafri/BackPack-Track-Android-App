@@ -59,6 +59,7 @@
         <activity
             android:name=".ViewArticleActivity"
             android:label="View Article" />
+        <activity android:name=".EditItineraryActivity"></activity>
     </application>
 
 </manifest>

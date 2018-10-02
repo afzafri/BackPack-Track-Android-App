@@ -137,8 +137,11 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         // when edit button clicked, open edit activity
         holder.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                // item clicked
-                Toast.makeText(v.getContext(), "EDIT ID: "+ itinerariesList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                // redirect to create activity page
+                Intent intentPage = new Intent(v.getContext(), EditItineraryActivity.class);
+                intentPage.putExtra("itinerary_id", itinerariesList.get(position).getId());
+                intentPage.putExtra("itinerary_title", itinerariesList.get(position).getTitle());
+                v.getContext().startActivity(intentPage);
             }
         });
 
