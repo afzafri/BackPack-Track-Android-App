@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Profile data not loaded!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Profile data not loaded! Please check your connection.", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
             }
         })
@@ -236,7 +236,7 @@ public class ProfileFragment extends Fragment {
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "Log out failed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity().getApplicationContext(), "Log out failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                                     loadingFrame.setVisibility(View.GONE);
                                 }
                             }) {

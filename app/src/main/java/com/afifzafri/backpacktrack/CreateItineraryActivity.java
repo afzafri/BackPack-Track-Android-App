@@ -195,7 +195,7 @@ public class CreateItineraryActivity extends AppCompatActivity {
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Create new itinerary failed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Create new itinerary failed! Please check your connection.", Toast.LENGTH_SHORT).show();
 
                                     createBtn.setEnabled(true);
                                     loadingFrame.setVisibility(View.GONE);

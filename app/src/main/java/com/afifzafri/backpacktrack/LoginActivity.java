@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Login Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
 
                             loginBtn.setEnabled(true);
                             loadingFrame.setVisibility(View.GONE);

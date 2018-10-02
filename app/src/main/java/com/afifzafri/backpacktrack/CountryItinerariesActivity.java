@@ -191,7 +191,7 @@ public class CountryItinerariesActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Load itineraries Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Load itineraries Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
                 itShouldLoadMore = true; // even if volley failed, set true so we can retry again
             }
@@ -274,7 +274,7 @@ public class CountryItinerariesActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Load more itineraries failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Load more itineraries failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 loadMoreSpin.setVisibility(View.GONE);
 
                 itShouldLoadMore = true; // even if volley failed, set true so we can retry again

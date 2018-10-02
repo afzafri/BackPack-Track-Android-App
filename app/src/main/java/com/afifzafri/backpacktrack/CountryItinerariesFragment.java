@@ -190,7 +190,7 @@ public class CountryItinerariesFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Load Countries Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Load Countries Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
                 itShouldLoadMore = true; // even if volley failed, set true so we can retry again
             }
@@ -266,7 +266,7 @@ public class CountryItinerariesFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Load more countries failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Load more countries failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 loadMoreSpin.setVisibility(View.GONE);
 
                 itShouldLoadMore = true; // even if volley failed, set true so we can retry again

@@ -160,7 +160,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Profile data not loaded!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Profile data not loaded!  Please check your connection.", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
             }
         })
@@ -287,7 +287,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Update failed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Update failed! Please check your connection.", Toast.LENGTH_SHORT).show();
 
                                     loadingFrame.setVisibility(View.GONE);
                                 }
@@ -415,7 +415,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Password change failed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Password change failed! Please check your connection.", Toast.LENGTH_SHORT).show();
 
                                     loadingFrame.setVisibility(View.GONE);
                                 }
@@ -522,7 +522,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Upload picture failed! Please check you internet connection" + error.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Upload picture failed! Please check your connection." + error.toString(), Toast.LENGTH_SHORT).show();
                                     loadingFrame.setVisibility(View.GONE);
                                 }
                             }) {

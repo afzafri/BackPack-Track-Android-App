@@ -226,7 +226,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Registration failed! Please check your connection.", Toast.LENGTH_SHORT).show();
 
                                     registerBtn.setEnabled(true);
                                     loadingFrame.setVisibility(View.GONE);
