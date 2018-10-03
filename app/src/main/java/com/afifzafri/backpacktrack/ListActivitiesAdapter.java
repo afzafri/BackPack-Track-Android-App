@@ -1,6 +1,11 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,9 +17,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAdapter.MyViewHolder> {
 
@@ -63,6 +78,16 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
 
             mCardView = (CardView) v.findViewById(R.id.activity_card);
             this.mCardView = mCardView;
+
+            editBtn = (ImageButton) v.findViewById(R.id.editBtn);
+            this.editBtn = editBtn;
+
+            deleteBtn = (ImageButton) v.findViewById(R.id.deleteBtn);
+            this.deleteBtn = deleteBtn;
+
+            deleteFrame = (FrameLayout) v.findViewById(R.id.deleteFrame);
+            this.deleteFrame = deleteFrame;
+
         }
     }
 
@@ -84,7 +109,7 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -123,6 +148,103 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
                 intentPage.putExtra("image_url", act_pic_url);
                 intentPage.putExtra("caption", activitiesList.get(position).getActivityTitle());
                 v.getContext().startActivity(intentPage);
+            }
+        });
+
+        // delete button clicked
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(final View v) {
+                final SharedPreferences sharedpreferences = v.getContext().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+                final String access_token = sharedpreferences.getString("access_token", "");
+
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                alert.setTitle("Delete this Activity");
+                alert.setMessage("Are you sure you want to delete this activity?");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        // show loading
+                        holder.deleteFrame.setVisibility(View.VISIBLE);
+
+                        JSONObject deleteParams = new JSONObject(); // login parameters
+
+                        try {
+                            deleteParams.put("activity_id", activitiesList.get(position).getId());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        // Request a string response from the provided URL.
+                        JsonObjectRequest deleteRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/deleteActivity", deleteParams,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+
+                                        try {
+
+                                            int code = Integer.parseInt(response.getString("code"));
+
+                                            if(code == 200)
+                                            {
+                                                // parse JSON response
+                                                String message = response.getString("message");
+                                                Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
+
+                                                // remove item from array and recyclerview
+                                                activitiesList.remove(position);
+                                                notifyItemRemoved(position);
+                                            }
+                                            else if(code == 400)
+                                            {
+                                                String errormsg = response.getString("message");
+                                                Toast.makeText(v.getContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            holder.deleteFrame.setVisibility(View.GONE);
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(v.getContext(), "Delete activity failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+
+                                holder.deleteFrame.setVisibility(View.GONE);
+                            }
+                        })
+                        {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String>  params = new HashMap<String, String>();
+                                params.put("Authorization", "Bearer "+access_token);
+
+                                return params;
+                            }
+                        };
+
+                        // Add the request to the VolleySingleton.
+                        VolleySingleton.getInstance(v.getContext()).addToRequestQueue(deleteRequest);
+
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
+
             }
         });
     }
