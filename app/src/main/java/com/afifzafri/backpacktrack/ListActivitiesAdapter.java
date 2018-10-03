@@ -104,9 +104,12 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
 
         // Set activity description
         holder.activity_description.setText(activitiesList.get(position).getDescription());
-
-        // Set activity image
-        Picasso.get().load(activitiesList.get(position).getPicUrl()).into(holder.activity_pic);
+        
+        String act_pic_url = activitiesList.get(position).getPicUrl();
+        if(act_pic_url != null && !act_pic_url.isEmpty() && act_pic_url != "null") {
+            // Set activity image
+            Picasso.get().load(act_pic_url).into(holder.activity_pic);
+        }
 
         // get current position item data
         holder.currentItem = activitiesList.get(position);
