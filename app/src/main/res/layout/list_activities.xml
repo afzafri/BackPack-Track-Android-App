@@ -17,12 +17,6 @@
             android:orientation="vertical"
             android:padding="15dp">
 
-            <ImageView
-                android:id="@+id/activity_pic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/gallery_colored" />
-
             <TextView
                 android:id="@+id/activity_title"
                 android:layout_width="match_parent"
@@ -32,6 +26,13 @@
                 android:text="Title"
                 android:textSize="22sp"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/activity_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:srcCompat="@mipmap/gallery_colored" />
 
             <LinearLayout
                 android:layout_width="match_parent"
