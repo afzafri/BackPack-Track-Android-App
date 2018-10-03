@@ -60,7 +60,7 @@ public class MyActivitiesActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         final String itinerary_id = extras.getString("itinerary_id");
         String itinerary_title = extras.getString("itinerary_title");
-        setTitle("Add activities for " + itinerary_title);
+        setTitle("Manage activities for " + itinerary_title);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getSharedPreferences("logindata", Context.MODE_PRIVATE);
