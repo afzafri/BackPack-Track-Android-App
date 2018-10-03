@@ -1,5 +1,6 @@
 package com.afifzafri.backpacktrack;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -105,7 +106,7 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
         // Set activity description
         holder.activity_description.setText(activitiesList.get(position).getDescription());
         
-        String act_pic_url = activitiesList.get(position).getPicUrl();
+        final String act_pic_url = activitiesList.get(position).getPicUrl();
         if(act_pic_url != null && !act_pic_url.isEmpty() && act_pic_url != "null") {
             // Set activity image
             Picasso.get().load(act_pic_url).into(holder.activity_pic);
@@ -113,6 +114,17 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
 
         // get current position item data
         holder.currentItem = activitiesList.get(position);
+
+        // on click image, show full screen activity
+        holder.activity_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentPage = new Intent(v.getContext(), ImageFullscreenActivity.class);
+                intentPage.putExtra("image_url", act_pic_url);
+                intentPage.putExtra("caption", activitiesList.get(position).getActivityTitle());
+                v.getContext().startActivity(intentPage);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
