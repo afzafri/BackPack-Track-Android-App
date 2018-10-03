@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -82,6 +83,31 @@ public class MyActivitiesActivity extends AppCompatActivity {
 
         // create a function for the first load
         firstLoadData(itinerary_id, access_token);
+
+        // here add a recyclerView listener, to listen to scrolling,
+        // we don't care when user scrolls upwards, will only be careful when user scrolls downwards
+        // this listener is freely provided for by android, no external library
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            // for this tutorial, this is the ONLY method that we need, ignore the rest
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    // Recycle view scrolling downwards...
+                    // this if statement detects when user reaches the end of recyclerView, this is only time we should load more
+                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                        // remember "!" is the same as "== false"
+                        // here we are now allowed to load more, but we need to be careful
+                        // we must check if itShouldLoadMore variable is true [unlocked]
+                        if (itShouldLoadMore) {
+                            loadMore(itinerary_id, access_token);
+                        }
+                    }
+
+                }
+            }
+        });
     }
 
     private void firstLoadData(String itinerary_id, final String access_token) {
@@ -151,6 +177,91 @@ public class MyActivitiesActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Load activities Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
+                itShouldLoadMore = true; // even if volley failed, set true so we can retry again
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(activitiesListRequest);
+
+        lastPage++; // increment the page number
+    }
+
+    private void loadMore(String itinerary_id, final String access_token) {
+        // get UI elements
+        final ProgressBar loadMoreSpin = (ProgressBar) findViewById(R.id.loadMoreSpin);
+
+        // show loading spinner
+        loadMoreSpin.setVisibility(View.VISIBLE);
+
+        itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
+        // user will not load more when volley is processing another request
+        // only load more when  volley is free
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest activitiesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/viewActivitiesPaginated/"+itinerary_id+"?page="+lastPage, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        // since volley has completed and it has our response, now let's update
+                        // itShouldLoadMore
+                        itShouldLoadMore = true;
+
+                        try {
+                            JSONArray activities = response.getJSONArray("data");
+
+                            if (activities.length() <= 0) {
+                                // we need to check this, to make sure, our dataStructure JSonArray contains
+                                // something
+                                Toast.makeText(getApplicationContext(), "No more activitites available", Toast.LENGTH_SHORT).show();
+                                itShouldLoadMore = false;
+                                loadMoreSpin.setVisibility(View.GONE);
+                                return; // return will end the program at this point
+                            }
+
+                            for(int i=0;i<activities.length();i++)
+                            {
+                                JSONObject activity = activities.getJSONObject(i);
+                                String id = activity.getString("id");
+                                String date = activity.getString("date");
+                                String time = activity.getString("time");
+                                String activity_title = activity.getString("activity");
+                                String description = activity.getString("description");
+                                String place_name = activity.getString("place_name");
+                                String lat = activity.getString("lat");
+                                String lng = activity.getString("lng");
+                                String budget = activity.getString("budget");
+                                String pic_url = activity.getString("pic_url");
+                                String itinerary_id = activity.getString("itinerary_id");
+
+                                // insert data into array
+                                activitiesList.add(new ActivitiesModel(id, date, time, activity_title, description, place_name, lat, lng, budget, pic_url, itinerary_id));
+
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Toast.makeText(getApplicationContext(), "Load more activitites success!", Toast.LENGTH_SHORT).show();
+                        loadMoreSpin.setVisibility(View.GONE);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Load more activities failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                loadMoreSpin.setVisibility(View.GONE);
+
                 itShouldLoadMore = true; // even if volley failed, set true so we can retry again
             }
         })
