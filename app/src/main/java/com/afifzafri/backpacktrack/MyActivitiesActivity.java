@@ -114,6 +114,7 @@ public class MyActivitiesActivity extends AppCompatActivity {
                                 // something
                                 Toast.makeText(getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
                                 itShouldLoadMore = false;
+                                loadingFrame.setVisibility(View.GONE);
                                 return; // return will end the program at this point
                             }
 
