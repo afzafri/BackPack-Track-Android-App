@@ -108,6 +108,23 @@ public class MyActivitiesActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // refresh fragment when perform swipe to refresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+
+                        finish();
+                        startActivity(getIntent());
+
+                        mSwipeRefreshLayout.setRefreshing(false);
+
+                        lastPage = 1; // reset back current page to first page
+                    }
+                }
+        );
     }
 
     private void firstLoadData(String itinerary_id, final String access_token) {
