@@ -21,6 +21,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.vipulasri.timelineview.TimelineView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -51,8 +52,9 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
         public ImageButton deleteBtn;
         public FrameLayout deleteFrame;
         public ActivitiesModel currentItem;
+        public TimelineView mTimelineView;
 
-        public MyViewHolder(View v) {
+        public MyViewHolder(View v, int viewType) {
             super(v);
             activity_title = (TextView) v.findViewById(R.id.activity_title);
             this.activity_title = activity_title;
@@ -75,6 +77,9 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
             mCardView = (CardView) v.findViewById(R.id.activity_card);
             this.mCardView = mCardView;
 
+            mTimelineView = (TimelineView) itemView.findViewById(R.id.time_marker);
+            mTimelineView.initLine(viewType);
+
         }
     }
 
@@ -84,6 +89,11 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
         this.activitiesList = activitiesList;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return TimelineView.getTimeLineViewType(position,getItemCount());
+    }
+
     // Create new views (invoked by the layout manager)
     @Override
     public ListViewActivitiesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
@@ -91,7 +101,7 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
         // create a new view
         View v= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_view_activities, parent, false);
-        MyViewHolder vh= new MyViewHolder(v);
+        MyViewHolder vh= new MyViewHolder(v, viewType);
         return vh;
     }
 

@@ -34,4 +34,5 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.github.jrvansuita:PickImage:2.2.4'
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
+    implementation 'com.github.vipulasri:timelineview:1.0.6'
 }
