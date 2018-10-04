@@ -76,7 +76,9 @@ public class ListDatesAdapter extends RecyclerView.Adapter<ListDatesAdapter.MyVi
         // - replace the contents of the view with that element
 
         // Set itinerary title
-        holder.activity_date.setText(new AppHelper().convertDate(allDataList.get(position).getDate()));
+        String actdate = new AppHelper().convertDate(allDataList.get(position).getDate());
+        String datetitle = "Day " + (position+1) + " (" + actdate + ")";
+        holder.activity_date.setText(datetitle);
 
         List activitiesList = allDataList.get(position).getActivitiesList();
 
