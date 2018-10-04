@@ -1,5 +1,6 @@
 package com.afifzafri.backpacktrack;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -92,8 +93,11 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         // when card is clicked, get id
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                // item clicked
-                Toast.makeText(v.getContext(), "ID: "+ itinerariesList.get(position).getId(), Toast.LENGTH_SHORT).show();
+                // redirect to view itinerary page
+                Intent intentPage = new Intent(v.getContext(), ViewItineraryActivity.class);
+                intentPage.putExtra("itinerary_id", itinerariesList.get(position).getId());
+                intentPage.putExtra("itinerary_title", itinerariesList.get(position).getTitle());
+                v.getContext().startActivity(intentPage);
 
             }
         });

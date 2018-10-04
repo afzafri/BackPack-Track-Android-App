@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ViewItineraryActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/date_list"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none" />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dates_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:scrollbars="none" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/loadingFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/colorBackground"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="106dp"
+            android:layout_height="107dp"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>
