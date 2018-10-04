@@ -69,6 +69,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         mRecyclerView.setAdapter(mAdapter);
 
+        mRecyclerView.setFocusable(false);
+
         // create a function for load all data
         firstLoadData(itinerary_id, access_token);
 
