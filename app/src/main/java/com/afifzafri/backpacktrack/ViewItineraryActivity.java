@@ -56,7 +56,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
         // you must assign all objects to avoid nullPointerException
         allDataList = new ArrayList<>();
 
-        mAdapter = new ListDatesAdapter(allDataList);
+        mAdapter = new ListDatesAdapter(this, allDataList);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.dates_list);
         // use a linear layout manager

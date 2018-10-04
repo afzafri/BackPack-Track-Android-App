@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import java.util.Map;
 public class ListDatesAdapter extends RecyclerView.Adapter<ListDatesAdapter.MyViewHolder> {
 
     private List<ItineraryDatesModel> allDataList;
+    private Context mContext;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -38,17 +40,21 @@ public class ListDatesAdapter extends RecyclerView.Adapter<ListDatesAdapter.MyVi
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView activity_date;
-
+        public RecyclerView activities_list;
 
         public MyViewHolder(View v) {
             super(v);
             activity_date = (TextView) v.findViewById(R.id.activity_date);
             this.activity_date = activity_date;
+
+            activities_list = (RecyclerView) v.findViewById(R.id.activities_list);
+            this.activities_list = activities_list;
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListDatesAdapter(List<ItineraryDatesModel> allDataList) {
+    public ListDatesAdapter(Context mContext, List<ItineraryDatesModel> allDataList) {
+        this.mContext = mContext;
         this.allDataList = allDataList;
     }
 
@@ -71,6 +77,14 @@ public class ListDatesAdapter extends RecyclerView.Adapter<ListDatesAdapter.MyVi
 
         // Set itinerary title
         holder.activity_date.setText(new AppHelper().convertDate(allDataList.get(position).getDate()));
+
+        List activitiesList = allDataList.get(position).getActivitiesList();
+
+        ListViewActivitiesAdapter itemListDataAdapter = new ListViewActivitiesAdapter(mContext, activitiesList);
+
+        holder.activities_list.setHasFixedSize(true);
+        holder.activities_list.setLayoutManager(new LinearLayoutManager(mContext));
+        holder.activities_list.setAdapter(itemListDataAdapter);
 
     }
 
