@@ -41,7 +41,6 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView activity_title;
-        public TextView activity_date;
         public TextView activity_time;
         public TextView activity_budget;
         public TextView activity_place;
@@ -57,9 +56,6 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
             super(v);
             activity_title = (TextView) v.findViewById(R.id.activity_title);
             this.activity_title = activity_title;
-
-            activity_date = (TextView) v.findViewById(R.id.activity_date);
-            this.activity_date = activity_date;
 
             activity_time = (TextView) v.findViewById(R.id.activity_time);
             this.activity_time = activity_time;
@@ -107,9 +103,6 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
 
         // Set activity title
         holder.activity_title.setText(activitiesList.get(position).getActivityTitle());
-
-        // Set activity date
-        holder.activity_date.setText(new AppHelper().convertDate(activitiesList.get(position).getDate()));
 
         // Set activity time
         holder.activity_time.setText(activitiesList.get(position).getTime());
