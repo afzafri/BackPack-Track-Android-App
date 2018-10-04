@@ -89,6 +89,11 @@ public class ViewItineraryActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            // get country info and currency
+                            JSONObject country = response.getJSONObject("country");
+                            String currency = country.getString("currency");
+
+                            // get activities
                             JSONObject activities = response.getJSONObject("activities");
 
                             if (activities.length() <= 0) {
@@ -118,7 +123,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
                                     String place_name = activity.getString("place_name");
                                     String lat = activity.getString("lat");
                                     String lng = activity.getString("lng");
-                                    String budget = activity.getString("budget");
+                                    String budget = currency + " " + activity.getString("budget");
                                     String pic_url = activity.getString("pic_url");
                                     String act_itinerary_id = activity.getString("itinerary_id");
 
