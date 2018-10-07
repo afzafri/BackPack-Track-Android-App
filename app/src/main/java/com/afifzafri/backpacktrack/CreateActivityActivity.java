@@ -23,6 +23,12 @@ public class CreateActivityActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
+        // get data pass through intent
+        Bundle extras = getIntent().getExtras();
+        final String itinerary_id = extras.getString("itinerary_id");
+        final String itinerary_title = extras.getString("itinerary_title");
+        setTitle("Create activity for " + itinerary_title);
+
         // get elements
         final EditText editDate = (EditText) findViewById(R.id.editDate);
         final EditText editTime = (EditText) findViewById(R.id.editTime);

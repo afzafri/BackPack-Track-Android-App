@@ -61,7 +61,7 @@ public class MyActivitiesActivity extends AppCompatActivity {
         // get data pass through intent
         Bundle extras = getIntent().getExtras();
         final String itinerary_id = extras.getString("itinerary_id");
-        String itinerary_title = extras.getString("itinerary_title");
+        final String itinerary_title = extras.getString("itinerary_title");
         setTitle("Manage activities for " + itinerary_title);
 
         // read from SharedPreferences
@@ -133,8 +133,10 @@ public class MyActivitiesActivity extends AppCompatActivity {
         createFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent pageIntent = new Intent(getApplicationContext(), CreateActivityActivity.class);
-                startActivityForResult(pageIntent, 1);
+                Intent intentPage = new Intent(getApplicationContext(), CreateActivityActivity.class);
+                intentPage.putExtra("itinerary_id", itinerary_id);
+                intentPage.putExtra("itinerary_title", itinerary_title);
+                startActivityForResult(intentPage, 1);
             }
         });
     }
