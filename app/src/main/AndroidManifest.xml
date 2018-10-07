@@ -60,7 +60,6 @@
             android:name=".ViewArticleActivity"
             android:label="View Article" />
         <activity android:name=".EditItineraryActivity" />
-        <activity android:name=".ViewItineraryActivityOld" />
         <activity android:name=".ViewItineraryActivity"></activity>
     </application>
 

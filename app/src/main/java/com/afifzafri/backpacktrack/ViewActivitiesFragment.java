@@ -107,7 +107,9 @@ public class ViewActivitiesFragment extends Fragment {
                             if (activities.length() <= 0) {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
-                                Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                if(isAdded()) {
+                                    Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                }
                                 loadingFrame.setVisibility(View.GONE);
                                 return; // return will end the program at this point
                             }
@@ -149,14 +151,15 @@ public class ViewActivitiesFragment extends Fragment {
                             e.printStackTrace();
                         }
 
-                        //Toast.makeText(getApplicationContext(), "Load activities Success!", Toast.LENGTH_SHORT).show();
                         loadingFrame.setVisibility(View.GONE);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity().getApplicationContext(), "Load activities Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Load activities Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
                 loadingFrame.setVisibility(View.GONE);
             }
         })
