@@ -24,6 +24,10 @@
                 android:resource="@xml/picker_provider_paths" />
         </provider>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD_lyCrDevPMnD_2TfcXRS8i60HRPQ1IM8"/>
+
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
