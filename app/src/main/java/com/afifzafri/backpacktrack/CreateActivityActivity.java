@@ -2,19 +2,29 @@ package com.afifzafri.backpacktrack;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class CreateActivityActivity extends AppCompatActivity {
+
+    final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +42,7 @@ public class CreateActivityActivity extends AppCompatActivity {
         // get elements
         final EditText editDate = (EditText) findViewById(R.id.editDate);
         final EditText editTime = (EditText) findViewById(R.id.editTime);
+        final EditText editPlaceName = (EditText) findViewById(R.id.editPlaceName);
 
 
         // Date picker
@@ -83,6 +94,48 @@ public class CreateActivityActivity extends AppCompatActivity {
                 mTimePicker.show();
             }
         });
+
+        // Select place, open Google Place Autocomplete API
+        editPlaceName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent =
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                                    .build(CreateActivityActivity.this);
+                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException e) {
+                    // TODO: Handle the error.
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    // TODO: Handle the error.
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final EditText editPlaceName = (EditText) findViewById(R.id.editPlaceName);
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                // get data
+                String placeName = place.getName().toString();
+                String placeLat = Double.toString(place.getLatLng().latitude);
+                String placeLng = Double.toString(place.getLatLng().longitude);
+                editPlaceName.setText(placeName);
+                editPlaceName.setTag(placeLat+","+placeLng);
+
+                //Log.i(TAG, "Place: " + place.getName());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                // TODO: Handle the error.
+                //Log.i(TAG, status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
     }
 
     // override default back navigation action

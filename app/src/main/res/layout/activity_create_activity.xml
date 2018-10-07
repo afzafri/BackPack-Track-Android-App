@@ -89,6 +89,17 @@ android:focusableInTouchMode="true">
                         android:inputType="textMultiLine" />
 
                     <EditText
+                        android:id="@+id/editPlaceName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Place Location"
+                        android:inputType="textPersonName"
+                        android:longClickable="false" />
+
+                    <EditText
                         android:id="@+id/editBudget"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
