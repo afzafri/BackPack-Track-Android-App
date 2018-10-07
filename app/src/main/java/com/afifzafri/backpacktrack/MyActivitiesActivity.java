@@ -1,8 +1,10 @@
 package com.afifzafri.backpacktrack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -125,6 +127,16 @@ public class MyActivitiesActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        // handle fab button
+        FloatingActionButton createFab = (FloatingActionButton) findViewById(R.id.createFab);
+        createFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pageIntent = new Intent(getApplicationContext(), CreateActivityActivity.class);
+                startActivityForResult(pageIntent, 1);
+            }
+        });
     }
 
     private void firstLoadData(String itinerary_id, final String access_token) {

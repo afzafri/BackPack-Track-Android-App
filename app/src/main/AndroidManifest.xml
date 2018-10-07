@@ -60,7 +60,10 @@
             android:name=".ViewArticleActivity"
             android:label="View Article" />
         <activity android:name=".EditItineraryActivity" />
-        <activity android:name=".ViewItineraryActivity"></activity>
+        <activity android:name=".ViewItineraryActivity" />
+        <activity
+            android:name=".CreateActivityActivity"
+            android:label="Create new Activity" />
     </application>
 
 </manifest>
