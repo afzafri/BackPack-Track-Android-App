@@ -164,6 +164,10 @@ public class MyActivitiesActivity extends AppCompatActivity {
                         itShouldLoadMore = true;
 
                         try {
+                            // get country info and currency
+                            JSONObject country = response.getJSONObject("country");
+                            String currency = country.getString("currency");
+
                             JSONArray activities = response.getJSONArray("data");
 
                             if (activities.length() <= 0) {
@@ -186,7 +190,7 @@ public class MyActivitiesActivity extends AppCompatActivity {
                                 String place_name = activity.getString("place_name");
                                 String lat = activity.getString("lat");
                                 String lng = activity.getString("lng");
-                                String budget = activity.getString("budget");
+                                String budget = currency + " " + activity.getString("budget");
                                 String pic_url = activity.getString("pic_url");
                                 String itinerary_id = activity.getString("itinerary_id");
 
