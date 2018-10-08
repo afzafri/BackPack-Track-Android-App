@@ -478,7 +478,7 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         // get all input
                         final ImageView avatarPreview = (ImageView) findViewById(R.id.avatarPreview);
 
-                        if(hasImage(avatarPreview))
+                        if(new AppHelper().hasImage(avatarPreview))
                         {
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
 
@@ -583,19 +583,6 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
             //TODO: do what you have to do with r.getError();
             Toast.makeText(this, r.getError().getMessage(), Toast.LENGTH_LONG).show();
         }
-    }
-
-    // method for checking if and ImageView have a drawable attached to it
-    // credit: https://stackoverflow.com/a/32066539/5784900
-    private boolean hasImage(@NonNull ImageView view) {
-        Drawable drawable = view.getDrawable();
-        boolean hasImage = (drawable != null);
-
-        if (hasImage && (drawable instanceof BitmapDrawable)) {
-            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
-        }
-
-        return hasImage;
     }
 
     // override default back navigation action

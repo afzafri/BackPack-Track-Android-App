@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
@@ -120,6 +122,24 @@ public class AppHelper {
         }
 
         return newSize;
+    }
+
+    /**
+     * method for checking if and ImageView have a drawable attached to it
+     * credit: https://stackoverflow.com/a/32066539/5784900
+     *
+     * @param view
+     * @return
+     */
+    public boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
+
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        }
+
+        return hasImage;
     }
 
     /**
