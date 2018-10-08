@@ -34,6 +34,10 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +48,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class CreateActivityActivity extends AppCompatActivity {
+public class CreateActivityActivity extends AppCompatActivity implements IPickResult {
 
     final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -142,6 +146,14 @@ public class CreateActivityActivity extends AppCompatActivity {
                 } catch (GooglePlayServicesNotAvailableException e) {
                     // TODO: Handle the error.
                 }
+            }
+        });
+
+        // ----- Choose image button, open gallery -----
+        chooseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PickImageDialog.build(new PickSetup()).show(CreateActivityActivity.this);
             }
         });
 
@@ -326,6 +338,7 @@ public class CreateActivityActivity extends AppCompatActivity {
         });
     }
 
+    // for select google place
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         final EditText editPlaceName = (EditText) findViewById(R.id.editPlaceName);
@@ -351,6 +364,24 @@ public class CreateActivityActivity extends AppCompatActivity {
                 editPlaceName.setText("");
                 editPlaceName.setTag("");
             }
+        }
+        super.onActivityResult(requestCode, resultCode, data); // need to call super, if not onPickResult will not be called
+    }
+
+    // for pick image
+    @Override
+    public void onPickResult(PickResult r) {
+        if (r.getError() == null) {
+            //If you want the Bitmap.
+            final ImageView imgPreview = (ImageView) findViewById(R.id.imgPreview);
+            imgPreview.setImageBitmap(r.getBitmap());
+
+            //Image path
+            //r.getPath();
+        } else {
+            //Handle possible errors
+            //TODO: do what you have to do with r.getError();
+            Toast.makeText(this, r.getError().getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
