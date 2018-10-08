@@ -151,6 +151,17 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
             }
         });
 
+        // edit button clicked
+        holder.editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentPage = new Intent(v.getContext(), EditActivityActivity.class);
+                intentPage.putExtra("activity_id", activitiesList.get(position).getId());
+                intentPage.putExtra("activity_title", activitiesList.get(position).getActivityTitle());
+                v.getContext().startActivity(intentPage);
+            }
+        });
+
         // delete button clicked
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(final View v) {

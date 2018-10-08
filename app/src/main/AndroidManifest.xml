@@ -26,7 +26,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD_lyCrDevPMnD_2TfcXRS8i60HRPQ1IM8"/>
+            android:value="AIzaSyD_lyCrDevPMnD_2TfcXRS8i60HRPQ1IM8" />
 
         <activity
             android:name=".SplashActivity"
@@ -68,6 +68,7 @@
         <activity
             android:name=".CreateActivityActivity"
             android:label="Create new Activity" />
+        <activity android:name=".EditActivityActivity"></activity>
     </application>
 
 </manifest>
