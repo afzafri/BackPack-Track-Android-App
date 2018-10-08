@@ -48,27 +48,35 @@
                     android:orientation="vertical"
                     android:padding="8dp">
 
-                    <EditText
-                        android:id="@+id/editDate"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:hint="Date"
-                        android:inputType="textPersonName"
-                        android:longClickable="false" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/editTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:hint="Time"
-                        android:inputType="textPersonName"
-                        android:longClickable="false" />
+                        <EditText
+                            android:id="@+id/editDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:hint="Date"
+                            android:inputType="textPersonName"
+                            android:longClickable="false" />
+
+                        <EditText
+                            android:id="@+id/editTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:focusable="false"
+                            android:hint="Time"
+                            android:inputType="textPersonName"
+                            android:longClickable="false" />
+                    </LinearLayout>
 
                     <EditText
                         android:id="@+id/editActivity"
