@@ -35,8 +35,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="false"
                 android:cropToPadding="false"
-                android:scaleType="centerCrop"
-                app:srcCompat="@mipmap/gallery_colored" />
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/activity_title"
