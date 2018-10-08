@@ -3,8 +3,10 @@ package com.afifzafri.backpacktrack;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,10 +19,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -57,6 +61,10 @@ public class CreateActivityActivity extends AppCompatActivity {
         final String itinerary_title = extras.getString("itinerary_title");
         setTitle("Create activity for " + itinerary_title);
 
+        // read from SharedPreferences
+        final SharedPreferences sharedpreferences = getSharedPreferences("logindata", Context.MODE_PRIVATE);
+        final String access_token = sharedpreferences.getString("access_token", "");
+
         // get elements
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
         final EditText editDate = (EditText) findViewById(R.id.editDate);
@@ -65,6 +73,7 @@ public class CreateActivityActivity extends AppCompatActivity {
         final EditText editDescription = (EditText) findViewById(R.id.editDescription);
         final EditText editPlaceName = (EditText) findViewById(R.id.editPlaceName);
         final EditText editBudget = (EditText) findViewById(R.id.editBudget);
+        final TextView labelChoose = (TextView) findViewById(R.id.labelChoose);
         final ImageButton chooseBtn = (ImageButton) findViewById(R.id.chooseBtn);
         final ImageView imgPreview = (ImageView) findViewById(R.id.imgPreview);
         final Button createBtn = (Button) findViewById(R.id.createBtn);
@@ -151,13 +160,14 @@ public class CreateActivityActivity extends AppCompatActivity {
 
                         dialog.dismiss();
 
-                        String actDate = editDate.getText().toString();
-                        String actTime = editTime.getText().toString();
-                        String actTitle = editActivity.getText().toString();
-                        String actDescription = editDescription.getText().toString();
-                        String actPlaceName = editPlaceName.getText().toString();
-                        String actLatLng = (String) editPlaceName.getTag();
-                        Drawable actPic = imgPreview.getDrawable();
+                        final String actDate = editDate.getText().toString();
+                        final String actTime = editTime.getText().toString();
+                        final String actTitle = editActivity.getText().toString();
+                        final String actDescription = editDescription.getText().toString();
+                        final String actPlaceName = editPlaceName.getText().toString();
+                        final String actLatLng = (String) editPlaceName.getTag();
+                        final String actBudget = editBudget.getText().toString();
+                        final Drawable actPic = imgPreview.getDrawable();
 
                         if(actDate != null && actTime != null && actTitle != null && actDescription != null && actPlaceName != null && actLatLng != null)
                         {
@@ -165,10 +175,135 @@ public class CreateActivityActivity extends AppCompatActivity {
                             loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
 
                             // parse latitude and longitude
-                            String lat = actLatLng.split(",")[0];
-                            String lng = actLatLng.split(",")[1];
+                            final String actLat = actLatLng.split(",")[0];
+                            final String actLng = actLatLng.split(",")[1];
 
                             // request to API
+                            // VolleyMultipartRequest library by Angga Ari Wijaya https://gist.github.com/anggadarkprince/a7c536da091f4b26bb4abf2f92926594
+                            VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppHelper.baseurl + "/api/newActivity", new Response.Listener<NetworkResponse>() {
+                                @Override
+                                public void onResponse(NetworkResponse response) {
+                                    String resultResponse = new String(response.data);
+                                    try {
+                                        JSONObject result = new JSONObject(resultResponse);
+                                        int code = Integer.parseInt(result.getString("code"));
+
+                                        if(code == 200)
+                                        {
+                                            // parse JSON response
+                                            String message = result.getString("message");
+                                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                        }
+                                        else if(code == 400)
+                                        {
+                                            String errormsg = result.getString("message");
+
+                                            // check if response contain errors messages
+                                            if(result.has("error"))
+                                            {
+                                                JSONObject errors = result.getJSONObject("error");
+                                                if(errors.has("date"))
+                                                {
+                                                    String err = errors.getJSONArray("date").getString(0);
+                                                    editDate.setError(err);
+                                                }
+                                                if(errors.has("time"))
+                                                {
+                                                    String err = errors.getJSONArray("time").getString(0);
+                                                    editTime.setError(err);
+                                                }
+                                                if(errors.has("activity"))
+                                                {
+                                                    String err = errors.getJSONArray("activity").getString(0);
+                                                    editActivity.setError(err);
+                                                }
+                                                if(errors.has("description"))
+                                                {
+                                                    String err = errors.getJSONArray("description").getString(0);
+                                                    editDescription.setError(err);
+                                                }
+                                                if(errors.has("place_name"))
+                                                {
+                                                    String err = errors.getJSONArray("place_name").getString(0);
+                                                    editPlaceName.setError(err);
+                                                }
+                                                if(errors.has("lat"))
+                                                {
+                                                    String err = errors.getJSONArray("lat").getString(0);
+                                                    editPlaceName.setError(err);
+                                                }
+                                                if(errors.has("lng"))
+                                                {
+                                                    String err = errors.getJSONArray("lng").getString(0);
+                                                    editPlaceName.setError(err);
+                                                }
+                                                if(errors.has("budget"))
+                                                {
+                                                    String err = errors.getJSONArray("budget").getString(0);
+                                                    editBudget.setError(err);
+                                                }
+                                                if(errors.has("image"))
+                                                {
+                                                    String err = errors.getJSONArray("image").getString(0);
+                                                    labelChoose.setError(err);
+                                                }
+                                            }
+
+                                            Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                            createBtn.setEnabled(true);
+                                            loadingFrame.setVisibility(View.GONE);
+                                        }
+
+                                        loadingFrame.setVisibility(View.GONE);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Create new activity failed! Please check your connection." + error.toString(), Toast.LENGTH_SHORT).show();
+                                    loadingFrame.setVisibility(View.GONE);
+                                }
+                            }) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String>  params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer "+access_token);
+
+                                    return params;
+                                }
+
+                                @Override
+                                protected Map<String, String> getParams() {
+                                    Map<String, String> params = new HashMap<>();
+                                    params.put("date", actDate);
+                                    params.put("time", actTime);
+                                    params.put("activity", actTitle);
+                                    params.put("description", actDescription);
+                                    params.put("place_name", actPlaceName);
+                                    params.put("lat", actLat);
+                                    params.put("lng", actLng);
+                                    params.put("itinerary_id", itinerary_id);
+                                    params.put("budget", actBudget);
+                                    return params;
+                                }
+
+                                @Override
+                                protected Map<String, DataPart> getByteData() {
+                                    Map<String, DataPart> params = new HashMap<>();
+                                    // file name could found file base or direct access from real path
+                                    // for now just get bitmap data from ImageView
+                                    if(new AppHelper().hasImage(imgPreview)) {
+                                        params.put("image", new DataPart("activity_image.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), actPic), "image/jpeg"));
+                                    }
+
+                                    return params;
+                                }
+                            };
+
+                            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
 
                         }
                         else
