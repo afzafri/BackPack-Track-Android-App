@@ -120,7 +120,7 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
         holder.activity_date.setText(new AppHelper().convertDate(activitiesList.get(position).getDate()));
 
         // Set activity time
-        holder.activity_time.setText(activitiesList.get(position).getTime());
+        holder.activity_time.setText(activitiesList.get(position).getTime().substring(0,5));
 
         // Set activity budget
         holder.activity_budget.setText(activitiesList.get(position).getBudget());
