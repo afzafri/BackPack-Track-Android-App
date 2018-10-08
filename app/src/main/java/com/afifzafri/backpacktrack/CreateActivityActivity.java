@@ -205,6 +205,9 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                                             // parse JSON response
                                             String message = result.getString("message");
                                             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+
+                                            setResult(CreateActivityActivity.RESULT_OK, new Intent());
+                                            finish();
                                         }
                                         else if(code == 400)
                                         {
