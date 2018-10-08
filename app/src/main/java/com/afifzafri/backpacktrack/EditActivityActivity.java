@@ -19,6 +19,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -29,9 +34,14 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class EditActivityActivity extends AppCompatActivity implements IPickResult {
 
@@ -46,7 +56,7 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
 
         // get data pass through intent
         Bundle extras = getIntent().getExtras();
-        final String acticity_id = extras.getString("acticity_id");
+        final String activity_id = extras.getString("activity_id");
         final String activity_title = extras.getString("activity_title");
         setTitle("Edit Activity: " + activity_title);
 
@@ -66,6 +76,67 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
         final ImageButton chooseBtn = (ImageButton) findViewById(R.id.chooseBtn);
         final ImageView imgPreview = (ImageView) findViewById(R.id.imgPreview);
         final Button createBtn = (Button) findViewById(R.id.createBtn);
+
+        // Fetch current activity data
+        // show progress bar
+        loadingFrame.setVisibility(View.VISIBLE);
+        JsonObjectRequest activityRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/viewActivity/"+activity_id, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+
+                            // parse JSON response
+                            String id = response.getString("id");
+                            String date = response.getString("date");
+                            String time = response.getString("time");
+                            String activityTitle = response.getString("activity");
+                            String description = response.getString("description");
+                            String place_name = response.getString("place_name");
+                            String lat = response.getString("lat");
+                            String lng = response.getString("lng");
+                            String budget = response.getString("budget");
+                            String pic_url = response.getString("pic_url");
+                            String curitinerary_id = response.getString("itinerary_id");
+
+                            // set values to the elements
+                            editDate.setText(date);
+                            editTime.setText(time);
+                            editActivity.setText(activityTitle);
+                            editDescription.setText(description);
+                            editPlaceName.setText(place_name);
+                            editPlaceName.setTag(lat+","+lng);
+                            editBudget.setText(budget);
+
+                            Toast.makeText(getApplicationContext(), "Activity data loaded!", Toast.LENGTH_SHORT).show();
+                            loadingFrame.setVisibility(View.GONE); // hide loading spinner
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            loadingFrame.setVisibility(View.GONE);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Activity data not loaded!  Please check your connection.", Toast.LENGTH_SHORT).show();
+                loadingFrame.setVisibility(View.GONE);
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(activityRequest);
 
         // Date picker
         final Calendar myCalendar = Calendar.getInstance();
