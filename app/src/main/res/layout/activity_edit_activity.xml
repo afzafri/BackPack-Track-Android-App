@@ -120,7 +120,7 @@
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:gravity="center"
-                            android:text="Choose picture" />
+                            android:text="Choose new picture" />
 
                         <ImageButton
                             android:id="@+id/chooseBtn"

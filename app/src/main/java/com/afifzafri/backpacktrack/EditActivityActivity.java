@@ -1,10 +1,13 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -20,6 +23,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -75,7 +79,7 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
         final TextView labelChoose = (TextView) findViewById(R.id.labelChoose);
         final ImageButton chooseBtn = (ImageButton) findViewById(R.id.chooseBtn);
         final ImageView imgPreview = (ImageView) findViewById(R.id.imgPreview);
-        final Button createBtn = (Button) findViewById(R.id.createBtn);
+        final Button saveBtn = (Button) findViewById(R.id.saveBtn);
 
         // Fetch current activity data
         // show progress bar
@@ -102,8 +106,9 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
 
                             // set values to the elements
                             editDate.setText(date);
-                            editTime.setText(time);
+                            editTime.setText(time.substring(0,5));
                             editActivity.setText(activityTitle);
+                            editActivity.setTag(curitinerary_id);
                             editDescription.setText(description);
                             editPlaceName.setText(place_name);
                             editPlaceName.setTag(lat+","+lng);
@@ -210,6 +215,188 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
             @Override
             public void onClick(View v) {
                 PickImageDialog.build(new PickSetup()).show(EditActivityActivity.this);
+            }
+        });
+
+        // Save button clicked, update data send to API
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create dialog box, ask confirmation before proceed
+                AlertDialog.Builder alert = new AlertDialog.Builder(EditActivityActivity.this);
+                alert.setTitle("Update activity?");
+                alert.setMessage("Are you sure you want to update this activity?");
+                // set positive button, yes etc
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                        final String actDate = editDate.getText().toString();
+                        final String actTime = editTime.getText().toString();
+                        final String actTitle = editActivity.getText().toString();
+                        final String itinerary_id = editActivity.getTag().toString();
+                        final String actDescription = editDescription.getText().toString();
+                        final String actPlaceName = editPlaceName.getText().toString();
+                        final String actLatLng = (String) editPlaceName.getTag();
+                        final String actBudget = editBudget.getText().toString();
+                        final Drawable actPic = imgPreview.getDrawable();
+
+                        if(actDate != null && actTime != null && actTitle != null && actDescription != null && actPlaceName != null && actLatLng != null)
+                        {
+                            saveBtn.setEnabled(false); // disable button
+                            loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
+
+                            // parse latitude and longitude
+                            final String actLat = actLatLng.split(",")[0];
+                            final String actLng = actLatLng.split(",")[1];
+
+                            // request to API
+                            // VolleyMultipartRequest library by Angga Ari Wijaya https://gist.github.com/anggadarkprince/a7c536da091f4b26bb4abf2f92926594
+                            VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, AppHelper.baseurl + "/api/updateActivity", new Response.Listener<NetworkResponse>() {
+                                @Override
+                                public void onResponse(NetworkResponse response) {
+                                    String resultResponse = new String(response.data);
+                                    try {
+                                        JSONObject result = new JSONObject(resultResponse);
+                                        int code = Integer.parseInt(result.getString("code"));
+
+                                        if(code == 200)
+                                        {
+                                            // parse JSON response
+                                            String message = result.getString("message");
+                                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                        }
+                                        else if(code == 400)
+                                        {
+                                            String errormsg = result.getString("message");
+
+                                            // check if response contain errors messages
+                                            if(result.has("error"))
+                                            {
+                                                JSONObject errors = result.getJSONObject("error");
+                                                if(errors.has("date"))
+                                                {
+                                                    String err = errors.getJSONArray("date").getString(0);
+                                                    editDate.setError(err);
+                                                }
+                                                if(errors.has("time"))
+                                                {
+                                                    String err = errors.getJSONArray("time").getString(0);
+                                                    editTime.setError(err);
+                                                }
+                                                if(errors.has("activity"))
+                                                {
+                                                    String err = errors.getJSONArray("activity").getString(0);
+                                                    editActivity.setError(err);
+                                                }
+                                                if(errors.has("description"))
+                                                {
+                                                    String err = errors.getJSONArray("description").getString(0);
+                                                    editDescription.setError(err);
+                                                }
+                                                if(errors.has("place_name"))
+                                                {
+                                                    String err = errors.getJSONArray("place_name").getString(0);
+                                                    editPlaceName.setError(err);
+                                                }
+                                                if(errors.has("lat"))
+                                                {
+                                                    String err = errors.getJSONArray("lat").getString(0);
+                                                    editPlaceName.setError(err);
+                                                }
+                                                if(errors.has("lng"))
+                                                {
+                                                    String err = errors.getJSONArray("lng").getString(0);
+                                                    editPlaceName.setError(err);
+                                                }
+                                                if(errors.has("budget"))
+                                                {
+                                                    String err = errors.getJSONArray("budget").getString(0);
+                                                    editBudget.setError(err);
+                                                }
+                                                if(errors.has("image"))
+                                                {
+                                                    String err = errors.getJSONArray("image").getString(0);
+                                                    labelChoose.setError(err);
+                                                }
+                                            }
+
+                                            Toast.makeText(getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                            saveBtn.setEnabled(true);
+                                            loadingFrame.setVisibility(View.GONE);
+                                        }
+
+                                        loadingFrame.setVisibility(View.GONE);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "Update activity failed! Please check your connection." + error.toString(), Toast.LENGTH_SHORT).show();
+                                    loadingFrame.setVisibility(View.GONE);
+                                }
+                            }) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String>  params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer "+access_token);
+
+                                    return params;
+                                }
+
+                                @Override
+                                protected Map<String, String> getParams() {
+                                    Map<String, String> params = new HashMap<>();
+                                    params.put("date", actDate);
+                                    params.put("time", actTime);
+                                    params.put("activity", actTitle);
+                                    params.put("description", actDescription);
+                                    params.put("place_name", actPlaceName);
+                                    params.put("lat", actLat);
+                                    params.put("lng", actLng);
+                                    params.put("activity_id", activity_id);
+                                    params.put("itinerary_id", itinerary_id);
+                                    params.put("budget", actBudget);
+                                    return params;
+                                }
+
+                                @Override
+                                protected Map<String, DataPart> getByteData() {
+                                    Map<String, DataPart> params = new HashMap<>();
+                                    // file name could found file base or direct access from real path
+                                    // for now just get bitmap data from ImageView
+                                    if(new AppHelper().hasImage(imgPreview)) {
+                                        params.put("image", new DataPart("activity_image.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), actPic), "image/jpeg"));
+                                    }
+
+                                    return params;
+                                }
+                            };
+
+                            VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
+
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Please fill in all the input!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+                // set negative button, no etc
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show(); // show alert message
             }
         });
     }
