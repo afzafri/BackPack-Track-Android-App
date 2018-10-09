@@ -27,7 +27,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 tab1.setArguments(bundle);
                 return tab1;
             case 1:
-                ViewActivitiesFragment tab2 = new ViewActivitiesFragment();
+                MapFragment tab2 = new MapFragment();
                 tab2.setArguments(bundle);
                 return tab2;
             case 2:
