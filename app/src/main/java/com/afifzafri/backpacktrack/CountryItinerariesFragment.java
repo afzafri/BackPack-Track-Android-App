@@ -333,6 +333,7 @@ public class CountryItinerariesFragment extends Fragment {
         }
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setQueryHint("Search itinerary title...");
 
             queryTextListener = new SearchView.OnQueryTextListener() {
                 @Override
