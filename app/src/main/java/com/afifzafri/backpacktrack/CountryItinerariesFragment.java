@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -346,7 +347,11 @@ public class CountryItinerariesFragment extends Fragment {
                 public boolean onQueryTextSubmit(String query) {
                     Log.i("onQueryTextSubmit", query);
 
-                    Toast.makeText(getActivity().getApplicationContext(), "Search: "+query, Toast.LENGTH_SHORT).show();
+                    // when user submit search (enter), open search result page
+                    // redirect to edit profile page
+                    Intent intentPage = new Intent(getActivity(), SearchItineraryActivity.class);
+                    intentPage.putExtra("query", query);
+                    startActivity(intentPage);
 
                     return true;
                 }
