@@ -115,7 +115,7 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
         holder.activity_title.setText(activitiesList.get(position).getActivityTitle());
 
         // Set activity time
-        holder.activity_time.setText(activitiesList.get(position).getTime().substring(0,5));
+        holder.activity_time.setText(new AppHelper().convertTime(activitiesList.get(position).getTime().substring(0,5)));
 
         // Set activity budget
         holder.activity_budget.setText(activitiesList.get(position).getBudget());

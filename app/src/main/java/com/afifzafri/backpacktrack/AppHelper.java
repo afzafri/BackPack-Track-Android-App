@@ -144,6 +144,7 @@ public class AppHelper {
 
     /**
      * Method to convert String date format
+     *
      * @param currentDate
      * @return
      */
@@ -160,5 +161,22 @@ public class AppHelper {
         String date = format.format(newDate);
 
         return date;
+    }
+
+    /**
+     * Method to convert 24h time format to 12h
+     *
+     * @param currentTime
+     * @return
+     */
+    public String convertTime(String currentTime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
+        Date dateObj = null;
+        try {
+            dateObj = sdf.parse(currentTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new SimpleDateFormat("hh:mm aa").format(dateObj);
     }
 }
