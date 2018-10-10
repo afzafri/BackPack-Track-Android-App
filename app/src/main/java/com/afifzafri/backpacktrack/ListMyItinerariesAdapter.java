@@ -108,7 +108,7 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         // Set itinerary title
         holder.itinerary_title.setText(itinerariesList.get(position).getTitle());
 
-        // Set itinerary title
+        // Set itinerary country
         holder.itinerary_country.setText(itinerariesList.get(position).getCountry());
 
         // Set itinerary duration
