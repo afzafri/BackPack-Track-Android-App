@@ -29,6 +29,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -100,6 +102,10 @@ public class MapFragment extends Fragment {
                         new Response.Listener<JSONArray>() {
                             @Override
                             public void onResponse(JSONArray response) {
+
+                                // Array for storing LatLng object, used for adding polylines
+                                LatLng[] markerArr = new LatLng[response.length()];
+
                                 for(int i=0;i<response.length();i++)
                                 {
                                     try {
@@ -108,25 +114,25 @@ public class MapFragment extends Fragment {
                                         String activity = data.getString("activity");
                                         Double lat = Double.parseDouble(data.getString("lat"));
                                         Double lng = Double.parseDouble(data.getString("lng"));
+                                        LatLng marker = new LatLng(lat, lng);
+                                        markerArr[i] = marker;
 
-                                        googleMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).title(place_name).snippet(activity));
+                                        // add markers to the map
+                                        googleMap.addMarker(new MarkerOptions().position(marker).title(place_name).snippet(activity));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 }
+
+                                // Add polylines to the map
+                                Polyline polyline = googleMap.addPolyline(new PolylineOptions().add(markerArr));
+
                                 loadingFrame.setVisibility(View.GONE);
 
-                                if(response.length() > 0) {
-                                    try {
-                                        JSONObject initialData = response.getJSONObject(0);
-                                        // initial lat lng for zoom
-                                        LatLng firstCoor = new LatLng(Double.parseDouble(initialData.getString("lat")), Double.parseDouble(initialData.getString("lng")));
-                                        // For zooming automatically to the location of the marker
-                                        CameraPosition cameraPosition = new CameraPosition.Builder().target(firstCoor).zoom(12).build();
-                                        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                // zoom the camera to first marker
+                                if(markerArr.length > 0) {
+                                    CameraPosition cameraPosition = new CameraPosition.Builder().target(markerArr[0]).zoom(12).build();
+                                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                                 }
                             }
                         }, new Response.ErrorListener() {
