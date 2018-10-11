@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
@@ -178,5 +179,23 @@ public class AppHelper {
             e.printStackTrace();
         }
         return new SimpleDateFormat("hh:mm aa").format(dateObj);
+    }
+
+    /**
+     * Method for set spinner selection equals to input text
+     * Credit: https://stackoverflow.com/a/24470136/5784900
+     *
+     * @param spin
+     * @param text
+     */
+    public void setSpinText(Spinner spin, String text)
+    {
+        if(spin != null && spin.getSelectedItem() != null ) {
+            for (int i = 0; i < spin.getAdapter().getCount(); i++) {
+                if (spin.getAdapter().getItem(i).toString().contains(text)) {
+                    spin.setSelection(i);
+                }
+            }
+        }
     }
 }
