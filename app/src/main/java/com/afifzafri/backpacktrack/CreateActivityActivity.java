@@ -7,18 +7,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -39,12 +43,15 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -77,10 +84,61 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
         final EditText editDescription = (EditText) findViewById(R.id.editDescription);
         final EditText editPlaceName = (EditText) findViewById(R.id.editPlaceName);
         final EditText editBudget = (EditText) findViewById(R.id.editBudget);
+        final Spinner spinnerBudget = (Spinner) findViewById(R.id.spinnerBudget);
         final TextView labelChoose = (TextView) findViewById(R.id.labelChoose);
         final ImageButton chooseBtn = (ImageButton) findViewById(R.id.chooseBtn);
         final ImageView imgPreview = (ImageView) findViewById(R.id.imgPreview);
         final Button createBtn = (Button) findViewById(R.id.createBtn);
+
+        // Populate budget type spinner
+        loadingFrame.setVisibility(View.VISIBLE);
+        JsonArrayRequest budgetListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listBudgetTypes", null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        ArrayList<BudgetTypeModel> budgetTypeList = new ArrayList<BudgetTypeModel>();
+                        budgetTypeList.add(new BudgetTypeModel(null,"Select type...")); // set default first element in the spinner
+
+                        for(int i=0;i<response.length();i++)
+                        {
+                            try {
+                                JSONObject budget = response.getJSONObject(i);
+                                String id = budget.getString("id");
+                                String type = budget.getString("type");
+
+                                budgetTypeList.add(new BudgetTypeModel(id, type));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // Populate the spinner with Array values
+                        ArrayAdapter<BudgetTypeModel> budgetAdapter = new ArrayAdapter<BudgetTypeModel>(getApplicationContext(), android.R.layout.simple_spinner_item, budgetTypeList);
+                        budgetAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+                        spinnerBudget.setAdapter(budgetAdapter);
+
+                        loadingFrame.setVisibility(View.GONE);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Load Budget type Failed! Check your connection", Toast.LENGTH_SHORT).show();
+                loadingFrame.setVisibility(View.GONE);
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(budgetListRequest);
 
         // Date picker
         final Calendar myCalendar = Calendar.getInstance();
@@ -179,6 +237,7 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                         final String actPlaceName = editPlaceName.getText().toString();
                         final String actLatLng = (String) editPlaceName.getTag();
                         final String actBudget = editBudget.getText().toString();
+                        final String actBudgetType = ((BudgetTypeModel) spinnerBudget.getSelectedItem()).getId();
                         final Drawable actPic = imgPreview.getDrawable();
 
                         if(actDate != null && actTime != null && actTitle != null && actDescription != null && actPlaceName != null && actLatLng != null)
@@ -257,6 +316,14 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                                                     String err = errors.getJSONArray("budget").getString(0);
                                                     editBudget.setError(err);
                                                 }
+                                                if(errors.has("budget_id"))
+                                                {
+                                                    String err = errors.getJSONArray("budget_id").getString(0);
+                                                    TextView errorText = (TextView)spinnerBudget.getSelectedView();
+                                                    errorText.setError("");
+                                                    errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                                                    errorText.setText(err);//changes the selected item text to this
+                                                }
                                                 if(errors.has("image"))
                                                 {
                                                     String err = errors.getJSONArray("image").getString(0);
@@ -302,6 +369,7 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                                     params.put("lng", actLng);
                                     params.put("itinerary_id", itinerary_id);
                                     params.put("budget", actBudget);
+                                    params.put("budget_type", actBudgetType);
                                     return params;
                                 }
 
