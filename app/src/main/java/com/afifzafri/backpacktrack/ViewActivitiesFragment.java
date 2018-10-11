@@ -134,11 +134,13 @@ public class ViewActivitiesFragment extends Fragment {
                                     String lat = activity.getString("lat");
                                     String lng = activity.getString("lng");
                                     String budget = currency + " " + activity.getString("budget");
+                                    JSONObject budgettype = activity.getJSONObject("budgettype");
+                                    String budgettype_type = budgettype.getString("type");
                                     String pic_url = activity.getString("pic_url");
                                     String act_itinerary_id = activity.getString("itinerary_id");
 
                                     // insert data into array
-                                    activitiesList.add(new ActivitiesModel(id, act_date, time, activity_title, description, place_name, lat, lng, budget, pic_url, act_itinerary_id));
+                                    activitiesList.add(new ActivitiesModel(id, act_date, time, activity_title, description, place_name, lat, lng, budget, budgettype_type, pic_url, act_itinerary_id));
                                 }
 
                                 // insert data into array

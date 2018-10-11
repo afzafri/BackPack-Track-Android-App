@@ -11,10 +11,11 @@ public class ActivitiesModel {
     private String lat;
     private String lng;
     private String budget;
+    private String budgettype;
     private String pic_url;
     private String itinerary_id;
 
-    public ActivitiesModel(String id, String date, String time, String activity_title, String description, String place_name, String lat, String lng, String budget, String pic_url, String itinerary_id) {
+    public ActivitiesModel(String id, String date, String time, String activity_title, String description, String place_name, String lat, String lng, String budget, String budgettype, String pic_url, String itinerary_id) {
         this.id = id;
         this.date = date;
         this.time = time;
@@ -24,6 +25,7 @@ public class ActivitiesModel {
         this.lat = lat;
         this.lng = lng;
         this.budget = budget;
+        this.budgettype = budgettype;
         this.pic_url = pic_url;
         this.itinerary_id = itinerary_id;
     }
@@ -45,6 +47,8 @@ public class ActivitiesModel {
     public String getLng() { return lng; }
 
     public String getBudget() { return budget; }
+
+    public String getBudgetType() { return budgettype; }
 
     public String getPicUrl() { return pic_url; }
 
