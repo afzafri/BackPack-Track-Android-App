@@ -316,7 +316,7 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                                                     String err = errors.getJSONArray("budget").getString(0);
                                                     editBudget.setError(err);
                                                 }
-                                                if(errors.has("budget_id"))
+                                                if(errors.has("budgettype_id"))
                                                 {
                                                     String err = errors.getJSONArray("budget_id").getString(0);
                                                     TextView errorText = (TextView)spinnerBudget.getSelectedView();
@@ -369,7 +369,7 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                                     params.put("lng", actLng);
                                     params.put("itinerary_id", itinerary_id);
                                     params.put("budget", actBudget);
-                                    params.put("budget_type", actBudgetType);
+                                    params.put("budgettype_id", actBudgetType);
                                     return params;
                                 }
 
