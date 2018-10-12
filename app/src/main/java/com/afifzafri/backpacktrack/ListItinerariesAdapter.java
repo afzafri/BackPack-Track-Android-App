@@ -91,7 +91,8 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         holder.itinerary_user.setText(itinerariesList.get(position).getUser());
 
         // Set itinerary date
-        holder.itinerary_date.setText(itinerariesList.get(position).getDate());
+        String crdate = itinerariesList.get(position).getDate();
+        holder.itinerary_date.setText(new AppHelper().convertDate(crdate.split(" ")[0]));
 
         // get current position item data
         holder.currentItem = itinerariesList.get(position);
