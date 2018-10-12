@@ -7,14 +7,16 @@ public class ItinerariesModel {
     private String title;
     private String country;
     private String duration;
+    private String date;
     private String totalbudget;
 
-    public ItinerariesModel(String id, String user, String title, String country, String duration, String totalbudget) {
+    public ItinerariesModel(String id, String user, String title, String country, String duration, String date, String totalbudget) {
         this.id = id;
         this.user = user;
         this.title = title;
         this.country = country;
         this.duration = duration;
+        this.date = date;
         this.totalbudget = totalbudget;
     }
 
@@ -36,6 +38,10 @@ public class ItinerariesModel {
 
     public String getDuration() {
         return duration;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getTotalBudget() {

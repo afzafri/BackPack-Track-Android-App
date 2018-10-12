@@ -24,6 +24,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         public TextView itinerary_duration;
         public TextView itinerary_totalbudget;
         public TextView itinerary_user;
+        public TextView itinerary_date;
         public CardView mCardView;
         public ItinerariesModel currentItem;
 
@@ -43,6 +44,9 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
             itinerary_user = (TextView) v.findViewById(R.id.itinerary_user);
             this.itinerary_user = itinerary_user;
+
+            itinerary_date = (TextView) v.findViewById(R.id.itinerary_date);
+            this.itinerary_date = itinerary_date;
 
             mCardView = (CardView) v.findViewById(R.id.itinerary_card);
             this.mCardView = mCardView;
@@ -85,6 +89,9 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
         // Set itinerary user name
         holder.itinerary_user.setText(itinerariesList.get(position).getUser());
+
+        // Set itinerary date
+        holder.itinerary_date.setText(itinerariesList.get(position).getDate());
 
         // get current position item data
         holder.currentItem = itinerariesList.get(position);
