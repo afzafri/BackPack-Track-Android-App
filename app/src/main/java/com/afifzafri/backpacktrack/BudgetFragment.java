@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +53,14 @@ import static com.github.mikephil.charting.components.Legend.LegendPosition.RIGH
  */
 public class BudgetFragment extends Fragment {
 
+    // initialize adapter and data structure here
+    private ListBudgetTypesAdapter mAdapter;
+    // List for all data array
+    private List<BudgetTypesModel> budgetList;
+
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+
 
     public BudgetFragment() {
         // Required empty public constructor
@@ -76,6 +86,25 @@ public class BudgetFragment extends Fragment {
         // initialize map
         final PieChart pieChart = (PieChart) view.findViewById(R.id.pieChart);
 
+        // Setup recycler view for listing the budgets table
+        // you must assign all objects to avoid nullPointerException
+        budgetList = new ArrayList<>();
+        mAdapter = new ListBudgetTypesAdapter(budgetList);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.listType);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // specify an adapter (see also next example)
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setFocusable(false);
+
+        // Setup the chart
+
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
 
@@ -84,14 +113,13 @@ public class BudgetFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        String currency = null;
                         // arraylist for piechart data
                         List<PieEntry> entries = new ArrayList<>();
 
                         try {
 
                             // parse JSON response
-                            currency = response.getString("currency");
+                            String currency = response.getString("currency");
                             String grandTotal = response.getString("grandTotal");
                             JSONArray budgets = response.getJSONArray("detail");
 
@@ -102,7 +130,11 @@ public class BudgetFragment extends Fragment {
                                 float totalBudget = Float.parseFloat(budget.getString("totalBudget"));
                                 String budget_type = budget.getString("budget_type");
                                 entries.add(new PieEntry(totalBudget, budget_type));
+
+                                budgetList.add(new BudgetTypesModel(budget.getString("budget_type"), currency + " " + budget.getString("totalBudget")));
                             }
+
+                            mAdapter.notifyDataSetChanged(); // alert adapter
 
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
 
