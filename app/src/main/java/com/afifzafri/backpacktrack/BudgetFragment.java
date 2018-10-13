@@ -75,7 +75,6 @@ public class BudgetFragment extends Fragment {
 
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
-        final TextView chartDescription = (TextView) view.findViewById(R.id.chartDescription);
         // initialize map
         final PieChart pieChart = (PieChart) view.findViewById(R.id.pieChart);
 
@@ -144,7 +143,6 @@ public class BudgetFragment extends Fragment {
                         pieChart.setData(data);
 
                         // styling
-                        chartDescription.setText("Total Budget Expense"); // set description
                         pieChart.getDescription().setEnabled(false); // remove default desc
                         pieChart.setUsePercentValues(true); // output data in percentage
                         set.setColors(ColorTemplate.MATERIAL_COLORS); // set colors
@@ -196,6 +194,8 @@ public class BudgetFragment extends Fragment {
         mRecyclerViewDaily.setAdapter(mAdapterDaily);
         mRecyclerViewDaily.setFocusable(false);
 
+        final TextView textTotalBudget = (TextView) view.findViewById(R.id.textTotalBudget);
+
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
 
@@ -221,6 +221,9 @@ public class BudgetFragment extends Fragment {
 
                                 dailyList.add(new DailyBudgetModel(budgetDay, budgetDate, currency + " " + budgetBudget));
                             }
+
+                            // set grand total
+                            textTotalBudget.setText(currency + " " + grandTotal);
 
                             mAdapterDaily.notifyDataSetChanged(); // alert adapter
 
