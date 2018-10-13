@@ -38,4 +38,5 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     implementation 'com.github.vipulasri:timelineview:1.0.6'
     implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
