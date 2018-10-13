@@ -1,10 +1,10 @@
 package com.afifzafri.backpacktrack;
 
-public class BudgetTypesModel {
+public class TotalBudgetTypeModel {
     private String budget_type;
     private String budget_total;
 
-    public BudgetTypesModel(String budget_type, String budget_total) {
+    public TotalBudgetTypeModel(String budget_type, String budget_total) {
         this.budget_type = budget_type;
         this.budget_total = budget_total;
     }
