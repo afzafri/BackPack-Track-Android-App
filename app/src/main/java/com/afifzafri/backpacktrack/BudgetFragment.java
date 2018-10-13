@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -147,7 +149,19 @@ public class BudgetFragment extends Fragment {
                         pieChart.setUsePercentValues(true); // output data in percentage
                         set.setColors(ColorTemplate.MATERIAL_COLORS); // set colors
                         pieChart.animateY(2000); // set animation
-                        pieChart.setDrawHoleEnabled(false); // no donut hole
+                        //pieChart.setDrawHoleEnabled(false); // no donut hole
+                        pieChart.setCenterText("Percentage for each budget types");
+                        set.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE); // set out values display
+                        set.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE); // set out label display
+                        // set label color
+                        int colorBlack = Color.parseColor("#000000");
+                        pieChart.setEntryLabelColor(colorBlack);
+
+                        // set offset, avoid content clipping
+                        pieChart.setExtraTopOffset(20f);
+                        pieChart.setExtraBottomOffset(20f);
+                        pieChart.setExtraLeftOffset(20f);
+                        pieChart.setExtraRightOffset(20f);
 
                         // disable legends
                         pieChart.getLegend().setEnabled(false);
