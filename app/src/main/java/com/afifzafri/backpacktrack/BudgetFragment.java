@@ -123,8 +123,46 @@ public class BudgetFragment extends Fragment {
                                 float totalBudget = Float.parseFloat(budget.getString("totalBudget"));
                                 String budget_type = budget.getString("budget_type");
                                 entries.add(new PieEntry(totalBudget, budget_type));
+                            }
 
-                                budgetList.add(new TotalBudgetTypeModel(budget.getString("budget_type"), currency + " " + budget.getString("totalBudget")));
+                            // set data
+                            PieDataSet set = new PieDataSet(entries, "Budget Types");
+                            PieData data = new PieData(set);
+                            data.setValueTextSize(20f);
+                            data.setValueFormatter(new PercentFormatter()); // show percentage symbol
+                            pieChart.setData(data);
+
+                            // styling
+                            pieChart.getDescription().setEnabled(false); // remove default desc
+                            pieChart.setUsePercentValues(true); // output data in percentage
+                            set.setColors(ColorTemplate.MATERIAL_COLORS); // set colors
+                            pieChart.animateY(2000); // set animation
+                            //pieChart.setDrawHoleEnabled(false); // no donut hole
+                            pieChart.setCenterText("Percentage for each budget types");
+                            set.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE); // set out values display
+                            set.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE); // set out label display
+                            // set label color
+                            int colorBlack = Color.parseColor("#000000");
+                            pieChart.setEntryLabelColor(colorBlack);
+
+                            // set offset, avoid content clipping
+                            pieChart.setExtraTopOffset(20f);
+                            pieChart.setExtraBottomOffset(20f);
+                            pieChart.setExtraLeftOffset(20f);
+                            pieChart.setExtraRightOffset(20f);
+
+                            // refresh chart
+                            pieChart.invalidate();
+
+                            // disable legends
+                            pieChart.getLegend().setEnabled(false);
+
+                            // display details table
+                            List<Integer> colorcodes = set.getColors();
+                            for(int i=0;i<budgets.length();i++) {
+                                JSONObject budget = budgets.getJSONObject(i);
+
+                                budgetList.add(new TotalBudgetTypeModel(budget.getString("budget_type"), currency + " " + budget.getString("totalBudget"), colorcodes.get(i)));
                             }
 
                             mAdapter.notifyDataSetChanged(); // alert adapter
@@ -136,38 +174,6 @@ public class BudgetFragment extends Fragment {
 
                             loadingFrame.setVisibility(View.GONE);
                         }
-
-                        // set data
-                        PieDataSet set = new PieDataSet(entries, "Budget Types");
-                        PieData data = new PieData(set);
-                        data.setValueTextSize(20f);
-                        data.setValueFormatter(new PercentFormatter()); // show percentage symbol
-                        pieChart.setData(data);
-
-                        // styling
-                        pieChart.getDescription().setEnabled(false); // remove default desc
-                        pieChart.setUsePercentValues(true); // output data in percentage
-                        set.setColors(ColorTemplate.MATERIAL_COLORS); // set colors
-                        pieChart.animateY(2000); // set animation
-                        //pieChart.setDrawHoleEnabled(false); // no donut hole
-                        pieChart.setCenterText("Percentage for each budget types");
-                        set.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE); // set out values display
-                        set.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE); // set out label display
-                        // set label color
-                        int colorBlack = Color.parseColor("#000000");
-                        pieChart.setEntryLabelColor(colorBlack);
-
-                        // set offset, avoid content clipping
-                        pieChart.setExtraTopOffset(20f);
-                        pieChart.setExtraBottomOffset(20f);
-                        pieChart.setExtraLeftOffset(20f);
-                        pieChart.setExtraRightOffset(20f);
-
-                        // disable legends
-                        pieChart.getLegend().setEnabled(false);
-
-                        // refresh chart
-                        pieChart.invalidate();
                     }
                 }, new Response.ErrorListener() {
             @Override

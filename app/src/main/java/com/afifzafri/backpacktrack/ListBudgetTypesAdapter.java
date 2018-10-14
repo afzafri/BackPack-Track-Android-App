@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ListBudgetTypesAdapter extends RecyclerView.Adapter<ListBudgetTypes
         // each data item is just a string in this case
         public TextView budgetType;
         public TextView budgetTotal;
+        public ImageView labelColor;
 
         public MyViewHolder(View v) {
             super(v);
@@ -27,6 +29,9 @@ public class ListBudgetTypesAdapter extends RecyclerView.Adapter<ListBudgetTypes
 
             budgetTotal = (TextView) v.findViewById(R.id.budgetTotal);
             this.budgetTotal = budgetTotal;
+
+            labelColor = (ImageView) v.findViewById(R.id.labelColor);
+            this.labelColor = labelColor;
         }
     }
 
@@ -58,6 +63,8 @@ public class ListBudgetTypesAdapter extends RecyclerView.Adapter<ListBudgetTypes
         // Set budget total
         holder.budgetTotal.setText(budgetList.get(position).getBudgetTotal());
 
+        // Set label color
+        holder.labelColor.setColorFilter(budgetList.get(position).getBudgetColor());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
