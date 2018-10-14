@@ -21,6 +21,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_itinerary);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
+        getSupportActionBar().setElevation(0); // remove shadow
 
         // get data pass through intent
         Bundle extras = getIntent().getExtras();
