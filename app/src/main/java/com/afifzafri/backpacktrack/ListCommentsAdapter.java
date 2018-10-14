@@ -79,7 +79,10 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
 
         holder.comment_username.setText("@" + commentsList.get(position).getUsername());
 
-        holder.comment_datetime.setText(commentsList.get(position).getDateTime());
+        String dateTime[] = commentsList.get(position).getDateTime().split(" ");
+        String date = dateTime[0];
+        String time = dateTime[1].substring(0,5);
+        holder.comment_datetime.setText(new AppHelper().convertDate(date) + "  " + new AppHelper().convertTime(time));
 
         holder.comment_message.setText(commentsList.get(position).getMessage());
 
