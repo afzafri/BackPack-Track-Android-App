@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -66,7 +67,7 @@ public class CommentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_comments, container, false);
+        final View view = inflater.inflate(R.layout.fragment_comments, container, false);
 
         // get itinerary id
         final String itinerary_id = getArguments().getString("itinerary_id");
@@ -97,6 +98,31 @@ public class CommentsFragment extends Fragment {
 
         // create a function for the first load
         firstLoadData(view, itinerary_id, access_token);
+
+        // here add a recyclerView listener, to listen to scrolling,
+        // we don't care when user scrolls upwards, will only be careful when user scrolls downwards
+        // this listener is freely provided for by android, no external library
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            // for this tutorial, this is the ONLY method that we need, ignore the rest
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    // Recycle view scrolling downwards...
+                    // this if statement detects when user reaches the end of recyclerView, this is only time we should load more
+                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                        // remember "!" is the same as "== false"
+                        // here we are now allowed to load more, but we need to be careful
+                        // we must check if itShouldLoadMore variable is true [unlocked]
+                        if (itShouldLoadMore) {
+                            loadMore(view, itinerary_id, access_token);
+                        }
+                    }
+
+                }
+            }
+        });
 
         // refresh fragment when perform swipe to refresh
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
@@ -185,6 +211,93 @@ public class CommentsFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Load comments Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 }
                 loadingFrame.setVisibility(View.GONE);
+                itShouldLoadMore = true; // even if volley failed, set true so we can retry again
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(commentsListRequest);
+
+        lastPage++; // increment the page number
+    }
+
+    private void loadMore(View view, final String itinerary_id, final String access_token) {
+        // get UI elements
+        final ProgressBar loadMoreSpin = (ProgressBar) view.findViewById(R.id.loadMoreSpin);
+
+        // show loading spinner
+        loadMoreSpin.setVisibility(View.VISIBLE);
+
+        itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
+        // user will not load more when volley is processing another request
+        // only load more when  volley is free
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest commentsListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listCommentsPaginated/"+itinerary_id+"?page="+lastPage, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        // since volley has completed and it has our response, now let's update
+                        // itShouldLoadMore
+                        itShouldLoadMore = true;
+
+                        try {
+                            JSONArray comments = response.getJSONArray("data");
+
+                            if (comments.length() <= 0) {
+                                // we need to check this, to make sure, our dataStructure JSonArray contains
+                                // something
+                                // check if activity have been attach to the fragment
+                                if(isAdded()) {
+                                    Toast.makeText(getActivity().getApplicationContext(), "No more comments available", Toast.LENGTH_SHORT).show();
+                                }
+                                itShouldLoadMore = false;
+                                loadMoreSpin.setVisibility(View.GONE);
+                                return; // return will end the program at this point
+                            }
+
+                            for(int i=0;i<comments.length();i++)
+                            {
+                                JSONObject comment = comments.getJSONObject(i);
+                                String id = comment.getString("id");
+                                String message = comment.getString("message");
+                                String datetime = comment.getString("created_at");
+                                JSONObject user = comment.getJSONObject("user");
+                                String user_name = user.getString("name");
+                                String user_id = user.getString("id");
+                                String user_username = user.getString("username");
+                                String user_avatar = user.getString("avatar_url");
+
+                                // insert data into array
+                                commentsList.add(new CommentsModel(id, user_name, user_username, user_id, user_avatar, message, datetime));
+
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        loadMoreSpin.setVisibility(View.GONE);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // check if activity have been attach to the fragment
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Load more comments failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
+                loadMoreSpin.setVisibility(View.GONE);
+
                 itShouldLoadMore = true; // even if volley failed, set true so we can retry again
             }
         })
