@@ -11,6 +11,8 @@
         android:id="@+id/simpleTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabMaxWidth="0dp"
+        app:tabGravity="fill"
         app:tabBackground="@color/colorPrimary" />
 
 
