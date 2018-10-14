@@ -158,7 +158,7 @@ public class AppHelper {
             e.printStackTrace();
         }
 
-        format = new SimpleDateFormat("dd-mm-yyyy");
+        format = new SimpleDateFormat("dd/mm/yyyy");
         String date = format.format(newDate);
 
         return date;
