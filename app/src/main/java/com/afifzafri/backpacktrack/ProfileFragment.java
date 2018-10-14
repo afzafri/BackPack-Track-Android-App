@@ -34,6 +34,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,10 +101,17 @@ public class ProfileFragment extends Fragment {
                             if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
                                 // check if activity have been attach to the fragment
                                 if(isAdded()) {
-                                    Picasso.get().load(avatar_url)
-                                            .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5)).into(avatar_pic);
+                                    Picasso.get()
+                                            .load(avatar_url)
+                                            .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5))
+                                            .into(avatar_pic);
                                 }
                                 avatar_pic.setTag(avatar_url); // store url into tag, used for retrieve later
+                            } else {
+                                Picasso.get()
+                                        .load(R.drawable.avatar)
+                                        .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5))
+                                        .into(avatar_pic);
                             }
 
                             // check if activity have been attach to the fragment
