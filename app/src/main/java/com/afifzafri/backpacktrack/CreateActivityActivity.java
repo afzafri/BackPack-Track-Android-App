@@ -236,9 +236,13 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                         final String actDescription = editDescription.getText().toString();
                         final String actPlaceName = editPlaceName.getText().toString();
                         final String actLatLng = (String) editPlaceName.getTag();
-                        final String actBudget = editBudget.getText().toString();
-                        final String actBudgetType = ((BudgetTypeModel) spinnerBudget.getSelectedItem()).getId();
+                        final String actBudget = (editBudget.getText().toString() == null || editBudget.getText().toString().equals("")) ? "0.00" : editBudget.getText().toString();
+                        BudgetTypeModel spinSel = (BudgetTypeModel) spinnerBudget.getSelectedItem();
+                        final String actBudgetType = (spinSel.getId() == null) ? "7" : spinSel.getId(); // if not selected, set budget type to Other
                         final Drawable actPic = imgPreview.getDrawable();
+
+                        Toast.makeText(getApplicationContext(), actBudget, Toast.LENGTH_SHORT).show();
+
 
                         if(actDate != null && actTime != null && actTitle != null && actDescription != null && actPlaceName != null && actLatLng != null)
                         {
@@ -346,6 +350,7 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getApplicationContext(), "Create new activity failed! Please check your connection." + error.toString(), Toast.LENGTH_SHORT).show();
+                                    createBtn.setEnabled(true);
                                     loadingFrame.setVisibility(View.GONE);
                                 }
                             }) {

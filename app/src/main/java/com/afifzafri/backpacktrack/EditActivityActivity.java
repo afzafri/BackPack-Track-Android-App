@@ -306,8 +306,9 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
                         final String actDescription = editDescription.getText().toString();
                         final String actPlaceName = editPlaceName.getText().toString();
                         final String actLatLng = (String) editPlaceName.getTag();
-                        final String actBudget = editBudget.getText().toString();
-                        final String actBudgetType = ((BudgetTypeModel) spinnerBudget.getSelectedItem()).getId();
+                        final String actBudget = (editBudget.getText().toString() == null || editBudget.getText().toString().equals("")) ? "0.00" : editBudget.getText().toString();
+                        BudgetTypeModel spinSel = (BudgetTypeModel) spinnerBudget.getSelectedItem();
+                        final String actBudgetType = (spinSel.getId() == null) ? "7" : spinSel.getId(); // if not selected, set budget type to Other
                         final Drawable actPic = imgPreview.getDrawable();
 
                         if(actDate != null && actTime != null && actTitle != null && actDescription != null && actPlaceName != null && actLatLng != null)
@@ -413,6 +414,7 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getApplicationContext(), "Update activity failed! Please check your connection." + error.toString(), Toast.LENGTH_SHORT).show();
+                                    saveBtn.setEnabled(true);
                                     loadingFrame.setVisibility(View.GONE);
                                 }
                             }) {
