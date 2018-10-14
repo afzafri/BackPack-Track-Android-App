@@ -14,18 +14,16 @@
 
         <TextView
             android:id="@+id/budgetDay"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
             android:text="budget type" />
 
         <TextView
             android:id="@+id/budgetBudget"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
             android:text="budget total" />
     </LinearLayout>
 

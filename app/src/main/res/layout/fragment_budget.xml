@@ -124,19 +124,17 @@
 
                         <TextView
                             android:id="@+id/labelTotal"
-                            android:layout_width="wrap_content"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
                             android:text="Grand Total"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textTotalBudget"
-                            android:layout_width="wrap_content"
+                            android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
                             android:text="total budget"
                             android:textStyle="bold" />
                     </LinearLayout>
