@@ -241,9 +241,6 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                         final String actBudgetType = (spinSel.getId() == null) ? "7" : spinSel.getId(); // if not selected, set budget type to Other
                         final Drawable actPic = imgPreview.getDrawable();
 
-                        Toast.makeText(getApplicationContext(), actBudget, Toast.LENGTH_SHORT).show();
-
-
                         if(actDate != null && actTime != null && actTitle != null && actDescription != null && actPlaceName != null && actLatLng != null)
                         {
                             createBtn.setEnabled(false); // disable button
