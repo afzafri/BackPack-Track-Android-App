@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
         public TextView comment_datetime;
         public TextView comment_message;
         public ImageView comment_user_avatar;
+        public ImageButton deleteBtn;
         public CommentsModel currentItem;
 
         public MyViewHolder(View v) {
@@ -48,6 +50,9 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
 
             comment_user_avatar = (ImageView) v.findViewById(R.id.comment_user_avatar);
             this.comment_user_avatar = comment_user_avatar;
+
+            deleteBtn = (ImageButton) v.findViewById(R.id.deleteBtn);
+            this.deleteBtn = deleteBtn;
         }
     }
 
@@ -103,6 +108,11 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
                     .load(R.drawable.avatar)
                     .transform(new CropCircleTransformation())
                     .into(holder.comment_user_avatar);
+        }
+
+        // if current logged in user id equals to comment user id, show delete button
+        if(authUserId.equals(commentsList.get(position).getUserId())) {
+            holder.deleteBtn.setVisibility(View.VISIBLE);
         }
 
         // get current position item data
