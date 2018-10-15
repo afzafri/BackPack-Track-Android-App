@@ -2,6 +2,7 @@ package com.afifzafri.backpacktrack;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -79,7 +82,8 @@ public class CommentsFragment extends Fragment {
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
-        // get and list all comments
+
+        // ----------------- Get and list all comments -----------------
         // you must assign all objects to avoid nullPointerException
         commentsList = new ArrayList<>();
         mAdapter = new ListCommentsAdapter(commentsList);
@@ -121,6 +125,118 @@ public class CommentsFragment extends Fragment {
                     }
 
                 }
+            }
+        });
+
+        // ----------------- Post new comments -----------------
+        final ImageButton sendBtn = (ImageButton) view.findViewById(R.id.sendBtn);
+        final TextView editComment = (TextView) view.findViewById(R.id.editComment);
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String newComment = editComment.getText().toString(); // get input
+                if(newComment != null && !newComment.equals(""))
+                {
+                    sendBtn.setEnabled(false); // disable button
+                    loadingFrame.setVisibility(View.VISIBLE);// show loading progress bar
+
+                    JSONObject commentParams = new JSONObject(); // login parameters
+
+                    try {
+                        commentParams.put("message", newComment);
+                        commentParams.put("itinerary_id", itinerary_id);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Request a string response from the provided URL.
+                    JsonObjectRequest createRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/newComment", commentParams,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+                                    try {
+
+                                        int code = Integer.parseInt(response.getString("code"));
+
+                                        if(code == 200)
+                                        {
+                                            // parse JSON response
+                                            String message = response.getString("message");
+                                            if(isAdded()) {
+                                                Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            // empty all input
+                                            editComment.setText("");
+
+                                            // refresh fragment
+                                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                            ft.detach(CommentsFragment.this).attach(CommentsFragment.this).commit();
+                                            lastPage = 1; // reset back current page to first page
+                                        }
+                                        else if(code == 400)
+                                        {
+                                            String errormsg = response.getString("message");
+
+                                            // check if response contain errors messages
+                                            if(response.has("error"))
+                                            {
+                                                JSONObject errors = response.getJSONObject("error");
+                                                if(errors.has("message"))
+                                                {
+                                                    String err = errors.getJSONArray("message").getString(0);
+                                                    editComment.setError(err);
+                                                }
+                                                if(errors.has("itinerary_id"))
+                                                {
+                                                    String err = errors.getJSONArray("itinerary_id").getString(0);
+                                                    editComment.setError(err);
+                                                }
+                                            }
+
+                                            if(isAdded()) {
+                                                Toast.makeText(getActivity().getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                            }
+                                            sendBtn.setEnabled(true);
+                                            loadingFrame.setVisibility(View.GONE);
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if(isAdded()) {
+                                Toast.makeText(getActivity().getApplicationContext(), "Unable to post new comment! Please check your connection.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            sendBtn.setEnabled(true);
+                            loadingFrame.setVisibility(View.GONE);
+                        }
+                    })
+                    {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String>  params = new HashMap<String, String>();
+                            params.put("Authorization", "Bearer "+access_token);
+
+                            return params;
+                        }
+                    };
+
+                    // Add the request to the VolleySingleton.
+                    VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(createRequest);
+                }
+                else
+                {
+                    editComment.setError("Write a comment");
+                }
+
             }
         });
 
