@@ -87,7 +87,7 @@ public class CommentsFragment extends Fragment {
         // ----------------- Get and list all comments -----------------
         // you must assign all objects to avoid nullPointerException
         commentsList = new ArrayList<>();
-        mAdapter = new ListCommentsAdapter(commentsList, authUserId);
+        mAdapter = new ListCommentsAdapter(commentsList, authUserId, access_token);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listComments);
         // use a linear layout manager
