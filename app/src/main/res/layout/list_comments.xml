@@ -12,6 +12,20 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
+        <FrameLayout
+            android:id="@+id/deleteFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/deleteLoading"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
         <ImageView
             android:id="@+id/comment_user_avatar"
             android:layout_width="40dp"
