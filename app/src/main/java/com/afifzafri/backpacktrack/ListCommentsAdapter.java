@@ -1,18 +1,32 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
@@ -20,6 +34,7 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
 
     private List<CommentsModel> commentsList;
     private String authUserId;
+    private String access_token;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -32,6 +47,7 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
         public TextView comment_message;
         public ImageView comment_user_avatar;
         public ImageButton deleteBtn;
+        public FrameLayout deleteFrame;
         public CommentsModel currentItem;
 
         public MyViewHolder(View v) {
@@ -53,13 +69,17 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
 
             deleteBtn = (ImageButton) v.findViewById(R.id.deleteBtn);
             this.deleteBtn = deleteBtn;
+
+            deleteFrame = (FrameLayout) v.findViewById(R.id.deleteFrame);
+            this.deleteFrame = deleteFrame;
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListCommentsAdapter(List<CommentsModel> commentsList, String authUserId) {
+    public ListCommentsAdapter(List<CommentsModel> commentsList, String authUserId, String access_token) {
         this.commentsList = commentsList;
         this.authUserId = authUserId;
+        this.access_token = access_token;
     }
 
     // Create new views (invoked by the layout manager)
@@ -75,7 +95,7 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -111,8 +131,102 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
         }
 
         // if current logged in user id equals to comment user id, show delete button
+        // and allow delete
         if(authUserId.equals(commentsList.get(position).getUserId())) {
             holder.deleteBtn.setVisibility(View.VISIBLE);
+
+            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    // Create dialog box, ask confirmation before proceed
+                    AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                    alert.setTitle("Delete this Itinerary");
+                    alert.setMessage("Are you sure you want to delete this itinerary?");
+                    // set positive button, yes etc
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+
+                            // show loading
+                            holder.deleteFrame.setVisibility(View.VISIBLE);
+
+                            JSONObject deleteParams = new JSONObject(); // login parameters
+
+                            try {
+                                deleteParams.put("comment_id", commentsList.get(position).getId());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            // Request a string response from the provided URL.
+                            JsonObjectRequest deleteRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/deleteComment", deleteParams,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+
+                                            try {
+
+                                                int code = Integer.parseInt(response.getString("code"));
+
+                                                if(code == 200)
+                                                {
+                                                    // parse JSON response
+                                                    String message = response.getString("message");
+                                                    Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
+
+                                                    // remove item from array and recyclerview
+                                                    commentsList.remove(position);
+                                                    notifyItemRemoved(position);
+                                                }
+                                                else if(code == 400)
+                                                {
+                                                    String errormsg = response.getString("message");
+                                                    Toast.makeText(v.getContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                holder.deleteFrame.setVisibility(View.GONE);
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(v.getContext(), "Unable to delete your comment! Please check your connection.", Toast.LENGTH_SHORT).show();
+
+                                    holder.deleteFrame.setVisibility(View.GONE);
+                                }
+                            })
+                            {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String>  params = new HashMap<String, String>();
+                                    params.put("Authorization", "Bearer "+access_token);
+
+                                    return params;
+                                }
+                            };
+
+                            // Add the request to the VolleySingleton.
+                            VolleySingleton.getInstance(v.getContext()).addToRequestQueue(deleteRequest);
+
+                        }
+                    });
+                    // set negative button, no etc
+                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    alert.show(); // show alert message
+                }
+            });
         }
 
         // get current position item data
