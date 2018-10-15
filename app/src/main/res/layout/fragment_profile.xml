@@ -93,6 +93,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:autoLink="email"
                         android:drawableStart="@drawable/ic_email_black_24dp"
                         android:gravity="center"
                         android:text="Email" />
@@ -102,6 +103,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:autoLink="web"
                         android:drawableStart="@drawable/ic_public_black_24dp"
                         android:gravity="center"
                         android:text="Website" />
