@@ -78,6 +78,7 @@ public class CommentsFragment extends Fragment {
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
+        final String authUserId = sharedpreferences.getString("user_id", "");
 
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
@@ -86,7 +87,7 @@ public class CommentsFragment extends Fragment {
         // ----------------- Get and list all comments -----------------
         // you must assign all objects to avoid nullPointerException
         commentsList = new ArrayList<>();
-        mAdapter = new ListCommentsAdapter(commentsList);
+        mAdapter = new ListCommentsAdapter(commentsList, authUserId);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.listComments);
         // use a linear layout manager

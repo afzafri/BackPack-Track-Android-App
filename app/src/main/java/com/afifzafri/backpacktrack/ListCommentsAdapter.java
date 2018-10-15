@@ -18,6 +18,7 @@ import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapter.MyViewHolder> {
 
     private List<CommentsModel> commentsList;
+    private String authUserId;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -51,8 +52,9 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListCommentsAdapter(List<CommentsModel> commentsList) {
+    public ListCommentsAdapter(List<CommentsModel> commentsList, String authUserId) {
         this.commentsList = commentsList;
+        this.authUserId = authUserId;
     }
 
     // Create new views (invoked by the layout manager)
