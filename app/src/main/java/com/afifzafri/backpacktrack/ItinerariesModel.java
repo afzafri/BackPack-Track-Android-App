@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 public class ItinerariesModel {
 
     private String id;
+    private String user_id;
     private String user;
     private String title;
     private String country;
@@ -10,8 +11,9 @@ public class ItinerariesModel {
     private String date;
     private String totalbudget;
 
-    public ItinerariesModel(String id, String user, String title, String country, String duration, String date, String totalbudget) {
+    public ItinerariesModel(String id, String user_id, String user, String title, String country, String duration, String date, String totalbudget) {
         this.id = id;
+        this.user_id = user_id;
         this.user = user;
         this.title = title;
         this.country = country;
@@ -22,6 +24,10 @@ public class ItinerariesModel {
 
     public String getId() {
         return id;
+    }
+
+    public String getUserId() {
+        return user_id;
     }
 
     public String getUser() {

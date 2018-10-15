@@ -104,6 +104,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
                 Intent intentPage = new Intent(v.getContext(), ViewItineraryActivity.class);
                 intentPage.putExtra("itinerary_id", itinerariesList.get(position).getId());
                 intentPage.putExtra("itinerary_title", itinerariesList.get(position).getTitle());
+                intentPage.putExtra("itinerary_user_id", itinerariesList.get(position).getUserId());
                 v.getContext().startActivity(intentPage);
 
             }

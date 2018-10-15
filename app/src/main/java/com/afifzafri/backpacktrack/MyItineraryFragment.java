@@ -190,6 +190,7 @@ public class MyItineraryFragment extends Fragment {
                                 String title = itinerary.getString("title");
                                 String duration = itinerary.getString("duration");
                                 JSONObject user = itinerary.getJSONObject("user");
+                                String user_id = user.getString("id");
                                 String user_name = user.getString("name");
                                 String date = itinerary.getString("created_at");
                                 JSONObject country = itinerary.getJSONObject("country");
@@ -198,7 +199,7 @@ public class MyItineraryFragment extends Fragment {
                                 String totalbudget = country_currency + " " + itinerary.getString("totalbudget");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_name, title, country_name, duration, date, totalbudget));
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -284,6 +285,7 @@ public class MyItineraryFragment extends Fragment {
                                 String title = itinerary.getString("title");
                                 String duration = itinerary.getString("duration");
                                 JSONObject user = itinerary.getJSONObject("user");
+                                String user_id = user.getString("id");
                                 String user_name = user.getString("name");
                                 String date = itinerary.getString("created_at");
                                 JSONObject country = itinerary.getJSONObject("country");
@@ -292,7 +294,7 @@ public class MyItineraryFragment extends Fragment {
                                 String totalbudget = country_currency + " " + itinerary.getString("totalbudget");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_name, title, country_name, duration, date, totalbudget));
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget));
 
                                 mAdapter.notifyDataSetChanged();
                             }

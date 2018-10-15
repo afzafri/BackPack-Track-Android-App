@@ -27,6 +27,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         final String itinerary_id = extras.getString("itinerary_id");
         String itinerary_title = extras.getString("itinerary_title");
+        String itinerary_user_id = extras.getString("itinerary_user_id");
         setTitle(itinerary_title);
 
         // get the reference of ViewPager and TabLayout
@@ -50,7 +51,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
         fourthTab.setText("Comments");
         tabLayout.addTab(fourthTab);
 
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), itinerary_id);
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), itinerary_id, itinerary_user_id);
         simpleViewPager.setAdapter(adapter);
         // addOnPageChangeListener event change the tab on slide
         simpleViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

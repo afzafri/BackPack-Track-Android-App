@@ -34,6 +34,7 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
 
     private List<CommentsModel> commentsList;
     private String authUserId;
+    private String itinerary_user_id;
     private String access_token;
 
     // Provide a reference to the views for each data item
@@ -76,9 +77,10 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListCommentsAdapter(List<CommentsModel> commentsList, String authUserId, String access_token) {
+    public ListCommentsAdapter(List<CommentsModel> commentsList, String authUserId, String itinerary_user_id, String access_token) {
         this.commentsList = commentsList;
         this.authUserId = authUserId;
+        this.itinerary_user_id = itinerary_user_id;
         this.access_token = access_token;
     }
 
@@ -130,9 +132,11 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
                     .into(holder.comment_user_avatar);
         }
 
-        // if current logged in user id equals to comment user id, show delete button
+        // if current logged in user id equals to comment user id,
+        // or current logged in user id equals itinerary owner id,
+        // show delete button
         // and allow delete
-        if(authUserId.equals(commentsList.get(position).getUserId())) {
+        if(authUserId.equals(commentsList.get(position).getUserId()) || authUserId.equals(itinerary_user_id)) {
             holder.deleteBtn.setVisibility(View.VISIBLE);
 
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -140,8 +144,8 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
                 public void onClick(final View v) {
                     // Create dialog box, ask confirmation before proceed
                     AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-                    alert.setTitle("Delete this Itinerary");
-                    alert.setMessage("Are you sure you want to delete this itinerary?");
+                    alert.setTitle("Delete user's comment");
+                    alert.setMessage("Are you sure you want to delete this comment?");
                     // set positive button, yes etc
                     alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override

@@ -8,11 +8,13 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
     String itinerary_id;
+    String itinerary_user_id;
 
-    public PagerAdapter(FragmentManager fm, int NumOfTabs, String itinerary_id) {
+    public PagerAdapter(FragmentManager fm, int NumOfTabs, String itinerary_id, String itinerary_user_id) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
         this.itinerary_id = itinerary_id;
+        this.itinerary_user_id = itinerary_user_id;
     }
 
     @Override
@@ -20,6 +22,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         Bundle bundle = new Bundle();
         bundle.putString("itinerary_id", itinerary_id);
+        bundle.putString("itinerary_user_id", itinerary_user_id);
 
         switch (position) {
             case 0:
