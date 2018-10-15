@@ -82,7 +82,9 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
         String dateTime[] = commentsList.get(position).getDateTime().split(" ");
         String date = dateTime[0];
         String time = dateTime[1].substring(0,5);
-        holder.comment_datetime.setText(new AppHelper().convertDate(date) + "  " + new AppHelper().convertTime(time));
+        // convert utc to default timezone, then convert 24h to 12h
+        String convertedTime = new AppHelper().convertTime(new AppHelper().convertUTCTime(time));
+        holder.comment_datetime.setText(new AppHelper().convertDate(date) + "  " + convertedTime);
 
         holder.comment_message.setText(commentsList.get(position).getMessage());
 
