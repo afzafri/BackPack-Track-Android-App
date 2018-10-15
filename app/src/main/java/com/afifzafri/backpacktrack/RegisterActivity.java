@@ -105,6 +105,8 @@ public class RegisterActivity extends AppCompatActivity {
                         final EditText usernameIn = (EditText) findViewById(R.id.username);
                         final EditText phoneIn = (EditText) findViewById(R.id.phone);
                         final EditText addressIn = (EditText) findViewById(R.id.address);
+                        final EditText bioIn = (EditText) findViewById(R.id.bio);
+                        final EditText websiteIn = (EditText) findViewById(R.id.website);
                         final EditText emailIn = (EditText) findViewById(R.id.email);
                         final EditText passwordIn = (EditText) findViewById(R.id.password);
                         final EditText password_confirmationIn = (EditText) findViewById(R.id.password_confirmation);
@@ -115,6 +117,8 @@ public class RegisterActivity extends AppCompatActivity {
                         String address = addressIn.getText().toString();
                         final String country_name = countryselect.getText().toString();
                         String country_id = Integer.toString(countrieslist.indexOf(country_name));
+                        String bio = bioIn.getText().toString();
+                        String website = websiteIn.getText().toString();
                         String email = emailIn.getText().toString();
                         String password = passwordIn.getText().toString();
                         String password_confirmation = password_confirmationIn.getText().toString();
@@ -133,6 +137,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 registerParams.put("phone", phone);
                                 registerParams.put("address", address);
                                 registerParams.put("country", country_id);
+                                registerParams.put("bio", bio);
+                                registerParams.put("website", website);
                                 registerParams.put("email", email);
                                 registerParams.put("password", password);
                                 registerParams.put("password_confirmation", password_confirmation);
@@ -163,6 +169,8 @@ public class RegisterActivity extends AppCompatActivity {
                                                     phoneIn.setText("");
                                                     addressIn.setText("");
                                                     countryselect.setText("");
+                                                    bioIn.setText("");
+                                                    websiteIn.setText("");
                                                     emailIn.setText("");
                                                     passwordIn.setText("");
                                                     password_confirmationIn.setText("");
@@ -199,6 +207,16 @@ public class RegisterActivity extends AppCompatActivity {
                                                         {
                                                             String err = errors.getJSONArray("country").getString(0);
                                                             countryselect.setError(err);
+                                                        }
+                                                        if(errors.has("bio"))
+                                                        {
+                                                            String err = errors.getJSONArray("bio").getString(0);
+                                                            bioIn.setError(err);
+                                                        }
+                                                        if(errors.has("website"))
+                                                        {
+                                                            String err = errors.getJSONArray("website").getString(0);
+                                                            websiteIn.setError(err);
                                                         }
                                                         if(errors.has("email"))
                                                         {

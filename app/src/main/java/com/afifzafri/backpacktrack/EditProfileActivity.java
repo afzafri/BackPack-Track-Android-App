@@ -52,6 +52,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
         final EditText editUsername = (EditText) findViewById(R.id.editUsername);
         final EditText editPhone = (EditText) findViewById(R.id.editPhone);
         final EditText editAddress = (EditText) findViewById(R.id.editAddress);
+        final EditText editBio = (EditText) findViewById(R.id.editBio);
+        final EditText editWebsite = (EditText) findViewById(R.id.editWebsite);
         final EditText editEmail = (EditText) findViewById(R.id.editEmail);
         final AutoCompleteTextView countryselect = (AutoCompleteTextView) findViewById(R.id.countries_list);
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
@@ -131,6 +133,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             String username = response.getString("username");
                             String phone = response.getString("phone");
                             String address = response.getString("address");
+                            String bio = response.getString("bio");
+                            String website = response.getString("website");
                             String email = response.getString("email");
                             String avatar_url = response.getString("avatar_url");
                             JSONObject country = response.getJSONObject("country");
@@ -143,6 +147,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             editPhone.setText(phone);
                             editAddress.setText(address);
                             countryselect.setText(country_name);
+                            editBio.setText(bio);
+                            editWebsite.setText(website);
                             editEmail.setText(email);
 
                             Toast.makeText(getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
@@ -196,6 +202,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         String address = editAddress.getText().toString();
                         final String country_name = countryselect.getText().toString();
                         String country_id = Integer.toString(countrieslist.indexOf(country_name));
+                        String bio = editBio.getText().toString();
+                        String website = editWebsite.getText().toString();
                         String email = editEmail.getText().toString();
 
                         if(name != null && username != null && phone != null && address != null && !country_id.equals("-1") && email != null)
@@ -210,6 +218,8 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                 updateParams.put("phone", phone);
                                 updateParams.put("address", address);
                                 updateParams.put("country_id", country_id);
+                                updateParams.put("bio", bio);
+                                updateParams.put("website", website);
                                 updateParams.put("email", email);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -263,6 +273,16 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                                                         {
                                                             String err = errors.getJSONArray("country").getString(0);
                                                             countryselect.setError(err);
+                                                        }
+                                                        if(errors.has("bio"))
+                                                        {
+                                                            String err = errors.getJSONArray("bio").getString(0);
+                                                            editBio.setError(err);
+                                                        }
+                                                        if(errors.has("website"))
+                                                        {
+                                                            String err = errors.getJSONArray("website").getString(0);
+                                                            editWebsite.setError(err);
                                                         }
                                                         if(errors.has("email"))
                                                         {
