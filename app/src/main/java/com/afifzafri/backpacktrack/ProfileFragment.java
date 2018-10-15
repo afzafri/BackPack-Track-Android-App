@@ -55,9 +55,10 @@ public class ProfileFragment extends Fragment {
         // get UI elements
         final TextView textName = (TextView) view.findViewById(R.id.textName);
         final TextView textUsername = (TextView) view.findViewById(R.id.textUsername);
+        final TextView textBio = (TextView) view.findViewById(R.id.textBio);
         final TextView textCountry = (TextView) view.findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
-        final TextView textPhone = (TextView) view.findViewById(R.id.textPhone);
+        final TextView textWebsite = (TextView) view.findViewById(R.id.textWebsite);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
@@ -84,6 +85,8 @@ public class ProfileFragment extends Fragment {
                             String username = response.getString("username");
                             String phone = response.getString("phone");
                             String address = response.getString("address");
+                            String bio = response.getString("bio");
+                            String website = response.getString("website");
                             String email = response.getString("email");
                             String avatar_url = response.getString("avatar_url");
                             JSONObject country = response.getJSONObject("country");
@@ -92,9 +95,19 @@ public class ProfileFragment extends Fragment {
                             // set values to the elements
                             textName.setText(name);
                             textUsername.setText("@"+username);
-                            textPhone.setText(phone);
+                            textBio.setText(bio);
+                            textWebsite.setText(website);
                             textEmail.setText(email);
                             textCountry.setText(country_name);
+
+                            // check if bio and website not available (because optional), hide the widgets
+                            if(bio == null || bio.equals("")) {
+                                textBio.setVisibility(View.GONE);
+                            }
+                            if(website == null || website.equals("")) {
+                                textWebsite.setVisibility(View.GONE);
+                            }
+
                             // set avatar image using Picasso library
                             if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
                                 // check if activity have been attach to the fragment
