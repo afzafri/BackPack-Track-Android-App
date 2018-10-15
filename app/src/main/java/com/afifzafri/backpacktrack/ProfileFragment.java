@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
                             textName.setText(name);
                             textUsername.setText("@"+username);
                             textBio.setText(bio);
-                            textWebsite.setText(website);
+                            textWebsite.setText(website.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)",""));
                             textEmail.setText(email);
                             textCountry.setText(country_name);
 
