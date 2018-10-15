@@ -7,13 +7,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.format.Time;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class AppHelper {
 
@@ -179,6 +182,37 @@ public class AppHelper {
             e.printStackTrace();
         }
         return new SimpleDateFormat("hh:mm aa").format(dateObj);
+    }
+
+    /**
+     * Convert UTC timezone to phone's default timezone
+     *
+     * @param currentTime
+     * @return
+     */
+    public String convertUTCTime(String currentTime) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        Date date = null;
+        try {
+            date = sdf.parse(currentTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // Local timezone + daylight saving
+        int offset = TimeZone.getDefault().getRawOffset() + TimeZone.getDefault().getDSTSavings();
+        long now = date.getTime() + offset;
+
+        // convert
+        Date dates = new Date(now);
+        DateFormat formatter = new SimpleDateFormat("H:mm");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String dateFormatted = formatter.format(dates);
+
+        return dateFormatted;
     }
 
     /**
