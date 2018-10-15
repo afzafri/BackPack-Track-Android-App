@@ -31,6 +31,7 @@ import java.util.Map;
 public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinerariesAdapter.MyViewHolder> {
 
     private List<ItinerariesModel> itinerariesList;
+    private String access_token;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -88,8 +89,9 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListMyItinerariesAdapter(List<ItinerariesModel> itinerariesList) {
+    public ListMyItinerariesAdapter(List<ItinerariesModel> itinerariesList, String access_token) {
         this.itinerariesList = itinerariesList;
+        this.access_token = access_token;
     }
 
     // Create new views (invoked by the layout manager)
@@ -156,8 +158,6 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         // delete button clicked
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(final View v) {
-                final SharedPreferences sharedpreferences = v.getContext().getSharedPreferences("logindata", Context.MODE_PRIVATE);
-                final String access_token = sharedpreferences.getString("access_token", "");
 
                 // Create dialog box, ask confirmation before proceed
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());

@@ -75,7 +75,7 @@ public class MyItineraryFragment extends Fragment {
 
         // you must assign all objects to avoid nullPointerException
         itinerariesList = new ArrayList<>();
-        mAdapter = new ListMyItinerariesAdapter(itinerariesList);
+        mAdapter = new ListMyItinerariesAdapter(itinerariesList, access_token);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.itineraries_list);
         // use a linear layout manager

@@ -74,7 +74,7 @@ public class MyActivitiesActivity extends AppCompatActivity {
 
         // you must assign all objects to avoid nullPointerException
         activitiesList = new ArrayList<>();
-        mAdapter = new ListActivitiesAdapter(activitiesList);
+        mAdapter = new ListActivitiesAdapter(activitiesList, access_token);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activities_list);
         // use a linear layout manager
