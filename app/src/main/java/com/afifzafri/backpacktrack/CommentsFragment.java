@@ -2,7 +2,6 @@ package com.afifzafri.backpacktrack;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONArray;
 import org.json.JSONException;

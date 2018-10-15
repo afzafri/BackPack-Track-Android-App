@@ -34,8 +34,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-
 
 /**
  * A simple {@link Fragment} subclass.
