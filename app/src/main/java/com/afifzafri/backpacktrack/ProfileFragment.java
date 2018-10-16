@@ -101,10 +101,10 @@ public class ProfileFragment extends Fragment {
                             textCountry.setText(country_name);
 
                             // check if bio and website not available (because optional), hide the widgets
-                            if(bio == null || bio.equals("")) {
+                            if(bio == null || bio.isEmpty() || bio == "null") {
                                 textBio.setVisibility(View.GONE);
                             }
-                            if(website == null || website.equals("")) {
+                            if(website == null || website.isEmpty() || website == "null") {
                                 textWebsite.setVisibility(View.GONE);
                             }
 
