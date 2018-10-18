@@ -58,9 +58,11 @@
 
                 <ImageView
                     android:id="@+id/dot"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_margin="5dp"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="6dp"
+                    android:foregroundGravity="center"
                     app:srcCompat="@drawable/ic_fiber_manual_record_black_24dp" />
 
                 <TextView
