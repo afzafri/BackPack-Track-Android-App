@@ -2,6 +2,7 @@ package com.afifzafri.backpacktrack;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,7 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
         public ImageView comment_user_avatar;
         public TextView itinerary_title;
         public TextView comment_datetime;
+        public LinearLayout comment_item;
         public CommentsNotificationModel currentItem;
 
         public MyViewHolder(View v) {
@@ -60,6 +63,9 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
 
             comment_datetime = (TextView) v.findViewById(R.id.comment_datetime);
             this.comment_datetime = comment_datetime;
+
+            comment_item = (LinearLayout) v.findViewById(R.id.comment_item);
+            this.comment_item = comment_item;
         }
     }
 
@@ -118,6 +124,19 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
 
         // get current position item data
         holder.currentItem = commentsList.get(position);
+
+        // when clicked on comment notification, redirect to the itinerary page
+        holder.comment_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // redirect to view itinerary page
+                Intent intentPage = new Intent(v.getContext(), ViewItineraryActivity.class);
+                intentPage.putExtra("itinerary_id", commentsList.get(position).getItineraryId());
+                intentPage.putExtra("itinerary_title", commentsList.get(position).getItineraryTitle());
+                intentPage.putExtra("itinerary_user_id", commentsList.get(position).getItineraryUserId());
+                v.getContext().startActivity(intentPage);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
