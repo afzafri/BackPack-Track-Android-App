@@ -138,6 +138,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp"
                 tools:layout_editor_absoluteX="8dp">
@@ -199,11 +201,13 @@
                             android:text="new comments today" />
                     </LinearLayout>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/listNotification"
+                    <TextView
+                        android:id="@+id/textClickView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp" />
+                        android:text="click to view"
+                        android:textSize="8sp"
+                        android:textStyle="italic" />
 
                 </LinearLayout>
 
