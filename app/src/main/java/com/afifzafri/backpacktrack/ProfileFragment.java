@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,6 +64,7 @@ public class ProfileFragment extends Fragment {
         final TextView textCount = (TextView) view.findViewById(R.id.textCount);
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
         final FrameLayout loadNotiFrame = (FrameLayout) view.findViewById(R.id.loadNotiFrame);
+        final CardView cardNotification = (CardView) view.findViewById(R.id.cardNotification);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -208,6 +210,18 @@ public class ProfileFragment extends Fragment {
 
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(notificationRequest);
+
+        // ----- Click notification, open activity to list all comments notification -----
+        cardNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // check if activity have been attach to the fragment
+                if(isAdded()) {
+                    Intent intentPage = new Intent(getActivity(), CommentsNotificationActivity.class);
+                    startActivity(intentPage);
+                }
+            }
+        });
 
         // ----- Click avatar, show full screen image -----
         avatar_pic.setOnClickListener(new View.OnClickListener() {
