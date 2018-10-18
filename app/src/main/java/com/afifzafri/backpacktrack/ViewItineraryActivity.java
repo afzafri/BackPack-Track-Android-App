@@ -24,6 +24,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
         final String itinerary_id = extras.getString("itinerary_id");
         String itinerary_title = extras.getString("itinerary_title");
         String itinerary_user_id = extras.getString("itinerary_user_id");
+        Boolean viewComment = false;
+        viewComment = extras.getBoolean("viewComment");
         setTitle(itinerary_title);
 
         // get the reference of ViewPager and TabLayout
@@ -68,6 +70,12 @@ public class ViewItineraryActivity extends AppCompatActivity {
                 //Log.i("TAG", "onTabReselected: " + tab.getPosition());
             }
         });
+
+        // check if the intent send include option to view comment tab
+        // if yes, open the comment tab
+        if(viewComment) {
+            fourthTab.select();
+        }
 
     }
 

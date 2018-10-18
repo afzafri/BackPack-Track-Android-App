@@ -134,6 +134,7 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
                 intentPage.putExtra("itinerary_id", commentsList.get(position).getItineraryId());
                 intentPage.putExtra("itinerary_title", commentsList.get(position).getItineraryTitle());
                 intentPage.putExtra("itinerary_user_id", commentsList.get(position).getItineraryUserId());
+                intentPage.putExtra("viewComment", true);
                 v.getContext().startActivity(intentPage);
             }
         });
