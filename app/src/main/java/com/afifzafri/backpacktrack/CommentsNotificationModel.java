@@ -10,8 +10,9 @@ public class CommentsNotificationModel {
     private String user_avatar;
     private String itinerary_id;
     private String itinerary_title;
+    private String itinerary_user_id;
 
-    public CommentsNotificationModel(String id, String date_time, String user_id, String user_name, String user_username, String user_avatar, String itinerary_id, String itinerary_title) {
+    public CommentsNotificationModel(String id, String date_time, String user_id, String user_name, String user_username, String user_avatar, String itinerary_id, String itinerary_title, String itinerary_user_id) {
         this.id = id;
         this.date_time = date_time;
         this.user_id = user_id;
@@ -20,6 +21,7 @@ public class CommentsNotificationModel {
         this.user_avatar = user_avatar;
         this.itinerary_id = itinerary_id;
         this.itinerary_title = itinerary_title;
+        this.itinerary_user_id = itinerary_user_id;
     }
 
     public String getId() { return id; }
@@ -37,4 +39,6 @@ public class CommentsNotificationModel {
     public String getItineraryId() { return itinerary_id; }
 
     public String getItineraryTitle() { return itinerary_title; }
+
+    public String getItineraryUserId() { return itinerary_user_id; }
 }

@@ -124,9 +124,10 @@ public class CommentsNotificationActivity extends AppCompatActivity {
                                 JSONObject itinerary = comment.getJSONObject("itinerary");
                                 String itinerary_id = itinerary.getString("id");
                                 String itinerary_title = itinerary.getString("title");
+                                String itinerary_user_id = itinerary.getString("user_id");
 
                                 // insert data into array
-                                commentsList.add(new CommentsNotificationModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title));
+                                commentsList.add(new CommentsNotificationModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id));
 
                                 mAdapter.notifyDataSetChanged();
                             }
