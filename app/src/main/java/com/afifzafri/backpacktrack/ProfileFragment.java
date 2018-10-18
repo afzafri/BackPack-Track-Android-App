@@ -60,17 +60,18 @@ public class ProfileFragment extends Fragment {
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textWebsite = (TextView) view.findViewById(R.id.textWebsite);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
+        final TextView textCount = (TextView) view.findViewById(R.id.textCount);
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
-
-        // show loading spinner
-        loadingFrame.setVisibility(View.VISIBLE);
+        final FrameLayout loadNotiFrame = (FrameLayout) view.findViewById(R.id.loadNotiFrame);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
 
-        // ----- Fetch user data and display the profile -----
 
+        // ----- Fetch user data and display the profile -----
+        // show loading spinner
+        loadingFrame.setVisibility(View.VISIBLE);
         // Request a string response from the provided URL.
         JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/user", null,
                 new Response.Listener<JSONObject>() {
@@ -159,6 +160,54 @@ public class ProfileFragment extends Fragment {
 
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(profileRequest);
+
+
+        // ----- Fetch user comments notification -----
+        loadNotiFrame.setVisibility(View.VISIBLE);
+        // Request a string response from the provided URL.
+        JsonObjectRequest notificationRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/getCommentsNotification", null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+
+                            // parse JSON response
+                            String total_comments = response.getString("total_comments");
+
+                            // set values to the elements
+                            textCount.setText(total_comments);
+
+                            loadNotiFrame.setVisibility(View.GONE); // hide loading spinner
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            loadNotiFrame.setVisibility(View.GONE);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // check if activity have been attach to the fragment
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Notification data not loaded! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
+                loadNotiFrame.setVisibility(View.GONE);
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(notificationRequest);
 
         // ----- Click avatar, show full screen image -----
         avatar_pic.setOnClickListener(new View.OnClickListener() {
