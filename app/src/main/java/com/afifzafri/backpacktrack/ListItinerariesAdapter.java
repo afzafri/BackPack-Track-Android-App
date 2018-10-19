@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         public TextView itinerary_comments;
         public TextView itinerary_user;
         public TextView itinerary_date;
-        public CardView mCardView;
+        public LinearLayout contentsArea;
         public ItinerariesModel currentItem;
 
         public MyViewHolder(View v) {
@@ -71,8 +72,8 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
             itinerary_date = (TextView) v.findViewById(R.id.itinerary_date);
             this.itinerary_date = itinerary_date;
 
-            mCardView = (CardView) v.findViewById(R.id.itinerary_card);
-            this.mCardView = mCardView;
+            contentsArea = (LinearLayout) v.findViewById(R.id.contentsArea);
+            this.contentsArea = contentsArea;
         }
     }
 
@@ -134,7 +135,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         holder.currentItem = itinerariesList.get(position);
 
         // when card is clicked, get id
-        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+        holder.contentsArea.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 // redirect to view itinerary page
                 Intent intentPage = new Intent(v.getContext(), ViewItineraryActivity.class);
