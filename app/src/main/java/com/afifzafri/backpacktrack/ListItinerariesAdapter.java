@@ -114,7 +114,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
             holder.likeBtn.setImageResource(R.drawable.ic_favorite_red_24dp);
             holder.itinerary_likes.setTextColor(Color.RED);
         } else {
-            holder.likeBtn.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            holder.likeBtn.setImageResource(R.drawable.ic_favorite_border_grey_24dp);
             holder.itinerary_likes.setTextColor(Color.GRAY);
         }
 
