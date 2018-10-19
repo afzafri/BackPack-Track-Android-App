@@ -153,6 +153,20 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
             }
         });
 
+        // when comment button clicked, open comment tab for the itinerary
+        holder.itinerary_comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // redirect to view itinerary page
+                Intent intentPage = new Intent(v.getContext(), ViewItineraryActivity.class);
+                intentPage.putExtra("itinerary_id", itinerariesList.get(position).getId());
+                intentPage.putExtra("itinerary_title", itinerariesList.get(position).getTitle());
+                intentPage.putExtra("itinerary_user_id", itinerariesList.get(position).getUserId());
+                intentPage.putExtra("viewComment", true);
+                v.getContext().startActivity(intentPage);
+            }
+        });
+
         // when like button clicked, like or unlike process
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
