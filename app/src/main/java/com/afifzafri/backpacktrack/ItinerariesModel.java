@@ -10,8 +10,11 @@ public class ItinerariesModel {
     private String duration;
     private String date;
     private String totalbudget;
+    private String totallikes;
+    private String totalcomments;
+    private Boolean isLiked;
 
-    public ItinerariesModel(String id, String user_id, String user, String title, String country, String duration, String date, String totalbudget) {
+    public ItinerariesModel(String id, String user_id, String user, String title, String country, String duration, String date, String totalbudget, String totallikes, String totalcomments, Boolean isLiked) {
         this.id = id;
         this.user_id = user_id;
         this.user = user;
@@ -20,6 +23,9 @@ public class ItinerariesModel {
         this.duration = duration;
         this.date = date;
         this.totalbudget = totalbudget;
+        this.totallikes = totallikes;
+        this.totalcomments = totalcomments;
+        this.isLiked = isLiked;
     }
 
     public String getId() {
@@ -52,5 +58,16 @@ public class ItinerariesModel {
 
     public String getTotalBudget() {
         return totalbudget;
+    }
+
+    public String getTotalLikes() { return totallikes; }
+
+    public String getTotalComments() { return totalcomments; }
+
+    public Boolean getIsLiked() { return isLiked; }
+
+    public void setIsLiked(Boolean isLiked)
+    {
+        this.isLiked = isLiked;
     }
 }

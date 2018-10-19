@@ -1,11 +1,13 @@
 package com.afifzafri.backpacktrack;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         public TextView itinerary_country;
         public TextView itinerary_duration;
         public TextView itinerary_totalbudget;
+        public ImageButton likeBtn;
+        public TextView itinerary_likes;
+        public TextView itinerary_comments;
         public TextView itinerary_user;
         public TextView itinerary_date;
         public CardView mCardView;
@@ -41,6 +46,15 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
             itinerary_totalbudget = (TextView) v.findViewById(R.id.itinerary_totalbudget);
             this.itinerary_totalbudget = itinerary_totalbudget;
+
+            likeBtn = (ImageButton) v.findViewById(R.id.likeBtn);
+            this.likeBtn = likeBtn;
+
+            itinerary_likes = (TextView) v.findViewById(R.id.itinerary_likes);
+            this.itinerary_likes = itinerary_likes;
+
+            itinerary_comments = (TextView) v.findViewById(R.id.itinerary_comments);
+            this.itinerary_comments = itinerary_comments;
 
             itinerary_user = (TextView) v.findViewById(R.id.itinerary_user);
             this.itinerary_user = itinerary_user;
@@ -86,6 +100,21 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
         // Set itinerary total budget
         holder.itinerary_totalbudget.setText(itinerariesList.get(position).getTotalBudget());
+
+        //setting liked status initially, if user liked it previously
+        if (itinerariesList.get(position).getIsLiked()) {
+            holder.likeBtn.setImageResource(R.drawable.ic_favorite_red_24dp);
+            holder.itinerary_likes.setTextColor(Color.RED);
+        } else {
+            holder.likeBtn.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+            holder.itinerary_likes.setTextColor(Color.GRAY);
+        }
+
+        // Set itinerary total likes
+        holder.itinerary_likes.setText("(" + itinerariesList.get(position).getTotalLikes() + ")");
+
+        // Set itinerary total comments
+        holder.itinerary_comments.setText("(" + itinerariesList.get(position).getTotalComments() + ")");
 
         // Set itinerary user name
         holder.itinerary_user.setText(itinerariesList.get(position).getUser());

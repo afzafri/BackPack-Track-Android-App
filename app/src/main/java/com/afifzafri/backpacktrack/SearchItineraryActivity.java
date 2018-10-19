@@ -176,9 +176,12 @@ public class SearchItineraryActivity extends AppCompatActivity {
                                 String country_name = country.getString("name");
                                 String country_currency = country.getString("currency");
                                 String totalbudget = country_currency + " " + itinerary.getString("totalbudget");
+                                String totallikes = itinerary.getString("totallikes");
+                                String totalcomments = itinerary.getString("totalcomments");
+                                Boolean isLiked = itinerary.getBoolean("isLiked");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget));
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -262,9 +265,12 @@ public class SearchItineraryActivity extends AppCompatActivity {
                                 String country_name = country.getString("name");
                                 String country_currency = country.getString("currency");
                                 String totalbudget = country_currency + " " + itinerary.getString("totalbudget");
+                                String totallikes = itinerary.getString("totallikes");
+                                String totalcomments = itinerary.getString("totalcomments");
+                                Boolean isLiked = itinerary.getBoolean("isLiked");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget));
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
 
                                 mAdapter.notifyDataSetChanged();
                             }
