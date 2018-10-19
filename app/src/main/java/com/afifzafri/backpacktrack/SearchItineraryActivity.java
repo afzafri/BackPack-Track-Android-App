@@ -69,7 +69,7 @@ public class SearchItineraryActivity extends AppCompatActivity {
 
         // you must assign all objects to avoid nullPointerException
         itinerariesList = new ArrayList<>();
-        mAdapter = new ListItinerariesAdapter(itinerariesList);
+        mAdapter = new ListItinerariesAdapter(itinerariesList, access_token);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.itineraries_list);
         // use a linear layout manager

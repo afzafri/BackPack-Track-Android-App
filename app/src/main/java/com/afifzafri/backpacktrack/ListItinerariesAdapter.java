@@ -15,6 +15,7 @@ import java.util.List;
 public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItinerariesAdapter.MyViewHolder> {
 
     private List<ItinerariesModel> itinerariesList;
+    private String access_token;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -68,8 +69,9 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListItinerariesAdapter(List<ItinerariesModel> itinerariesList) {
+    public ListItinerariesAdapter(List<ItinerariesModel> itinerariesList, String access_token) {
         this.itinerariesList = itinerariesList;
+        this.access_token = access_token;
     }
 
     // Create new views (invoked by the layout manager)
