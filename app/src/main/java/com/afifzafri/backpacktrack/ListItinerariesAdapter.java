@@ -9,8 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItinerariesAdapter.MyViewHolder> {
 
@@ -87,7 +99,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -144,28 +156,121 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         // when like button clicked, like or unlike process
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 //check whether it is liked or unliked
                 if (itinerariesList.get(position).getIsLiked()) {
                     //update unlike drawable
                     itinerariesList.get(position).setIsLiked(false);
 
-                    int totallikes = Integer.parseInt(itinerariesList.get(position).getTotalLikes());
+                    final int totallikes = Integer.parseInt(itinerariesList.get(position).getTotalLikes());
                     int newtotal = (totallikes > 0) ? (totallikes - 1) : 0;
                     itinerariesList.get(position).setTotallikes(Integer.toString(newtotal));
 
                     notifyItemChanged(position);
+
+                    // network request to Unlike API
+                    JSONObject params = new JSONObject(); // login parameters
+
+                    try {
+                        params.put("itinerary_id", itinerariesList.get(position).getId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Request a string response from the provided URL.
+                    JsonObjectRequest unlikeRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/unlikeItinerary", params,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    // handle success
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // failed to unlike, revert back like
+                            itinerariesList.get(position).setIsLiked(true);
+                            itinerariesList.get(position).setTotallikes(Integer.toString(totallikes));
+                            notifyItemChanged(position);
+                            Toast.makeText(v.getContext(), "Network error.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String>  params = new HashMap<String, String>();
+                            params.put("Authorization", "Bearer "+access_token);
+
+                            return params;
+                        }
+                    };
+
+                    // Add the request to the VolleySingleton.
+                    VolleySingleton.getInstance(v.getContext()).addToRequestQueue(unlikeRequest);
+
                 } else {
                     //update like drawable
                     itinerariesList.get(position).setIsLiked(true);
 
-                    int totallikes = Integer.parseInt(itinerariesList.get(position).getTotalLikes());
+                    final int totallikes = Integer.parseInt(itinerariesList.get(position).getTotalLikes());
                     itinerariesList.get(position).setTotallikes(Integer.toString(totallikes + 1));
 
                     notifyItemChanged(position);
+
+                    // network request to Like API
+                    JSONObject params = new JSONObject(); // login parameters
+
+                    try {
+                        params.put("itinerary_id", itinerariesList.get(position).getId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Request a string response from the provided URL.
+                    JsonObjectRequest likeRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/likeItinerary", params,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    // handle success
+                                    try {
+
+                                        int code = Integer.parseInt(response.getString("code"));
+                                        // if error
+                                        if(code == 400)
+                                        {
+                                            String errormsg = response.getString("message");
+                                            Toast.makeText(v.getContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                            itinerariesList.get(position).setIsLiked(false);
+                                            itinerariesList.get(position).setTotallikes(Integer.toString(totallikes));
+                                            notifyItemChanged(position);
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // failed to unlike, revert back like
+                            itinerariesList.get(position).setIsLiked(false);
+                            itinerariesList.get(position).setTotallikes(Integer.toString(totallikes));
+                            notifyItemChanged(position);
+                            Toast.makeText(v.getContext(), "Network error.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String>  params = new HashMap<String, String>();
+                            params.put("Authorization", "Bearer "+access_token);
+
+                            return params;
+                        }
+                    };
+
+                    // Add the request to the VolleySingleton.
+                    VolleySingleton.getInstance(v.getContext()).addToRequestQueue(likeRequest);
                 }
-                //make network request
-                //updateLike(getAdapterPosition());
             }
         });
     }
