@@ -70,4 +70,9 @@ public class ItinerariesModel {
     {
         this.isLiked = isLiked;
     }
+
+    public void setTotallikes(String totallikes)
+    {
+        this.totallikes = totallikes;
+    }
 }

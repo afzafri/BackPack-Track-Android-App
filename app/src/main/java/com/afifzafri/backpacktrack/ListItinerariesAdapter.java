@@ -138,6 +138,34 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
             }
         });
+
+        // when like button clicked, like or unlike process
+        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //check whether it is liked or unliked
+                if (itinerariesList.get(position).getIsLiked()) {
+                    //update unlike drawable
+                    itinerariesList.get(position).setIsLiked(false);
+
+                    int totallikes = Integer.parseInt(itinerariesList.get(position).getTotalLikes());
+                    int newtotal = (totallikes > 0) ? (totallikes - 1) : 0;
+                    itinerariesList.get(position).setTotallikes(Integer.toString(newtotal));
+
+                    notifyItemChanged(position);
+                } else {
+                    //update like drawable
+                    itinerariesList.get(position).setIsLiked(true);
+
+                    int totallikes = Integer.parseInt(itinerariesList.get(position).getTotalLikes());
+                    itinerariesList.get(position).setTotallikes(Integer.toString(totallikes + 1));
+
+                    notifyItemChanged(position);
+                }
+                //make network request
+                //updateLike(getAdapterPosition());
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
