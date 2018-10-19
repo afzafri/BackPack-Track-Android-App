@@ -32,6 +32,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="Title"
+                android:textColor="?android:attr/colorForeground"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -48,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_today_black_24dp"
+                    android:drawableStart="@drawable/ic_today_grey_24dp"
                     android:gravity="center_vertical"
                     android:text="date"
                     android:textSize="14sp" />
@@ -58,19 +59,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_access_time_black_24dp"
+                    android:drawableStart="@drawable/ic_access_time_grey_24dp"
                     android:gravity="center_vertical"
                     android:text="time"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/activity_budget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_attach_money_black_24dp"
-                    android:gravity="center_vertical"
-                    android:text="budget"
                     android:textSize="14sp" />
 
                 <TextView
@@ -78,9 +69,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_place_black_24dp"
+                    android:drawableStart="@drawable/ic_place_grey_24dp"
                     android:gravity="center_vertical"
                     android:text="place"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/activity_budget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_monetization_on_grey_24dp"
+                    android:gravity="center_vertical"
+                    android:text="budget"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -89,9 +90,17 @@
                 android:id="@+id/activity_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="description" />
+
+            <View
+                android:id="@+id/divider9"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:background="?android:attr/listDivider" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -99,8 +108,7 @@
                 android:layout_gravity="right"
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="8dp">
+                android:paddingRight="15dp">
 
                 <ImageButton
                     android:id="@+id/editBtn"

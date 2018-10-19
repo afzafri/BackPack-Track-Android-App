@@ -46,6 +46,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:text="Title"
+                android:textColor="?android:attr/colorForeground"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -73,19 +74,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_access_time_black_24dp"
+                    android:drawableStart="@drawable/ic_access_time_grey_24dp"
                     android:gravity="center_vertical"
                     android:text="time"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/activity_budget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_attach_money_black_24dp"
-                    android:gravity="center_vertical"
-                    android:text="budget"
                     android:textSize="14sp" />
 
                 <TextView
@@ -93,9 +84,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_place_black_24dp"
+                    android:drawableStart="@drawable/ic_place_grey_24dp"
                     android:gravity="center_vertical"
                     android:text="place"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/activity_budget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_monetization_on_grey_24dp"
+                    android:gravity="center_vertical"
+                    android:text="budget"
                     android:textSize="14sp" />
 
             </LinearLayout>
