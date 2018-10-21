@@ -22,6 +22,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,12 +109,14 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
 
         holder.comment_username.setText("@" + commentsList.get(position).getUsername());
 
-        String dateTime[] = commentsList.get(position).getDateTime().split(" ");
-        String date = dateTime[0];
-        String time = dateTime[1].substring(0,5);
-        // convert utc to default timezone, then convert 24h to 12h
-        String convertedTime = new AppHelper().convertTime(new AppHelper().convertUTCTime(time));
-        holder.comment_datetime.setText(new AppHelper().convertDate(date) + "  " + convertedTime);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date_time = null;
+        try {
+            date_time = df.parse(commentsList.get(position).getDateTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.comment_datetime.setText(new AppHelper().convertDateTime(date_time));
 
         holder.comment_message.setText(commentsList.get(position).getMessage());
 
