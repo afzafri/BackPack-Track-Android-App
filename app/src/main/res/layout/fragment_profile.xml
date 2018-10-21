@@ -186,11 +186,12 @@
                             android:text="You have" />
 
                         <TextView
-                            android:id="@+id/textCount"
+                            android:id="@+id/textCountComments"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
-                            android:text="count"
+                            android:drawableStart="@drawable/ic_mode_comment_black_24dp"
+                            android:text="(0)"
                             android:textColor="@color/colorAccent"
                             android:textStyle="bold" />
 
@@ -199,6 +200,36 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="new comments today" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textLikeMsg1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="You have" />
+
+                        <TextView
+                            android:id="@+id/textCountLikes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:drawableStart="@drawable/ic_favorite_border_black_24dp"
+                            android:text="(0)"
+                            android:textColor="@color/colorAccent"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textLikeMsg2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="new likes today" />
                     </LinearLayout>
 
                     <TextView

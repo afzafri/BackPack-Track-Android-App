@@ -61,7 +61,8 @@ public class ProfileFragment extends Fragment {
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textWebsite = (TextView) view.findViewById(R.id.textWebsite);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
-        final TextView textCount = (TextView) view.findViewById(R.id.textCount);
+        final TextView textCountComments = (TextView) view.findViewById(R.id.textCountComments);
+        final TextView textCountLikes = (TextView) view.findViewById(R.id.textCountLikes);
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
         final FrameLayout loadNotiFrame = (FrameLayout) view.findViewById(R.id.loadNotiFrame);
         final CardView cardNotification = (CardView) view.findViewById(R.id.cardNotification);
@@ -167,18 +168,23 @@ public class ProfileFragment extends Fragment {
         // ----- Fetch user comments notification -----
         loadNotiFrame.setVisibility(View.VISIBLE);
         // Request a string response from the provided URL.
-        JsonObjectRequest notificationRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/getCommentsNotification", null,
+        JsonObjectRequest notificationRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/getNotifications", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
                         try {
-
                             // parse JSON response
-                            String total_comments = response.getString("total_comments");
+                            // comments
+                            JSONObject comments = response.getJSONObject("comments");
+                            String total_comments = comments.getString("total_comments");
+                            // likes
+                            JSONObject likes = response.getJSONObject("likes");
+                            String total_likes = likes.getString("total_likes");
 
                             // set values to the elements
-                            textCount.setText(total_comments);
+                            textCountComments.setText(total_comments);
+                            textCountLikes.setText(total_likes);
 
                             loadNotiFrame.setVisibility(View.GONE); // hide loading spinner
 
