@@ -22,7 +22,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +127,14 @@ public class NotificationsActivity extends AppCompatActivity {
                             {
                                 JSONObject comment = comments_data.getJSONObject(i);
                                 String id = comment.getString("id");
-                                String date_time = comment.getString("created_at");
+                                String date_timeString = comment.getString("created_at");
+                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date date_time = null;
+                                try {
+                                    date_time = df.parse(date_timeString);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                                 JSONObject user = comment.getJSONObject("user");
                                 String user_id = user.getString("id");
                                 String user_name = user.getString("name");
@@ -136,8 +147,6 @@ public class NotificationsActivity extends AppCompatActivity {
 
                                 // insert data into array
                                 notificationsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "comment"));
-
-                                mAdapter.notifyDataSetChanged();
                             }
 
                             // insert likes into db
@@ -145,7 +154,14 @@ public class NotificationsActivity extends AppCompatActivity {
                             {
                                 JSONObject like = likes_data.getJSONObject(i);
                                 String id = like.getString("id");
-                                String date_time = like.getString("created_at");
+                                String date_timeString = like.getString("created_at");
+                                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date date_time = null;
+                                try {
+                                    date_time = df.parse(date_timeString);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                                 JSONObject user = like.getJSONObject("user");
                                 String user_id = user.getString("id");
                                 String user_name = user.getString("name");
@@ -158,9 +174,13 @@ public class NotificationsActivity extends AppCompatActivity {
 
                                 // insert data into array
                                 notificationsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "like"));
-
-                                mAdapter.notifyDataSetChanged();
                             }
+
+                            // sort the notifications by date time
+                            Collections.sort(notificationsList);
+
+                            // update adapter
+                            mAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

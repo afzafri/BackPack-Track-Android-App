@@ -215,6 +215,26 @@ public class AppHelper {
     }
 
     /**
+     * Convert Java Date object from Laravel date time.
+     * convert date, time 24h to 12h, and timezone
+     *
+     * @param currentDateTime
+     * @return
+     */
+    public String convertDateTime(Date currentDateTime) {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy H:mm");
+        String currDate = df.format(currentDateTime);
+
+        String dateTime[] = currDate.split(" ");
+        String date = dateTime[0];
+        String time = dateTime[1].substring(0,5);
+        // convert utc to default timezone, then convert 24h to 12h
+        String convertedTime = convertTime(convertUTCTime(time));
+
+        return date + " " + convertedTime;
+    }
+
+    /**
      * Method for set spinner selection equals to input text
      * Credit: https://stackoverflow.com/a/24470136/5784900
      *

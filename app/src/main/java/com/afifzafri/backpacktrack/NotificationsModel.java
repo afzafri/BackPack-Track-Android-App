@@ -1,9 +1,11 @@
 package com.afifzafri.backpacktrack;
 
-public class NotificationsModel {
+import java.util.Date;
+
+public class NotificationsModel implements Comparable<NotificationsModel> {
 
     private String id;
-    private String date_time;
+    private Date date_time;
     private String user_id;
     private String user_name;
     private String user_username;
@@ -13,7 +15,7 @@ public class NotificationsModel {
     private String itinerary_user_id;
     private String notificationType;
 
-    public NotificationsModel(String id, String date_time, String user_id, String user_name, String user_username, String user_avatar, String itinerary_id, String itinerary_title, String itinerary_user_id, String notificationType) {
+    public NotificationsModel(String id, Date date_time, String user_id, String user_name, String user_username, String user_avatar, String itinerary_id, String itinerary_title, String itinerary_user_id, String notificationType) {
         this.id = id;
         this.date_time = date_time;
         this.user_id = user_id;
@@ -28,7 +30,7 @@ public class NotificationsModel {
 
     public String getId() { return id; }
 
-    public String getDateTime() { return date_time; }
+    public Date getDateTime() { return date_time; }
 
     public String getUserId() { return user_id; }
 
@@ -45,4 +47,9 @@ public class NotificationsModel {
     public String getItineraryUserId() { return itinerary_user_id; }
 
     public String getNotificationType() { return notificationType; }
+
+    @Override
+    public int compareTo(NotificationsModel o) {
+        return getDateTime().compareTo(o.getDateTime());
+    }
 }

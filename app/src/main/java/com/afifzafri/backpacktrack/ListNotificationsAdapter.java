@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
@@ -97,12 +99,7 @@ public class ListNotificationsAdapter extends RecyclerView.Adapter<ListNotificat
 
         holder.itinerary_title.setTag(notificationsList.get(position).getItineraryId());
 
-        String dateTime[] = notificationsList.get(position).getDateTime().split(" ");
-        String date = dateTime[0];
-        String time = dateTime[1].substring(0,5);
-        // convert utc to default timezone, then convert 24h to 12h
-        String convertedTime = new AppHelper().convertTime(new AppHelper().convertUTCTime(time));
-        holder.notification_datetime.setText(new AppHelper().convertDate(date) + "  " + convertedTime);
+        holder.notification_datetime.setText(new AppHelper().convertDateTime(notificationsList.get(position).getDateTime()));
 
         String avatar_url = notificationsList.get(position).getUserAvatar();
         if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
