@@ -15,9 +15,9 @@ import java.util.List;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
-public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCommentsNotificationAdapter.MyViewHolder> {
+public class ListNotificationsAdapter extends RecyclerView.Adapter<ListNotificationsAdapter.MyViewHolder> {
 
-    private List<NotificationsModel> commentsList;
+    private List<NotificationsModel> notificationsList;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -59,14 +59,14 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListCommentsNotificationAdapter(List<NotificationsModel> commentsList) {
-        this.commentsList = commentsList;
+    public ListNotificationsAdapter(List<NotificationsModel> notificationsList) {
+        this.notificationsList = notificationsList;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ListCommentsNotificationAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                           int viewType) {
+    public ListNotificationsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                    int viewType) {
         // create a new view
         View v= LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_notification, parent, false);
@@ -81,30 +81,30 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
         // - replace the contents of the view with that element
 
         // Set data to display
-        if(commentsList.get(position).getNotificationType().equals("comment")) {
+        if(notificationsList.get(position).getNotificationType().equals("comment")) {
             holder.textNotiType.setText("commented on");
-        } else if(commentsList.get(position).getNotificationType().equals("like")) {
+        } else if(notificationsList.get(position).getNotificationType().equals("like")) {
             holder.textNotiType.setText("likes");
         }
 
-        holder.notification_name.setText(commentsList.get(position).getUserFName());
+        holder.notification_name.setText(notificationsList.get(position).getUserFName());
 
-        holder.notification_name.setTag(commentsList.get(position).getUserId());
+        holder.notification_name.setTag(notificationsList.get(position).getUserId());
 
-        holder.notification_username.setText("@" + commentsList.get(position).getUsername());
+        holder.notification_username.setText("@" + notificationsList.get(position).getUsername());
 
-        holder.itinerary_title.setText(commentsList.get(position).getItineraryTitle());
+        holder.itinerary_title.setText(notificationsList.get(position).getItineraryTitle());
 
-        holder.itinerary_title.setTag(commentsList.get(position).getItineraryId());
+        holder.itinerary_title.setTag(notificationsList.get(position).getItineraryId());
 
-        String dateTime[] = commentsList.get(position).getDateTime().split(" ");
+        String dateTime[] = notificationsList.get(position).getDateTime().split(" ");
         String date = dateTime[0];
         String time = dateTime[1].substring(0,5);
         // convert utc to default timezone, then convert 24h to 12h
         String convertedTime = new AppHelper().convertTime(new AppHelper().convertUTCTime(time));
         holder.notification_datetime.setText(new AppHelper().convertDate(date) + "  " + convertedTime);
 
-        String avatar_url = commentsList.get(position).getUserAvatar();
+        String avatar_url = notificationsList.get(position).getUserAvatar();
         if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
             Picasso.get()
                     .load(avatar_url)
@@ -118,7 +118,7 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
         }
 
         // get current position item data
-        holder.currentItem = commentsList.get(position);
+        holder.currentItem = notificationsList.get(position);
 
         // when clicked on comment notification, redirect to the itinerary page
         holder.notification_item.setOnClickListener(new View.OnClickListener() {
@@ -126,10 +126,12 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
             public void onClick(View v) {
                 // redirect to view itinerary page
                 Intent intentPage = new Intent(v.getContext(), ViewItineraryActivity.class);
-                intentPage.putExtra("itinerary_id", commentsList.get(position).getItineraryId());
-                intentPage.putExtra("itinerary_title", commentsList.get(position).getItineraryTitle());
-                intentPage.putExtra("itinerary_user_id", commentsList.get(position).getItineraryUserId());
-                intentPage.putExtra("viewComment", true);
+                intentPage.putExtra("itinerary_id", notificationsList.get(position).getItineraryId());
+                intentPage.putExtra("itinerary_title", notificationsList.get(position).getItineraryTitle());
+                intentPage.putExtra("itinerary_user_id", notificationsList.get(position).getItineraryUserId());
+                if(notificationsList.get(position).getNotificationType().equals("comment")) {
+                    intentPage.putExtra("viewComment", true);
+                }
                 v.getContext().startActivity(intentPage);
             }
         });
@@ -138,6 +140,6 @@ public class ListCommentsNotificationAdapter extends RecyclerView.Adapter<ListCo
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return commentsList.size();
+        return notificationsList.size();
     }
 }

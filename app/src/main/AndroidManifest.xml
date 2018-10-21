@@ -76,8 +76,8 @@
         <activity android:name=".EditActivityActivity" />
         <activity android:name=".SearchItineraryActivity" />
         <activity
-            android:name=".CommentsNotificationActivity"
-            android:label="Comments Notification"></activity>
+            android:name=".NotificationsActivity"
+            android:label="Notifications"></activity>
     </application>
 
 </manifest>

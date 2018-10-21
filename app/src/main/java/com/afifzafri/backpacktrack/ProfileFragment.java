@@ -223,7 +223,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 // check if activity have been attach to the fragment
                 if(isAdded()) {
-                    Intent intentPage = new Intent(getActivity(), CommentsNotificationActivity.class);
+                    Intent intentPage = new Intent(getActivity(), NotificationsActivity.class);
                     startActivity(intentPage);
                 }
             }

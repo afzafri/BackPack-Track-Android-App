@@ -27,15 +27,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommentsNotificationActivity extends AppCompatActivity {
+public class NotificationsActivity extends AppCompatActivity {
 
     // for swipe to refresh widget
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // initialize adapter and data structure here
-    private ListCommentsNotificationAdapter mAdapter;
+    private ListNotificationsAdapter mAdapter;
     // Countries list Array
-    private List<NotificationsModel> commentsList;
+    private List<NotificationsModel> notificationsList;
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -43,7 +43,7 @@ public class CommentsNotificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comments_notification);
+        setContentView(R.layout.activity_notifications);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
@@ -52,8 +52,8 @@ public class CommentsNotificationActivity extends AppCompatActivity {
         final String access_token = sharedpreferences.getString("access_token", "");
 
         // you must assign all objects to avoid nullPointerException
-        commentsList = new ArrayList<>();
-        mAdapter = new ListCommentsNotificationAdapter(commentsList);
+        notificationsList = new ArrayList<>();
+        mAdapter = new ListNotificationsAdapter(notificationsList);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.comments_list);
         // use a linear layout manager
@@ -110,7 +110,7 @@ public class CommentsNotificationActivity extends AppCompatActivity {
                             String total_likes = likes.getString("total_likes");
                             JSONArray likes_data = likes.getJSONArray("data");
 
-                            if (comments_data.length() <= 0) {
+                            if (comments_data.length() <= 0 && likes_data.length() <= 0) {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
                                 Toast.makeText(getApplicationContext(), "no notification available", Toast.LENGTH_SHORT).show();
@@ -135,7 +135,7 @@ public class CommentsNotificationActivity extends AppCompatActivity {
                                 String itinerary_user_id = itinerary.getString("user_id");
 
                                 // insert data into array
-                                commentsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "comment"));
+                                notificationsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "comment"));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -157,7 +157,7 @@ public class CommentsNotificationActivity extends AppCompatActivity {
                                 String itinerary_user_id = itinerary.getString("user_id");
 
                                 // insert data into array
-                                commentsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "like"));
+                                notificationsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "like"));
 
                                 mAdapter.notifyDataSetChanged();
                             }
