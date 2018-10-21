@@ -1,6 +1,6 @@
 package com.afifzafri.backpacktrack;
 
-public class CommentsNotificationModel {
+public class NotificationsModel {
 
     private String id;
     private String date_time;
@@ -11,8 +11,9 @@ public class CommentsNotificationModel {
     private String itinerary_id;
     private String itinerary_title;
     private String itinerary_user_id;
+    private String notificationType;
 
-    public CommentsNotificationModel(String id, String date_time, String user_id, String user_name, String user_username, String user_avatar, String itinerary_id, String itinerary_title, String itinerary_user_id) {
+    public NotificationsModel(String id, String date_time, String user_id, String user_name, String user_username, String user_avatar, String itinerary_id, String itinerary_title, String itinerary_user_id, String notificationType) {
         this.id = id;
         this.date_time = date_time;
         this.user_id = user_id;
@@ -22,6 +23,7 @@ public class CommentsNotificationModel {
         this.itinerary_id = itinerary_id;
         this.itinerary_title = itinerary_title;
         this.itinerary_user_id = itinerary_user_id;
+        this.notificationType = notificationType;
     }
 
     public String getId() { return id; }
@@ -41,4 +43,6 @@ public class CommentsNotificationModel {
     public String getItineraryTitle() { return itinerary_title; }
 
     public String getItineraryUserId() { return itinerary_user_id; }
+
+    public String getNotificationType() { return notificationType; }
 }

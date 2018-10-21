@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/comment_item"
+    android:id="@+id/notification_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -14,7 +14,7 @@
         android:paddingBottom="10dp">
 
         <ImageView
-            android:id="@+id/comment_user_avatar"
+            android:id="@+id/notification_user_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
@@ -30,7 +30,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/comment_name"
+                    android:id="@+id/notification_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
@@ -38,18 +38,18 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/comment_username"
+                    android:id="@+id/notification_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="3dp"
                     android:text="@username" />
 
                 <TextView
-                    android:id="@+id/textComment"
+                    android:id="@+id/textNotiType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="commented on" />
+                    android:text="commented or likes" />
 
             </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/comment_datetime"
+                android:id="@+id/notification_datetime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"

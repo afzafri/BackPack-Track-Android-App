@@ -35,7 +35,7 @@ public class CommentsNotificationActivity extends AppCompatActivity {
     // initialize adapter and data structure here
     private ListCommentsNotificationAdapter mAdapter;
     // Countries list Array
-    private List<CommentsNotificationModel> commentsList;
+    private List<NotificationsModel> commentsList;
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -93,17 +93,24 @@ public class CommentsNotificationActivity extends AppCompatActivity {
         loadingFrame.setVisibility(View.VISIBLE);
 
         // Request a string response from the provided URL.
-        JsonObjectRequest notificationsRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/getCommentsNotification", null,
+        JsonObjectRequest notificationsRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/getNotifications", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
                         try {
                             // parse JSON response
-                            String total_comments = response.getString("total_comments");
-                            JSONArray comments = response.getJSONArray("comments");
+                            // comments
+                            JSONObject comments = response.getJSONObject("comments");
+                            String total_comments = comments.getString("total_comments");
+                            JSONArray comments_data = comments.getJSONArray("data");
 
-                            if (comments.length() <= 0) {
+                            // likes
+                            JSONObject likes = response.getJSONObject("likes");
+                            String total_likes = likes.getString("total_likes");
+                            JSONArray likes_data = likes.getJSONArray("data");
+
+                            if (comments_data.length() <= 0) {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
                                 Toast.makeText(getApplicationContext(), "no notification available", Toast.LENGTH_SHORT).show();
@@ -111,9 +118,10 @@ public class CommentsNotificationActivity extends AppCompatActivity {
                                 return; // return will end the program at this point
                             }
 
-                            for(int i=0;i<comments.length();i++)
+                            // insert comments into db
+                            for(int i=0;i<comments_data.length();i++)
                             {
-                                JSONObject comment = comments.getJSONObject(i);
+                                JSONObject comment = comments_data.getJSONObject(i);
                                 String id = comment.getString("id");
                                 String date_time = comment.getString("created_at");
                                 JSONObject user = comment.getJSONObject("user");
@@ -127,7 +135,29 @@ public class CommentsNotificationActivity extends AppCompatActivity {
                                 String itinerary_user_id = itinerary.getString("user_id");
 
                                 // insert data into array
-                                commentsList.add(new CommentsNotificationModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id));
+                                commentsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "comment"));
+
+                                mAdapter.notifyDataSetChanged();
+                            }
+
+                            // insert likes into db
+                            for(int i=0;i<likes_data.length();i++)
+                            {
+                                JSONObject like = likes_data.getJSONObject(i);
+                                String id = like.getString("id");
+                                String date_time = like.getString("created_at");
+                                JSONObject user = like.getJSONObject("user");
+                                String user_id = user.getString("id");
+                                String user_name = user.getString("name");
+                                String user_username = user.getString("username");
+                                String user_avatar = user.getString("avatar_url");
+                                JSONObject itinerary = like.getJSONObject("itinerary");
+                                String itinerary_id = itinerary.getString("id");
+                                String itinerary_title = itinerary.getString("title");
+                                String itinerary_user_id = itinerary.getString("user_id");
+
+                                // insert data into array
+                                commentsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "like"));
 
                                 mAdapter.notifyDataSetChanged();
                             }
