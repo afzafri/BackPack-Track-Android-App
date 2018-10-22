@@ -153,7 +153,7 @@ public class AppHelper {
      * @return
      */
     public String convertDate(String currentDate) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = null;
         try {
             newDate = format.parse(currentDate);
@@ -161,7 +161,7 @@ public class AppHelper {
             e.printStackTrace();
         }
 
-        format = new SimpleDateFormat("dd/mm/yyyy");
+        format = new SimpleDateFormat("dd/MM/yyyy");
         String date = format.format(newDate);
 
         return date;
