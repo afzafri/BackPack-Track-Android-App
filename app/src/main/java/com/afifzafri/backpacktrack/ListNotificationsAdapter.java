@@ -32,6 +32,7 @@ public class ListNotificationsAdapter extends RecyclerView.Adapter<ListNotificat
         public TextView itinerary_title;
         public TextView notification_datetime;
         public TextView textNotiType;
+        public ImageView typeIcon;
         public LinearLayout notification_item;
         public NotificationsModel currentItem;
 
@@ -54,6 +55,9 @@ public class ListNotificationsAdapter extends RecyclerView.Adapter<ListNotificat
 
             textNotiType = (TextView) v.findViewById(R.id.textNotiType);
             this.textNotiType = textNotiType;
+
+            typeIcon = (ImageView) v.findViewById(R.id.typeIcon);
+            this.typeIcon = typeIcon;
 
             notification_item = (LinearLayout) v.findViewById(R.id.notification_item);
             this.notification_item = notification_item;
@@ -85,8 +89,10 @@ public class ListNotificationsAdapter extends RecyclerView.Adapter<ListNotificat
         // Set data to display
         if(notificationsList.get(position).getNotificationType().equals("comment")) {
             holder.textNotiType.setText("commented on");
+            holder.typeIcon.setImageResource(R.drawable.ic_mode_comment_black_24dp);
         } else if(notificationsList.get(position).getNotificationType().equals("like")) {
             holder.textNotiType.setText("likes");
+            holder.typeIcon.setImageResource(R.drawable.ic_favorite_red_24dp);
         }
 
         holder.notification_name.setText(notificationsList.get(position).getUserFName());
