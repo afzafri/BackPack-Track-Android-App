@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class AppHelper {
@@ -216,22 +217,23 @@ public class AppHelper {
 
     /**
      * Convert Java Date object from Laravel date time.
-     * convert date, time 24h to 12h, and timezone
+     * convert date format
+     * time 24h to 12h
+     * timezone UTC to local
      *
      * @param currentDateTime
      * @return
      */
     public String convertDateTime(Date currentDateTime) {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy H:mm");
-        String currDate = df.format(currentDateTime);
+        // output date format
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY hh:mm aa", Locale.ENGLISH);
+        // get local timezone
+        TimeZone tz = TimeZone.getDefault();
+        // calculate new datetime with new timezone and daylight saving time
+        int currentOffsetFromUTC = tz.getRawOffset() + (tz.inDaylightTime(currentDateTime) ? tz.getDSTSavings() : 0);
+        String convertedDateTime = sdf.format(currentDateTime.getTime() + currentOffsetFromUTC);
 
-        String dateTime[] = currDate.split(" ");
-        String date = dateTime[0];
-        String time = dateTime[1].substring(0,5);
-        // convert utc to default timezone, then convert 24h to 12h
-        String convertedTime = convertTime(convertUTCTime(time));
-
-        return date + " " + convertedTime;
+        return convertedDateTime;
     }
 
     /**
