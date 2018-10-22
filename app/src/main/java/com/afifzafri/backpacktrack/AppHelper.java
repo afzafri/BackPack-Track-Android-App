@@ -185,37 +185,6 @@ public class AppHelper {
     }
 
     /**
-     * Convert UTC timezone to phone's default timezone
-     *
-     * @param currentTime
-     * @return
-     */
-    public String convertUTCTime(String currentTime) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        Date date = null;
-        try {
-            date = sdf.parse(currentTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // Local timezone + daylight saving
-        int offset = TimeZone.getDefault().getRawOffset() + TimeZone.getDefault().getDSTSavings();
-        long now = date.getTime() + offset;
-
-        // convert
-        Date dates = new Date(now);
-        DateFormat formatter = new SimpleDateFormat("H:mm");
-        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String dateFormatted = formatter.format(dates);
-
-        return dateFormatted;
-    }
-
-    /**
      * Convert Java Date object from Laravel date time.
      * convert date format
      * time 24h to 12h
