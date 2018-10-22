@@ -29,18 +29,33 @@
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/itinerary_user"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_weight="1"
-                android:drawableStart="@drawable/ic_person_outline_grey_24dp"
-                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="user"
-                android:textStyle="italic" />
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:id="@+id/itinerary_user"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_person_outline_grey_24dp"
+                    android:gravity="center_vertical"
+                    android:text="user"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/itinerary_country"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_place_grey_24dp"
+                    android:gravity="center_vertical"
+                    android:text="country" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,7 +67,7 @@
 
                 <TextView
                     android:id="@+id/itinerary_totalbudget"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_monetization_on_grey_24dp"
@@ -62,7 +77,7 @@
 
                 <TextView
                     android:id="@+id/itinerary_duration"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_date_range_grey_24dp"
@@ -71,29 +86,16 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/itinerary_country"
-                    android:layout_width="match_parent"
+                    android:id="@+id/itinerary_date"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_place_grey_24dp"
-                    android:gravity="center_vertical"
-                    android:text="country"
-                    android:textSize="18sp" />
+                    android:drawableStart="@drawable/ic_today_grey_24dp"
+                    android:gravity="center"
+                    android:text="date"
+                    android:textSize="16sp" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/itinerary_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginBottom="8dp"
-                android:layout_weight="1"
-                android:drawableStart="@drawable/ic_today_grey_24dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="date"
-                android:textStyle="italic" />
 
             <View
                 android:id="@+id/divider8"
