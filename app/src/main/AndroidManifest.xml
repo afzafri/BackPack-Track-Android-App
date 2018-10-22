@@ -69,7 +69,15 @@
             android:name=".ViewArticleActivity"
             android:label="View Article" />
         <activity android:name=".EditItineraryActivity" />
-        <activity android:name=".ViewItineraryActivity" />
+        <activity
+            android:name=".ViewItineraryActivity" >
+            <intent-filter>
+                <data android:scheme="backpacktrack" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".CreateActivityActivity"
             android:label="Create new Activity" />
