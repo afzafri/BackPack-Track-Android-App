@@ -40,6 +40,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         public TextView itinerary_duration;
         public TextView itinerary_totalbudget;
         public ImageButton likeBtn;
+        public ImageButton shareBtn;
         public TextView itinerary_likes;
         public TextView itinerary_comments;
         public TextView itinerary_user;
@@ -63,6 +64,9 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
             likeBtn = (ImageButton) v.findViewById(R.id.likeBtn);
             this.likeBtn = likeBtn;
+
+            shareBtn = (ImageButton) v.findViewById(R.id.shareBtn);
+            this.shareBtn = shareBtn;
 
             itinerary_likes = (TextView) v.findViewById(R.id.itinerary_likes);
             this.itinerary_likes = itinerary_likes;
@@ -165,6 +169,21 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
                 intentPage.putExtra("itinerary_user_id", itinerariesList.get(position).getUserId());
                 intentPage.putExtra("viewComment", true);
                 v.getContext().startActivity(intentPage);
+            }
+        });
+
+        // when share button clicked, open share intent, to share the itinerary
+        holder.shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String itTitle = itinerariesList.get(position).getTitle();
+                String itUrl = AppHelper.baseurl + "/itinerary/" + itinerariesList.get(position).getId();
+                String shareBody = itTitle + " " + itUrl;
+                //sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                v.getContext().startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
         });
 
