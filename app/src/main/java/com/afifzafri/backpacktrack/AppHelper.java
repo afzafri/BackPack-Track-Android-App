@@ -23,7 +23,7 @@ public class AppHelper {
     /**
      * RESTFul API Endpoint
      */
-    public static final String baseurl = "http://178.128.97.69";
+    public static final String baseurl = "http://www.backpacktrack.site";
 
     public AppHelper() {}
 
