@@ -55,7 +55,8 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_place_grey_24dp"
                         android:gravity="center_vertical|center_horizontal|center"
-                        android:text="country" />
+                        android:text="country"
+                        android:textColor="@color/colorAccent" />
                 </LinearLayout>
 
                 <LinearLayout

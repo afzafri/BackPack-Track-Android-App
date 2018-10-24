@@ -155,6 +155,20 @@ public class ViewActivitiesFragment extends Fragment {
             }
         });
 
+        // --- COUNTRY ---
+        itinerary_country.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // check if activity have been attach to the fragment
+                if(isAdded()) {
+                    Intent intentPage = new Intent(getActivity(), CountryItinerariesActivity.class);
+                    intentPage.putExtra("country_id", itinerary_country.getTag().toString());
+                    intentPage.putExtra("country_name", itinerary_country.getText().toString());
+                    startActivity(intentPage);
+                }
+            }
+        });
+
         // --- SHARE ---
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
