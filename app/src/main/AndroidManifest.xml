@@ -69,11 +69,14 @@
             android:name=".ViewArticleActivity"
             android:label="View Article" />
         <activity android:name=".EditItineraryActivity" />
-        <activity
-            android:name=".ViewItineraryActivity" >
+        <activity android:name=".ViewItineraryActivity">
             <intent-filter>
-                <data android:scheme="backpacktrack" android:host="itinerary"/>
+                <data
+                    android:host="itinerary"
+                    android:scheme="backpacktrack" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
@@ -85,7 +88,10 @@
         <activity android:name=".SearchItineraryActivity" />
         <activity
             android:name=".NotificationsActivity"
-            android:label="Notifications"></activity>
+            android:label="Notifications" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="User Profile"></activity>
     </application>
 
 </manifest>
