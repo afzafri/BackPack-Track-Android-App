@@ -77,8 +77,7 @@ public class UserProfileActivity extends AppCompatActivity {
                             String email = response.getString("email");
                             String totalitineraries = response.getString("totalitineraries");
                             String avatar_url = response.getString("avatar_url");
-                            JSONObject country = response.getJSONObject("country");
-                            String country_name = country.getString("name");
+                            String country_name = response.getString("country_name");
 
                             // set values to the elements
                             textName.setText(name);
@@ -117,6 +116,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+
                             loadingFrame.setVisibility(View.GONE);
                         }
 
