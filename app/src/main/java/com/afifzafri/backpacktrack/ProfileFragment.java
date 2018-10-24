@@ -60,6 +60,7 @@ public class ProfileFragment extends Fragment {
         final TextView textCountry = (TextView) view.findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textWebsite = (TextView) view.findViewById(R.id.textWebsite);
+        final TextView textTotal = (TextView) view.findViewById(R.id.textTotal);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
         final TextView textCountComments = (TextView) view.findViewById(R.id.textCountComments);
         final TextView textCountLikes = (TextView) view.findViewById(R.id.textCountLikes);
@@ -92,6 +93,7 @@ public class ProfileFragment extends Fragment {
                             String bio = response.getString("bio");
                             String website = response.getString("website");
                             String email = response.getString("email");
+                            String totalitineraries = response.getString("totalitineraries");
                             String avatar_url = response.getString("avatar_url");
                             JSONObject country = response.getJSONObject("country");
                             String country_name = country.getString("name");
@@ -103,6 +105,7 @@ public class ProfileFragment extends Fragment {
                             textWebsite.setText(website.replaceFirst("^(http[s]?://www\\.|http[s]?://|www\\.)",""));
                             textEmail.setText(email);
                             textCountry.setText(country_name);
+                            textTotal.setText(totalitineraries);
 
                             // check if bio and website not available (because optional), hide the widgets
                             if(bio == null || bio.isEmpty() || bio == "null") {
