@@ -142,6 +142,19 @@ public class ViewActivitiesFragment extends Fragment {
             }
         });
 
+        // --- USER PROFILE ---
+        itinerary_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // check if activity have been attach to the fragment
+                if(isAdded()) {
+                    Intent intentPage = new Intent(getActivity(), UserProfileActivity.class);
+                    intentPage.putExtra("user_id", itinerary_user.getTag().toString());
+                    startActivity(intentPage);
+                }
+            }
+        });
+
         // --- SHARE ---
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
