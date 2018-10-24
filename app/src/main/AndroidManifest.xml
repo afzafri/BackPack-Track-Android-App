@@ -91,7 +91,18 @@
             android:label="Notifications" />
         <activity
             android:name=".UserProfileActivity"
-            android:label="User Profile"></activity>
+            android:label="User Profile">
+            <intent-filter>
+                <data
+                    android:host="user"
+                    android:scheme="backpacktrack" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

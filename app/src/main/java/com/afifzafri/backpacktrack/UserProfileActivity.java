@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,9 +39,18 @@ public class UserProfileActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
-        // get data pass through intent
+        // declare variables
+        String user_id = null;
+
+        // If activity start from other intent get data pass through intent
         Bundle extras = getIntent().getExtras();
-        final String user_id = extras.getString("user_id");
+        user_id = extras.getString("user_id");
+
+        // If activity launched from web, get data from deeplink
+        Uri deepLink = this.getIntent().getData();
+        if (deepLink != null && deepLink.isHierarchical()) {
+            user_id = deepLink.getQueryParameter("user_id");
+        }
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getSharedPreferences("logindata", Context.MODE_PRIVATE);
