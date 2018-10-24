@@ -49,6 +49,8 @@ public class ViewActivitiesFragment extends Fragment {
     private TextView itinerary_country;
     private ImageButton likeBtn;
     private TextView itinerary_likes;
+    private TextView leftB;
+    private TextView rightB;
 
     public ViewActivitiesFragment() {
         // Required empty public constructor
@@ -62,7 +64,7 @@ public class ViewActivitiesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_activities, container, false);
 
         // get itinerary id
-        String itinerary_id = getArguments().getString("itinerary_id");
+        final String itinerary_id = getArguments().getString("itinerary_id");
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -73,6 +75,8 @@ public class ViewActivitiesFragment extends Fragment {
         itinerary_country = (TextView) view.findViewById(R.id.itinerary_country);
         likeBtn = (ImageButton) view.findViewById(R.id.likeBtn);
         itinerary_likes = (TextView) view.findViewById(R.id.itinerary_likes);
+        leftB = (TextView) view.findViewById(R.id.leftB);
+        rightB = (TextView) view.findViewById(R.id.rightB);
 
         // fetch and set the itinerary data info
         setItineraryData(view, itinerary_id, access_token);
@@ -97,6 +101,37 @@ public class ViewActivitiesFragment extends Fragment {
 
         // create a function for load all data
         firstLoadData(view, itinerary_id, access_token);
+
+        // ------ HANDLE ONCLICKS EVENTS -------
+        // --- LIKES ---
+        likeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                String isLiked = itinerary_likes.getTag().toString();
+                int totallikes = Integer.parseInt(itinerary_likes.getText().toString());
+
+                if(isLiked.equals("true")) {
+                    likeBtn.setImageResource(R.drawable.ic_favorite_border_grey_24dp);
+                    itinerary_likes.setTextColor(Color.GRAY);
+                    leftB.setTextColor(Color.GRAY);
+                    rightB.setTextColor(Color.GRAY);
+                    itinerary_likes.setTag("false");
+
+                    int newtotal = (totallikes > 0) ? (totallikes - 1) : 0;
+                    itinerary_likes.setText(Integer.toString(newtotal));
+                } else {
+                    likeBtn.setImageResource(R.drawable.ic_favorite_red_24dp);
+                    itinerary_likes.setTextColor(Color.RED);
+                    leftB.setTextColor(Color.RED);
+                    rightB.setTextColor(Color.RED);
+                    itinerary_likes.setTag("true");
+
+                    int newtotal = totallikes + 1;
+                    itinerary_likes.setText(Integer.toString(newtotal));
+                }
+
+            }
+        });
 
         return view;
     }
@@ -128,16 +163,20 @@ public class ViewActivitiesFragment extends Fragment {
                             itinerary_user.setTag(user_id);
                             itinerary_country.setText(country_name);
                             itinerary_country.setTag(country_id);
-                            itinerary_likes.setText("(" + totallikes + ")");
+                            itinerary_likes.setText(totallikes);
 
                             if(isLiked) {
                                 likeBtn.setImageResource(R.drawable.ic_favorite_red_24dp);
                                 itinerary_likes.setTextColor(Color.RED);
-                                itinerary_likes.setTag(true);
+                                leftB.setTextColor(Color.RED);
+                                rightB.setTextColor(Color.RED);
+                                itinerary_likes.setTag("true");
                             } else {
                                 likeBtn.setImageResource(R.drawable.ic_favorite_border_grey_24dp);
                                 itinerary_likes.setTextColor(Color.GRAY);
-                                itinerary_likes.setTag(false);
+                                leftB.setTextColor(Color.GRAY);
+                                rightB.setTextColor(Color.GRAY);
+                                itinerary_likes.setTag("false");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

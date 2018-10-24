@@ -72,11 +72,23 @@
                         android:background="@drawable/ic_favorite_border_grey_24dp" />
 
                     <TextView
+                        android:id="@+id/leftB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(" />
+
+                    <TextView
                         android:id="@+id/itinerary_likes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="total" />
+
+                    <TextView
+                        android:id="@+id/rightB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=")" />
                 </LinearLayout>
 
                 <LinearLayout
