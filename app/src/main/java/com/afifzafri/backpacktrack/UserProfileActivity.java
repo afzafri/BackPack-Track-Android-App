@@ -1,9 +1,11 @@
 package com.afifzafri.backpacktrack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +29,8 @@ import java.util.Map;
 
 public class UserProfileActivity extends AppCompatActivity {
 
+    private TextView textUsername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // get UI elements
         final TextView textName = (TextView) findViewById(R.id.textName);
-        final TextView textUsername = (TextView) findViewById(R.id.textUsername);
+        textUsername = (TextView) findViewById(R.id.textUsername);
         final TextView textBio = (TextView) findViewById(R.id.textBio);
         final TextView textCountry = (TextView) findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) findViewById(R.id.textEmail);
@@ -143,6 +147,13 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.user_profile_menu, menu);
+        return true;
+    }
+
     // override default back navigation action
     // need finish(), to destroy the current activity so that it go back to last activity with last fragment
     @Override
@@ -152,6 +163,20 @@ public class UserProfileActivity extends AppCompatActivity {
                 // todo: goto back activity from here
 
                 finish();
+                return true;
+
+            // share profile
+            case R.id.action_share:
+
+                String usrn = textUsername.getText().toString();
+                if(!usrn.equals("") && usrn != null) {
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String url = AppHelper.baseurl + "/user/" + usrn.replace("@", "");
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url);
+                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                }
+
                 return true;
 
             default:
