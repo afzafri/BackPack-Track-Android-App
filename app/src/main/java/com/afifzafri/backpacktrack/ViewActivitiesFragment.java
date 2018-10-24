@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,11 @@ public class ViewActivitiesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
 
+    private TextView itinerary_user;
+    private TextView itinerary_country;
+    private ImageButton likeBtn;
+    private TextView itinerary_likes;
+
     public ViewActivitiesFragment() {
         // Required empty public constructor
     }
@@ -60,6 +67,12 @@ public class ViewActivitiesFragment extends Fragment {
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
+
+        // elements
+        itinerary_user = (TextView) view.findViewById(R.id.itinerary_user);
+        itinerary_country = (TextView) view.findViewById(R.id.itinerary_country);
+        likeBtn = (ImageButton) view.findViewById(R.id.likeBtn);
+        itinerary_likes = (TextView) view.findViewById(R.id.itinerary_likes);
 
         // fetch and set the itinerary data info
         setItineraryData(view, itinerary_id, access_token);
@@ -91,8 +104,6 @@ public class ViewActivitiesFragment extends Fragment {
     private void setItineraryData(final View view, String itinerary_id, final String access_token) {
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
-        final TextView itinerary_user = (TextView) view.findViewById(R.id.itinerary_user);
-        final TextView itinerary_country = (TextView) view.findViewById(R.id.itinerary_country);
 
         // show loading spinner
         loadingFrame.setVisibility(View.VISIBLE);
@@ -116,6 +127,17 @@ public class ViewActivitiesFragment extends Fragment {
                             itinerary_user.setTag(user_id);
                             itinerary_country.setText(country_name);
                             itinerary_country.setTag(country_id);
+                            itinerary_likes.setText("(" + totallikes + ")");
+
+                            if(isLiked) {
+                                likeBtn.setImageResource(R.drawable.ic_favorite_red_24dp);
+                                itinerary_likes.setTextColor(Color.RED);
+                                itinerary_likes.setTag(true);
+                            } else {
+                                likeBtn.setImageResource(R.drawable.ic_favorite_border_grey_24dp);
+                                itinerary_likes.setTextColor(Color.GRAY);
+                                itinerary_likes.setTag(false);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
