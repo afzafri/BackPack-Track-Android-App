@@ -39,8 +39,7 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_person_outline_grey_24dp"
                         android:gravity="center_vertical|center_horizontal"
-                        android:text="user"
-                        android:textStyle="italic" />
+                        android:text="user" />
                 </LinearLayout>
 
                 <LinearLayout
