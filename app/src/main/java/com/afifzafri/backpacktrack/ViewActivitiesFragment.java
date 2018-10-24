@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -60,6 +61,9 @@ public class ViewActivitiesFragment extends Fragment {
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
 
+        // fetch and set the itinerary data info
+        setItineraryData(view, itinerary_id, access_token);
+
         // you must assign all objects to avoid nullPointerException
         allDataList = new ArrayList<>();
 
@@ -82,6 +86,64 @@ public class ViewActivitiesFragment extends Fragment {
         firstLoadData(view, itinerary_id, access_token);
 
         return view;
+    }
+
+    private void setItineraryData(final View view, String itinerary_id, final String access_token) {
+        // get UI elements
+        final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
+        final TextView itinerary_user = (TextView) view.findViewById(R.id.itinerary_user);
+        final TextView itinerary_country = (TextView) view.findViewById(R.id.itinerary_country);
+
+        // show loading spinner
+        loadingFrame.setVisibility(View.VISIBLE);
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest itineraryRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/viewItineraryDetails/"+itinerary_id, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject user = response.getJSONObject("user");
+                            String user_id = user.getString("id");
+                            String user_name = user.getString("name");
+                            JSONObject country = response.getJSONObject("country");
+                            String country_id = country.getString("id");
+                            String country_name = country.getString("name");
+                            String totallikes = response.getString("totallikes");
+                            Boolean isLiked = response.getBoolean("isLiked");
+
+                            itinerary_user.setText(user_name);
+                            itinerary_user.setTag(user_id);
+                            itinerary_country.setText(country_name);
+                            itinerary_country.setTag(country_id);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        loadingFrame.setVisibility(View.GONE);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Load itinerary data Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
+                loadingFrame.setVisibility(View.GONE);
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(itineraryRequest);
     }
 
     private void firstLoadData(final View view, String itinerary_id, final String access_token) {
