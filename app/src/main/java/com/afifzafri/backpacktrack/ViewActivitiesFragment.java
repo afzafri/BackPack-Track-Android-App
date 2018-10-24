@@ -117,13 +117,14 @@ public class ViewActivitiesFragment extends Fragment {
                             JSONObject user = response.getJSONObject("user");
                             String user_id = user.getString("id");
                             String user_name = user.getString("name");
+                            String user_username = user.getString("username");
                             JSONObject country = response.getJSONObject("country");
                             String country_id = country.getString("id");
                             String country_name = country.getString("name");
                             String totallikes = response.getString("totallikes");
                             Boolean isLiked = response.getBoolean("isLiked");
 
-                            itinerary_user.setText(user_name);
+                            itinerary_user.setText("@"+user_username);
                             itinerary_user.setTag(user_id);
                             itinerary_country.setText(country_name);
                             itinerary_country.setTag(country_id);
