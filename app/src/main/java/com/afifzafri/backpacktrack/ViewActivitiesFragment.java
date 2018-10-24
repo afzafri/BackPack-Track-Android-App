@@ -2,6 +2,7 @@ package com.afifzafri.backpacktrack;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class ViewActivitiesFragment extends Fragment {
     private TextView itinerary_likes;
     private TextView leftB;
     private TextView rightB;
+    private ImageButton shareBtn;
 
     public ViewActivitiesFragment() {
         // Required empty public constructor
@@ -77,6 +79,7 @@ public class ViewActivitiesFragment extends Fragment {
         itinerary_likes = (TextView) view.findViewById(R.id.itinerary_likes);
         leftB = (TextView) view.findViewById(R.id.leftB);
         rightB = (TextView) view.findViewById(R.id.rightB);
+        shareBtn = (ImageButton) view.findViewById(R.id.shareBtn);
 
         // fetch and set the itinerary data info
         setItineraryData(view, itinerary_id, access_token);
@@ -136,6 +139,21 @@ public class ViewActivitiesFragment extends Fragment {
                     likeItinerary(v, itinerary_id, access_token);
                 }
 
+            }
+        });
+
+        // --- SHARE ---
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String itTitle = getActivity().getTitle().toString();
+                String itUrl = AppHelper.baseurl + "/itinerary/" + itinerary_id;
+                String shareBody = itTitle + " " + itUrl;
+                //sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                v.getContext().startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
         });
 
