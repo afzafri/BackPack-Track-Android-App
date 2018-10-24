@@ -119,6 +119,9 @@ public class ViewActivitiesFragment extends Fragment {
 
                     int newtotal = (totallikes > 0) ? (totallikes - 1) : 0;
                     itinerary_likes.setText(Integer.toString(newtotal));
+
+                    // network request to Unlike API
+                    unLikeItinerary(v, itinerary_id, access_token);
                 } else {
                     likeBtn.setImageResource(R.drawable.ic_favorite_red_24dp);
                     itinerary_likes.setTextColor(Color.RED);
@@ -128,6 +131,9 @@ public class ViewActivitiesFragment extends Fragment {
 
                     int newtotal = totallikes + 1;
                     itinerary_likes.setText(Integer.toString(newtotal));
+
+                    // network request to Like API
+                    likeItinerary(v, itinerary_id, access_token);
                 }
 
             }
@@ -206,6 +212,122 @@ public class ViewActivitiesFragment extends Fragment {
 
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(itineraryRequest);
+    }
+
+    private void likeItinerary(final View view, String itinerary_id, final String access_token) {
+        // network request to Unlike API
+        JSONObject params = new JSONObject(); // login parameters
+
+        try {
+            params.put("itinerary_id", itinerary_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest likeRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/likeItinerary", params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // handle success
+                        try {
+
+                            int code = Integer.parseInt(response.getString("code"));
+                            // if error
+                            if(code == 400)
+                            {
+                                String errormsg = response.getString("message");
+                                if(isAdded()) {
+                                    Toast.makeText(getActivity().getApplicationContext(), errormsg, Toast.LENGTH_SHORT).show();
+                                }
+                                int curtotal = Integer.parseInt(itinerary_likes.getText().toString());
+                                itinerary_likes.setText(Integer.toString(curtotal - 1));
+                                likeBtn.setImageResource(R.drawable.ic_favorite_border_grey_24dp);
+                                itinerary_likes.setTextColor(Color.GRAY);
+                                leftB.setTextColor(Color.GRAY);
+                                rightB.setTextColor(Color.GRAY);
+                                itinerary_likes.setTag("false");
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                int curtotal = Integer.parseInt(itinerary_likes.getText().toString());
+                itinerary_likes.setText(Integer.toString(curtotal - 1));
+                likeBtn.setImageResource(R.drawable.ic_favorite_border_grey_24dp);
+                itinerary_likes.setTextColor(Color.GRAY);
+                leftB.setTextColor(Color.GRAY);
+                rightB.setTextColor(Color.GRAY);
+                itinerary_likes.setTag("false");
+
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Network error.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(likeRequest);
+    }
+
+    private void unLikeItinerary(final View view, String itinerary_id, final String access_token) {
+        // network request to Unlike API
+        JSONObject params = new JSONObject(); // login parameters
+
+        try {
+            params.put("itinerary_id", itinerary_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest unlikeRequest = new JsonObjectRequest(Request.Method.POST, AppHelper.baseurl + "/api/unlikeItinerary", params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // handle success
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                int curtotal = Integer.parseInt(itinerary_likes.getText().toString());
+                itinerary_likes.setText(Integer.toString(curtotal + 1));
+                likeBtn.setImageResource(R.drawable.ic_favorite_red_24dp);
+                itinerary_likes.setTextColor(Color.RED);
+                leftB.setTextColor(Color.RED);
+                rightB.setTextColor(Color.RED);
+                itinerary_likes.setTag("true");
+
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Network error.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(unlikeRequest);
     }
 
     private void firstLoadData(final View view, String itinerary_id, final String access_token) {
@@ -302,5 +424,4 @@ public class ViewActivitiesFragment extends Fragment {
         // Add the request to the VolleySingleton.
         VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(activitiesListRequest);
     }
-
 }
