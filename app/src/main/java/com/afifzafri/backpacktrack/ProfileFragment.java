@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,13 +28,17 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -42,6 +48,14 @@ import java.util.Map;
 public class ProfileFragment extends Fragment {
 
     private TextView textUsername;
+
+    // initialize adapter and data structure here
+    private ListPopularItinerariesAdapter mAdapter;
+    // Countries list Array
+    private List<PopularItinerariesModel> popularList;
+
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -71,6 +85,7 @@ public class ProfileFragment extends Fragment {
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
+        final String user_id = sharedpreferences.getString("user_id", "");
 
 
         // ----- Fetch user data and display the profile -----
@@ -247,7 +262,85 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        // you must assign all objects to avoid nullPointerException
+        popularList = new ArrayList<>();
+        mAdapter = new ListPopularItinerariesAdapter(popularList);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.listPopularItineraries);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // specify an adapter (see also next example)
+        mRecyclerView.setAdapter(mAdapter);
+
+        // create a function for the load user's popular itineraries list
+        loadPopularList(user_id, access_token, view);
+
         return view;
+    }
+
+    private void loadPopularList(String user_id, final String access_token, View view) {
+        // get UI elements
+        final FrameLayout loadPopularFrame = (FrameLayout) view.findViewById(R.id.loadPopularFrame);
+
+        // show loading spinner
+        loadPopularFrame.setVisibility(View.VISIBLE);
+
+        // Request a string response from the provided URL.
+        JsonArrayRequest popularListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listUserPopularItineraries/"+user_id, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        try {
+
+                            for(int i=0;i<response.length();i++)
+                            {
+                                JSONObject itinerary = response.getJSONObject(i);
+                                String itinerary_id = itinerary.getString("id");
+                                String itinerary_title = itinerary.getString("itinerary_title");
+                                String itinerary_country = itinerary.getString("itinerary_country");
+                                String itinerary_poster_id = itinerary.getString("itinerary_poster_id");
+                                String itinerary_poster_name = itinerary.getString("itinerary_poster_name");
+                                String totallikes = itinerary.getString("total");
+
+                                // insert data into array
+                                popularList.add(new PopularItinerariesModel(itinerary_id, itinerary_title, itinerary_country, itinerary_poster_id, itinerary_poster_name, totallikes));
+
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        loadPopularFrame.setVisibility(View.GONE);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getBaseContext(), "Load popular itineraries Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
+                loadPopularFrame.setVisibility(View.GONE);
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(popularListRequest);
     }
 
     @Override
