@@ -209,7 +209,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:layout_marginTop="3dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginBottom="3dp"
                         android:gravity="center"
                         android:text="Popular Itineraries"
                         android:textStyle="bold" />
@@ -218,22 +220,18 @@
                         android:id="@+id/divider10"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginBottom="3dp"
                         android:background="?android:attr/listDivider" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/listPopularItineraries"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp" />
+                        android:layout_height="match_parent" />
 
                     <Button
                         android:id="@+id/itineraryBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginBottom="8dp"
                         android:backgroundTint="@color/colorPrimaryDark"
                         android:drawableStart="@drawable/ic_view_list_black_24dp"
                         android:text="View All Itineraries" />
