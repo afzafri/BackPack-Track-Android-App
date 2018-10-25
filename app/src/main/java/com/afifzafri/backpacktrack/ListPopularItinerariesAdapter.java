@@ -103,6 +103,19 @@ public class ListPopularItinerariesAdapter extends RecyclerView.Adapter<ListPopu
 
         holder.totallikes.setText(itinerariesList.get(position).getTotalLikes());
 
+        // on click itinerary, open the itinerary
+        holder.popular_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // redirect to view itinerary page
+                Intent intentPage = new Intent(v.getContext(), ViewItineraryActivity.class);
+                intentPage.putExtra("itinerary_id", itinerariesList.get(position).getItineraryId());
+                intentPage.putExtra("itinerary_title", itinerariesList.get(position).getItineraryTitle());
+                intentPage.putExtra("itinerary_user_id", itinerariesList.get(position).getItineraryPosterId());
+                v.getContext().startActivity(intentPage);
+            }
+        });
+
         // get current position item data
         holder.currentItem = itinerariesList.get(position);
     }
