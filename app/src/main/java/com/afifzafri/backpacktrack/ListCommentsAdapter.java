@@ -2,6 +2,7 @@ package com.afifzafri.backpacktrack;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+        public LinearLayout userLayout;
         public TextView comment_name;
         public TextView comment_username;
         public TextView comment_datetime;
@@ -54,6 +57,9 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
 
         public MyViewHolder(View v) {
             super(v);
+            userLayout = (LinearLayout) v.findViewById(R.id.userLayout);
+            this.userLayout = userLayout;
+
             comment_name = (TextView) v.findViewById(R.id.comment_name);
             this.comment_name = comment_name;
 
@@ -134,6 +140,16 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
                     .transform(new CropCircleTransformation())
                     .into(holder.comment_user_avatar);
         }
+
+        // Click user name, open user profile
+        holder.userLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentPage = new Intent(v.getContext(), UserProfileActivity.class);
+                intentPage.putExtra("user_id", holder.comment_name.getTag().toString());
+                v.getContext().startActivity(intentPage);
+            }
+        });
 
         // if current logged in user id equals to comment user id,
         // or current logged in user id equals itinerary owner id,
