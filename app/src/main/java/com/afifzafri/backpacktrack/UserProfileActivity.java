@@ -186,6 +186,18 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // create a function for the load user's popular itineraries list
         loadPopularList(user_id, access_token);
+
+        // ----- Click avatar, show full screen image -----
+        avatar_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open fullscreen image activity
+                Intent intentPage = new Intent(UserProfileActivity.this, ImageFullscreenActivity.class);
+                intentPage.putExtra("image_url", avatar_pic.getTag().toString());
+                intentPage.putExtra("caption", textName.getText().toString());
+                startActivity(intentPage);
+            }
+        });
     }
 
     private void loadPopularList(String user_id, final String access_token) {
