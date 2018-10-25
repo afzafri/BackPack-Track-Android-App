@@ -37,6 +37,7 @@ import java.util.Map;
 public class UserProfileActivity extends AppCompatActivity {
 
     private TextView textUsername;
+    private String user_id;
 
     // initialize adapter and data structure here
     private ListPopularItinerariesAdapter mAdapter;
@@ -54,7 +55,7 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
         // declare variables
-        String user_id = null;
+        user_id = null;
 
         // If activity start from other intent get data pass through intent
         Bundle extras = getIntent().getExtras();
@@ -195,6 +196,17 @@ public class UserProfileActivity extends AppCompatActivity {
                 Intent intentPage = new Intent(UserProfileActivity.this, ImageFullscreenActivity.class);
                 intentPage.putExtra("image_url", avatar_pic.getTag().toString());
                 intentPage.putExtra("caption", textName.getText().toString());
+                startActivity(intentPage);
+            }
+        });
+
+        // ----- Click view all itineraries button, open user itineraries activity -----
+        itineraryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentPage = new Intent(UserProfileActivity.this, UserItinerariesActivity.class);
+                intentPage.putExtra("user_id", user_id);
+                intentPage.putExtra("user_name", textName.getText().toString());
                 startActivity(intentPage);
             }
         });
