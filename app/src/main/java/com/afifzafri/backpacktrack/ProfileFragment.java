@@ -41,7 +41,7 @@ import java.util.Map;
  */
 public class ProfileFragment extends Fragment {
 
-    //private View view;
+    private TextView textUsername;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -55,7 +55,7 @@ public class ProfileFragment extends Fragment {
 
         // get UI elements
         final TextView textName = (TextView) view.findViewById(R.id.textName);
-        final TextView textUsername = (TextView) view.findViewById(R.id.textUsername);
+        textUsername = (TextView) view.findViewById(R.id.textUsername);
         final TextView textBio = (TextView) view.findViewById(R.id.textBio);
         final TextView textCountry = (TextView) view.findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
@@ -276,6 +276,20 @@ public class ProfileFragment extends Fragment {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.detach(this).attach(this).commit();
+
+                return true;
+
+            // share profile
+            case R.id.action_share:
+
+                String usrn = textUsername.getText().toString();
+                if(!usrn.equals("") && usrn != null) {
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String url = AppHelper.baseurl + "/user/" + usrn.replace("@", "");
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url);
+                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                }
 
                 return true;
 
