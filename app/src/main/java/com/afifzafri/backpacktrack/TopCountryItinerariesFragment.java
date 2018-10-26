@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -89,6 +90,31 @@ public class TopCountryItinerariesFragment extends Fragment {
 
         // create a function for the first load
         firstLoadData(view, country_id, access_token);
+
+        // here add a recyclerView listener, to listen to scrolling,
+        // we don't care when user scrolls upwards, will only be careful when user scrolls downwards
+        // this listener is freely provided for by android, no external library
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            // for this tutorial, this is the ONLY method that we need, ignore the rest
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    // Recycle view scrolling downwards...
+                    // this if statement detects when user reaches the end of recyclerView, this is only time we should load more
+                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
+                        // remember "!" is the same as "== false"
+                        // here we are now allowed to load more, but we need to be careful
+                        // we must check if itShouldLoadMore variable is true [unlocked]
+                        if (itShouldLoadMore) {
+                            loadMore(view, country_id, access_token);
+                        }
+                    }
+
+                }
+            }
+        });
 
         return view;
     }
@@ -169,6 +195,101 @@ public class TopCountryItinerariesFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Load itineraries Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 }
                 loadingFrame.setVisibility(View.GONE);
+                itShouldLoadMore = true; // even if volley failed, set true so we can retry again
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(countriesListRequest);
+
+        lastPage++; // increment the page number
+    }
+
+    private void loadMore(View view, String country_id, final String access_token) {
+        // get UI elements
+        final ProgressBar loadMoreSpin = (ProgressBar) view.findViewById(R.id.loadMoreSpin);
+
+        // show loading spinner
+        loadMoreSpin.setVisibility(View.VISIBLE);
+
+        itShouldLoadMore = false; // lock this guy,(itShouldLoadMore) to make sure,
+        // user will not load more when volley is processing another request
+        // only load more when  volley is free
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listItinerariesByCountry/"+country_id+"?page="+lastPage, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        // since volley has completed and it has our response, now let's update
+                        // itShouldLoadMore
+                        itShouldLoadMore = true;
+
+                        try {
+                            JSONArray itineraries = response.getJSONArray("data");
+
+                            if (itineraries.length() <= 0) {
+                                // we need to check this, to make sure, our dataStructure JSonArray contains
+                                // something
+                                if(isAdded()) {
+                                    Toast.makeText(getActivity().getApplicationContext(), "No more itineraries available", Toast.LENGTH_SHORT).show();
+                                }
+                                itShouldLoadMore = false;
+                                loadMoreSpin.setVisibility(View.GONE);
+                                return; // return will end the program at this point
+                            }
+
+
+                            for(int i=0;i<itineraries.length();i++)
+                            {
+                                JSONObject itinerary = itineraries.getJSONObject(i);
+                                String id = itinerary.getString("id");
+                                String title = itinerary.getString("title");
+                                String duration = itinerary.getString("duration");
+                                JSONObject user = itinerary.getJSONObject("user");
+                                String user_id = user.getString("id");
+                                String user_name = user.getString("name");
+                                String date = itinerary.getString("created_at");
+                                JSONObject country = itinerary.getJSONObject("country");
+                                String country_name = country.getString("name");
+                                String country_currency = country.getString("currency");
+                                String totalbudget = country_currency + " " + itinerary.getString("totalbudget");
+                                String totallikes = itinerary.getString("totallikes");
+                                String totalcomments = itinerary.getString("totalcomments");
+                                Boolean isLiked = itinerary.getBoolean("isLiked");
+
+                                // insert data into array
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
+
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if(isAdded()) {
+                            Toast.makeText(getActivity().getApplicationContext(), "Load more itineraries success!", Toast.LENGTH_SHORT).show();
+                        }
+                        loadMoreSpin.setVisibility(View.GONE);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Load more itineraries failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
+                loadMoreSpin.setVisibility(View.GONE);
+
                 itShouldLoadMore = true; // even if volley failed, set true so we can retry again
             }
         })
