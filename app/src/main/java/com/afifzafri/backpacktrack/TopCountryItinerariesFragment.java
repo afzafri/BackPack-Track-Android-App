@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -115,6 +116,22 @@ public class TopCountryItinerariesFragment extends Fragment {
                 }
             }
         });
+
+        // refresh fragment when perform swipe to refresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(TopCountryItinerariesFragment.this).attach(TopCountryItinerariesFragment.this).commit();
+
+                        mSwipeRefreshLayout.setRefreshing(false);
+
+                        lastPage = 1; // reset back current page to first page
+                    }
+                }
+        );
 
         return view;
     }
