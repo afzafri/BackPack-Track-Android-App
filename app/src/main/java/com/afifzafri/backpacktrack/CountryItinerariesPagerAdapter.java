@@ -24,14 +24,17 @@ public class CountryItinerariesPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 TopCountryItinerariesFragment tab1 = new TopCountryItinerariesFragment();
+                bundle.putInt("sort", 1); // Sort by NEW : 1
                 tab1.setArguments(bundle);
                 return tab1;
             case 1:
                 TopCountryItinerariesFragment tab2 = new TopCountryItinerariesFragment();
+                bundle.putInt("sort", 2); // Sort by TOP : 2
                 tab2.setArguments(bundle);
                 return tab2;
             case 2:
                 TopCountryItinerariesFragment tab3 = new TopCountryItinerariesFragment();
+                bundle.putInt("sort", 3); // Sort by TRENDING : 3
                 tab3.setArguments(bundle);
                 return tab3;
             default:

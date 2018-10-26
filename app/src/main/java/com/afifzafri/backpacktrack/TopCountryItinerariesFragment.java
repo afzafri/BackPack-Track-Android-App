@@ -56,6 +56,8 @@ public class TopCountryItinerariesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
 
+    private String apiEndpoint;
+
     public TopCountryItinerariesFragment() {
         // Required empty public constructor
     }
@@ -69,6 +71,20 @@ public class TopCountryItinerariesFragment extends Fragment {
 
         // get country id
         final String country_id = getArguments().getString("country_id");
+        // get sort type
+        final int sort = getArguments().getInt("sort");
+
+        // set API endpoint based on sort code received
+        apiEndpoint = null;
+        if(sort == 1) {
+            apiEndpoint = "listItinerariesByCountry";
+        } else if(sort == 2) {
+            apiEndpoint = "listTopItinerariesByCountry";
+        } else if(sort == 3) {
+            apiEndpoint = "listTrendingItinerariesByCountry";
+        } else {
+            apiEndpoint = "listItinerariesByCountry";
+        }
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -90,7 +106,7 @@ public class TopCountryItinerariesFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         // create a function for the first load
-        firstLoadData(view, country_id, access_token);
+        firstLoadData(view, country_id, access_token, apiEndpoint);
 
         // here add a recyclerView listener, to listen to scrolling,
         // we don't care when user scrolls upwards, will only be careful when user scrolls downwards
@@ -109,7 +125,7 @@ public class TopCountryItinerariesFragment extends Fragment {
                         // here we are now allowed to load more, but we need to be careful
                         // we must check if itShouldLoadMore variable is true [unlocked]
                         if (itShouldLoadMore) {
-                            loadMore(view, country_id, access_token);
+                            loadMore(view, country_id, access_token, apiEndpoint);
                         }
                     }
 
@@ -136,7 +152,7 @@ public class TopCountryItinerariesFragment extends Fragment {
         return view;
     }
 
-    private void firstLoadData(View view, String country_id, final String access_token) {
+    private void firstLoadData(View view, String country_id, final String access_token, String apiEndpoint) {
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
@@ -148,7 +164,7 @@ public class TopCountryItinerariesFragment extends Fragment {
         // only load more when  volley is free
 
         // Request a string response from the provided URL.
-        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listItinerariesByCountry/"+country_id, null,
+        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/"+apiEndpoint+"/"+country_id, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -231,7 +247,7 @@ public class TopCountryItinerariesFragment extends Fragment {
         lastPage++; // increment the page number
     }
 
-    private void loadMore(View view, String country_id, final String access_token) {
+    private void loadMore(View view, String country_id, final String access_token, String apiEndpoint) {
         // get UI elements
         final ProgressBar loadMoreSpin = (ProgressBar) view.findViewById(R.id.loadMoreSpin);
 
@@ -243,7 +259,7 @@ public class TopCountryItinerariesFragment extends Fragment {
         // only load more when  volley is free
 
         // Request a string response from the provided URL.
-        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/listItinerariesByCountry/"+country_id+"?page="+lastPage, null,
+        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/"+apiEndpoint+"/"+country_id+"?page="+lastPage, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
