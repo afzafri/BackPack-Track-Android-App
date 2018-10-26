@@ -1,34 +1,10 @@
 package com.afifzafri.backpacktrack;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class CountryItinerariesActivity extends AppCompatActivity {
 
@@ -68,7 +44,7 @@ public class CountryItinerariesActivity extends AppCompatActivity {
         thirdTab.setText("Trending");
         tabLayout.addTab(thirdTab);
 
-        CountryItinerariesPagerAdapter adapter = new CountryItinerariesPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), country_id);
+        ItinerariesPagerAdapter adapter = new ItinerariesPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), "country", country_id);
         simpleViewPager.setAdapter(adapter);
         // addOnPageChangeListener event change the tab on slide
         simpleViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

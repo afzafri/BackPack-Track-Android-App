@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListCountryItinerariesFragment extends Fragment {
+public class ListItinerariesFragment extends Fragment {
 
     // for swipe to refresh widget
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -58,7 +58,7 @@ public class ListCountryItinerariesFragment extends Fragment {
 
     private String apiEndpoint;
 
-    public ListCountryItinerariesFragment() {
+    public ListItinerariesFragment() {
         // Required empty public constructor
     }
 
@@ -67,23 +67,47 @@ public class ListCountryItinerariesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_list_country_itineraries, container, false);
+        final View view = inflater.inflate(R.layout.fragment_list_itineraries, container, false);
 
-        // get country id
-        final String country_id = getArguments().getString("country_id");
+        // get API type
+        final String type = getArguments().getString("type");
+        // get input
+        final String input = getArguments().getString("input");
         // get sort type
         final int sort = getArguments().getInt("sort");
 
         // set API endpoint based on sort code received
         apiEndpoint = null;
-        if(sort == 1) {
-            apiEndpoint = "listItinerariesByCountry";
-        } else if(sort == 2) {
-            apiEndpoint = "listTopItinerariesByCountry";
-        } else if(sort == 3) {
-            apiEndpoint = "listTrendingItinerariesByCountry";
-        } else {
-            apiEndpoint = "listItinerariesByCountry";
+        if(type.equals("country")) {
+            if(sort == 1) {
+                apiEndpoint = "listItinerariesByCountry/"+input;
+            } else if(sort == 2) {
+                apiEndpoint = "listTopItinerariesByCountry/"+input;
+            } else if(sort == 3) {
+                apiEndpoint = "listTrendingItinerariesByCountry/"+input;
+            } else {
+                apiEndpoint = "listItinerariesByCountry/"+input;
+            }
+        } else if(type.equals("search")) {
+            if(sort == 1) {
+                apiEndpoint = "searchItineraries/"+input;
+            } else if(sort == 2) {
+                apiEndpoint = "searchTopItineraries/"+input;
+            } else if(sort == 3) {
+                apiEndpoint = "searchTrendingItineraries/"+input;
+            } else {
+                apiEndpoint = "searchItineraries/"+input;
+            }
+        } else if(type.equals("user")) {
+            if(sort == 1) {
+                apiEndpoint = "listItinerariesByUserPaginated/"+input;
+            } else if(sort == 2) {
+                apiEndpoint = "listTopItinerariesByUserPaginated/"+input;
+            } else if(sort == 3) {
+                apiEndpoint = "listTrendingItinerariesByUserPaginated/"+input;
+            } else {
+                apiEndpoint = "listItinerariesByUserPaginated/"+input;
+            }
         }
 
         // read from SharedPreferences
@@ -106,7 +130,7 @@ public class ListCountryItinerariesFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         // create a function for the first load
-        firstLoadData(view, country_id, access_token, apiEndpoint);
+        firstLoadData(view, access_token, apiEndpoint);
 
         // here add a recyclerView listener, to listen to scrolling,
         // we don't care when user scrolls upwards, will only be careful when user scrolls downwards
@@ -125,7 +149,7 @@ public class ListCountryItinerariesFragment extends Fragment {
                         // here we are now allowed to load more, but we need to be careful
                         // we must check if itShouldLoadMore variable is true [unlocked]
                         if (itShouldLoadMore) {
-                            loadMore(view, country_id, access_token, apiEndpoint);
+                            loadMore(view, access_token, apiEndpoint);
                         }
                     }
 
@@ -140,7 +164,7 @@ public class ListCountryItinerariesFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.detach(ListCountryItinerariesFragment.this).attach(ListCountryItinerariesFragment.this).commit();
+                        ft.detach(ListItinerariesFragment.this).attach(ListItinerariesFragment.this).commit();
 
                         mSwipeRefreshLayout.setRefreshing(false);
 
@@ -152,7 +176,7 @@ public class ListCountryItinerariesFragment extends Fragment {
         return view;
     }
 
-    private void firstLoadData(View view, String country_id, final String access_token, String apiEndpoint) {
+    private void firstLoadData(View view, final String access_token, String apiEndpoint) {
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
@@ -164,7 +188,7 @@ public class ListCountryItinerariesFragment extends Fragment {
         // only load more when  volley is free
 
         // Request a string response from the provided URL.
-        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/"+apiEndpoint+"/"+country_id, null,
+        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/"+apiEndpoint, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -247,7 +271,7 @@ public class ListCountryItinerariesFragment extends Fragment {
         lastPage++; // increment the page number
     }
 
-    private void loadMore(View view, String country_id, final String access_token, String apiEndpoint) {
+    private void loadMore(View view, final String access_token, String apiEndpoint) {
         // get UI elements
         final ProgressBar loadMoreSpin = (ProgressBar) view.findViewById(R.id.loadMoreSpin);
 
@@ -259,7 +283,7 @@ public class ListCountryItinerariesFragment extends Fragment {
         // only load more when  volley is free
 
         // Request a string response from the provided URL.
-        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/"+apiEndpoint+"/"+country_id+"?page="+lastPage, null,
+        JsonObjectRequest countriesListRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/"+apiEndpoint+"?page="+lastPage, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

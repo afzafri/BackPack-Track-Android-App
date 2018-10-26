@@ -67,7 +67,7 @@ public class SearchItineraryActivity extends AppCompatActivity {
         thirdTab.setText("Trending");
         tabLayout.addTab(thirdTab);
 
-        SearchItinerariesPagerAdapter adapter = new SearchItinerariesPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), query);
+        ItinerariesPagerAdapter adapter = new ItinerariesPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), "search", query);
         simpleViewPager.setAdapter(adapter);
         // addOnPageChangeListener event change the tab on slide
         simpleViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

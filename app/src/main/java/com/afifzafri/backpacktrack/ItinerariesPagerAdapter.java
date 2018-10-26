@@ -5,35 +5,38 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class CountryItinerariesPagerAdapter extends FragmentStatePagerAdapter {
+public class ItinerariesPagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
-    String country_id;
+    String type;
+    String input;
 
-    public CountryItinerariesPagerAdapter(FragmentManager fm, int NumOfTabs, String country_id) {
+    public ItinerariesPagerAdapter(FragmentManager fm, int NumOfTabs, String type, String input) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
-        this.country_id = country_id;
+        this.type = type;
+        this.input = input;
     }
 
     @Override
     public Fragment getItem(int position) {
 
         Bundle bundle = new Bundle();
-        bundle.putString("country_id", country_id);
+        bundle.putString("type", type);
+        bundle.putString("input", input);
 
         switch (position) {
             case 0:
-                ListCountryItinerariesFragment tab1 = new ListCountryItinerariesFragment();
+                ListItinerariesFragment tab1 = new ListItinerariesFragment();
                 bundle.putInt("sort", 1); // Sort by NEW : 1
                 tab1.setArguments(bundle);
                 return tab1;
             case 1:
-                ListCountryItinerariesFragment tab2 = new ListCountryItinerariesFragment();
+                ListItinerariesFragment tab2 = new ListItinerariesFragment();
                 bundle.putInt("sort", 2); // Sort by TOP : 2
                 tab2.setArguments(bundle);
                 return tab2;
             case 2:
-                ListCountryItinerariesFragment tab3 = new ListCountryItinerariesFragment();
+                ListItinerariesFragment tab3 = new ListItinerariesFragment();
                 bundle.putInt("sort", 3); // Sort by TRENDING : 3
                 tab3.setArguments(bundle);
                 return tab3;
