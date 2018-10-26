@@ -231,11 +231,13 @@ public class UserProfileActivity extends AppCompatActivity {
                             {
                                 JSONObject itinerary = response.getJSONObject(i);
                                 String itinerary_id = itinerary.getString("id");
-                                String itinerary_title = itinerary.getString("itinerary_title");
-                                String itinerary_country = itinerary.getString("itinerary_country");
-                                String itinerary_poster_id = itinerary.getString("itinerary_poster_id");
-                                String itinerary_poster_name = itinerary.getString("itinerary_poster_name");
-                                String totallikes = itinerary.getString("total");
+                                String itinerary_title = itinerary.getString("title");
+                                JSONObject country = itinerary.getJSONObject("country");
+                                String itinerary_country = country.getString("name");
+                                JSONObject user = itinerary.getJSONObject("user");
+                                String itinerary_poster_id = user.getString("id");
+                                String itinerary_poster_name = user.getString("name");
+                                String totallikes = itinerary.getString("totallikes");
 
                                 // insert data into array
                                 popularList.add(new PopularItinerariesModel(itinerary_id, itinerary_title, itinerary_country, itinerary_poster_id, itinerary_poster_name, totallikes));
