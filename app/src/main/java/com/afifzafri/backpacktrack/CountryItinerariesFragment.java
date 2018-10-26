@@ -349,7 +349,7 @@ public class CountryItinerariesFragment extends Fragment {
 
                     // when user submit search (enter), open search result page
                     // redirect to edit profile page
-                    Intent intentPage = new Intent(getActivity(), SearchItineraryActivity.class);
+                    Intent intentPage = new Intent(getActivity(), SearchItinerariesActivity.class);
                     intentPage.putExtra("query", query);
                     startActivity(intentPage);
 

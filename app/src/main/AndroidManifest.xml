@@ -85,7 +85,7 @@
             android:name=".CreateActivityActivity"
             android:label="Create new Activity" />
         <activity android:name=".EditActivityActivity" />
-        <activity android:name=".SearchItineraryActivity" />
+        <activity android:name=".SearchItinerariesActivity" />
         <activity
             android:name=".NotificationsActivity"
             android:label="Notifications" />
