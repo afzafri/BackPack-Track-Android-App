@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TopCountryItinerariesFragment extends Fragment {
+public class ListCountryItinerariesFragment extends Fragment {
 
     // for swipe to refresh widget
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -58,7 +58,7 @@ public class TopCountryItinerariesFragment extends Fragment {
 
     private String apiEndpoint;
 
-    public TopCountryItinerariesFragment() {
+    public ListCountryItinerariesFragment() {
         // Required empty public constructor
     }
 
@@ -67,7 +67,7 @@ public class TopCountryItinerariesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_top_country_itineraries, container, false);
+        final View view = inflater.inflate(R.layout.fragment_list_country_itineraries, container, false);
 
         // get country id
         final String country_id = getArguments().getString("country_id");
@@ -140,7 +140,7 @@ public class TopCountryItinerariesFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.detach(TopCountryItinerariesFragment.this).attach(TopCountryItinerariesFragment.this).commit();
+                        ft.detach(ListCountryItinerariesFragment.this).attach(ListCountryItinerariesFragment.this).commit();
 
                         mSwipeRefreshLayout.setRefreshing(false);
 
