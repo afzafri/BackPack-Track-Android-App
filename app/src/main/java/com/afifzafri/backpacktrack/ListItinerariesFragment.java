@@ -221,6 +221,9 @@ public class ListItinerariesFragment extends Fragment {
                                 JSONObject user = itinerary.getJSONObject("user");
                                 String user_id = user.getString("id");
                                 String user_name = user.getString("name");
+                                JSONObject rank = user.getJSONObject("rank");
+                                String user_rank = rank.getString("rank");
+                                String user_badge = rank.getString("badge");
                                 String date = itinerary.getString("created_at");
                                 JSONObject country = itinerary.getJSONObject("country");
                                 String country_name = country.getString("name");
@@ -231,7 +234,7 @@ public class ListItinerariesFragment extends Fragment {
                                 Boolean isLiked = itinerary.getBoolean("isLiked");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, user_rank, user_badge, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -316,6 +319,9 @@ public class ListItinerariesFragment extends Fragment {
                                 JSONObject user = itinerary.getJSONObject("user");
                                 String user_id = user.getString("id");
                                 String user_name = user.getString("name");
+                                JSONObject rank = user.getJSONObject("rank");
+                                String user_rank = rank.getString("rank");
+                                String user_badge = rank.getString("badge");
                                 String date = itinerary.getString("created_at");
                                 JSONObject country = itinerary.getJSONObject("country");
                                 String country_name = country.getString("name");
@@ -326,7 +332,7 @@ public class ListItinerariesFragment extends Fragment {
                                 Boolean isLiked = itinerary.getBoolean("isLiked");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, user_rank, user_badge, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
 
                                 mAdapter.notifyDataSetChanged();
                             }

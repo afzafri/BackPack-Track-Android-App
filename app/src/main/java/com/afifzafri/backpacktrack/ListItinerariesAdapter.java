@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +46,7 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
         public TextView itinerary_likes;
         public TextView itinerary_comments;
         public TextView itinerary_user;
+        public ImageView itinerary_user_badge;
         public TextView itinerary_date;
         public LinearLayout contentsArea;
         public ItinerariesModel currentItem;
@@ -76,6 +79,9 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
             itinerary_user = (TextView) v.findViewById(R.id.itinerary_user);
             this.itinerary_user = itinerary_user;
+
+            itinerary_user_badge = (ImageView) v.findViewById(R.id.itinerary_user_badge);
+            this.itinerary_user_badge = itinerary_user_badge;
 
             itinerary_date = (TextView) v.findViewById(R.id.itinerary_date);
             this.itinerary_date = itinerary_date;
@@ -137,6 +143,9 @@ public class ListItinerariesAdapter extends RecyclerView.Adapter<ListItineraries
 
         // Set itinerary user name
         holder.itinerary_user.setText(itinerariesList.get(position).getUser());
+
+        // set user badge
+        Picasso.get().load(itinerariesList.get(position).getUserBadge()).into(holder.itinerary_user_badge);
 
         // Set itinerary date
         String crdate = itinerariesList.get(position).getDate();

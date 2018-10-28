@@ -202,7 +202,7 @@ public class MyItineraryFragment extends Fragment {
                                 Boolean isLiked = itinerary.getBoolean("isLiked");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, "", "", title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -300,7 +300,7 @@ public class MyItineraryFragment extends Fragment {
                                 Boolean isLiked = itinerary.getBoolean("isLiked");
 
                                 // insert data into array
-                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
+                                itinerariesList.add(new ItinerariesModel(id, user_id, user_name, "", "", title, country_name, duration, date, totalbudget, totallikes, totalcomments, isLiked));
 
                                 mAdapter.notifyDataSetChanged();
                             }
