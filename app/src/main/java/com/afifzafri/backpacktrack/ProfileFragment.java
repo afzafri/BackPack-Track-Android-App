@@ -74,6 +74,8 @@ public class ProfileFragment extends Fragment {
         final TextView textCountry = (TextView) view.findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textWebsite = (TextView) view.findViewById(R.id.textWebsite);
+        final ImageView badge = (ImageView) view.findViewById(R.id.badge);
+        final TextView textRank = (TextView) view.findViewById(R.id.textRank);
         final TextView textTotal = (TextView) view.findViewById(R.id.textTotal);
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
         final TextView textCountComments = (TextView) view.findViewById(R.id.textCountComments);
@@ -108,6 +110,9 @@ public class ProfileFragment extends Fragment {
                             String bio = response.getString("bio");
                             String website = response.getString("website");
                             String email = response.getString("email");
+                            JSONObject rank = response.getJSONObject("rank");
+                            String user_badge = rank.getString("badge");
+                            String user_rank = rank.getString("rank");
                             String totalitineraries = response.getString("totalitineraries");
                             String avatar_url = response.getString("avatar_url");
                             JSONObject country = response.getJSONObject("country");
@@ -121,6 +126,7 @@ public class ProfileFragment extends Fragment {
                             textEmail.setText(email);
                             textCountry.setText(country_name);
                             textTotal.setText(totalitineraries);
+                            textRank.setText(user_rank);
 
                             // check if bio and website not available (because optional), hide the widgets
                             if(bio == null || bio.isEmpty() || bio == "null") {
@@ -145,6 +151,13 @@ public class ProfileFragment extends Fragment {
                                         .load(R.drawable.avatar)
                                         .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5))
                                         .into(avatar_pic);
+                            }
+
+                            // set user badge
+                            if(isAdded()) {
+                                Picasso.get()
+                                        .load(user_badge)
+                                        .into(badge);
                             }
 
                             // check if activity have been attach to the fragment

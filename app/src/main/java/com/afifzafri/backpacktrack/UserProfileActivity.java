@@ -78,6 +78,8 @@ public class UserProfileActivity extends AppCompatActivity {
         final TextView textCountry = (TextView) findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) findViewById(R.id.textEmail);
         final TextView textWebsite = (TextView) findViewById(R.id.textWebsite);
+        final ImageView badge = (ImageView) findViewById(R.id.badge);
+        final TextView textRank = (TextView) findViewById(R.id.textRank);
         final TextView textTotal = (TextView) findViewById(R.id.textTotal);
         final ImageView avatar_pic = (ImageView) findViewById(R.id.avatar_pic);
         final Button itineraryBtn = (Button) findViewById(R.id.itineraryBtn);
@@ -104,6 +106,9 @@ public class UserProfileActivity extends AppCompatActivity {
                             String bio = response.getString("bio");
                             String website = response.getString("website");
                             String email = response.getString("email");
+                            JSONObject rank = response.getJSONObject("rank");
+                            String user_badge = rank.getString("badge");
+                            String user_rank = rank.getString("rank");
                             String totalitineraries = response.getString("totalitineraries");
                             String avatar_url = response.getString("avatar_url");
                             String country_name = response.getString("country_name");
@@ -116,6 +121,7 @@ public class UserProfileActivity extends AppCompatActivity {
                             textEmail.setText(email);
                             textCountry.setText(country_name);
                             textTotal.setText(totalitineraries);
+                            textRank.setText(user_rank);
 
                             // check if bio and website not available (because optional), hide the widgets
                             if(bio == null || bio.isEmpty() || bio == "null") {
@@ -139,6 +145,11 @@ public class UserProfileActivity extends AppCompatActivity {
                                         .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5))
                                         .into(avatar_pic);
                             }
+
+                            // set user badge
+                            Picasso.get()
+                                    .load(user_badge)
+                                    .into(badge);
 
                             Toast.makeText(getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
