@@ -96,45 +96,52 @@
                     <LinearLayout
                         android:id="@+id/rankLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/badge"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/ic_fiber_manual_record_black_24dp" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/textRank"
-                            android:layout_width="wrap_content"
+                            <ImageView
+                                android:id="@+id/badge"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_fiber_manual_record_black_24dp" />
+
+                            <TextView
+                                android:id="@+id/textRank"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="rank" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="rank" />
-                    </LinearLayout>
+                            android:layout_marginBottom="15dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/textTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textColor="@color/colorAccent"
+                                android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/textTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/colorAccent"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/labelit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="itineraries" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/labelit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="itineraries" />
                     </LinearLayout>
 
                     <LinearLayout
