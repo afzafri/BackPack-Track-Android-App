@@ -9,6 +9,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -228,7 +230,9 @@ public class AppHelper {
     public void rankInfo(Context ctx)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        builder.setMessage("Look at this dialog!")
+        LayoutInflater inflater = LayoutInflater.from(ctx);
+        View dialogView = inflater.inflate(R.layout.rank_info_dialog, null);
+        builder.setView(dialogView)
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
