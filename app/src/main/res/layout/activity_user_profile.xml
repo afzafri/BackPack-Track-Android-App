@@ -92,6 +92,7 @@
                         android:text="Bio" />
 
                     <LinearLayout
+                        android:id="@+id/rankLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
