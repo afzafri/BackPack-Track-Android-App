@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -232,6 +234,18 @@ public class AppHelper {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         LayoutInflater inflater = LayoutInflater.from(ctx);
         View dialogView = inflater.inflate(R.layout.rank_info_dialog, null);
+
+        ImageView bronze = (ImageView) dialogView.findViewById(R.id.bronze);
+        ImageView silver = (ImageView) dialogView.findViewById(R.id.silver);
+        ImageView gold = (ImageView) dialogView.findViewById(R.id.gold);
+        ImageView diamond = (ImageView) dialogView.findViewById(R.id.diamond);
+
+        // load and set badge
+        Picasso.get().load(baseurl + "/images/badges/bronze.png").into(bronze);
+        Picasso.get().load(baseurl + "/images/badges/silver.png").into(silver);
+        Picasso.get().load(baseurl + "/images/badges/gold.png").into(gold);
+        Picasso.get().load(baseurl + "/images/badges/diamond.png").into(diamond);
+
         builder.setView(dialogView)
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
