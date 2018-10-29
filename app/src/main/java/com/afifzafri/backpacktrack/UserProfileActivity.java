@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +79,7 @@ public class UserProfileActivity extends AppCompatActivity {
         final TextView textCountry = (TextView) findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) findViewById(R.id.textEmail);
         final TextView textWebsite = (TextView) findViewById(R.id.textWebsite);
+        final LinearLayout rankLayout = (LinearLayout) findViewById(R.id.rankLayout);
         final ImageView badge = (ImageView) findViewById(R.id.badge);
         final TextView textRank = (TextView) findViewById(R.id.textRank);
         final TextView textTotal = (TextView) findViewById(R.id.textTotal);
@@ -219,6 +221,14 @@ public class UserProfileActivity extends AppCompatActivity {
                 intentPage.putExtra("user_id", user_id);
                 intentPage.putExtra("user_name", textName.getText().toString());
                 startActivity(intentPage);
+            }
+        });
+
+        // ----- Click user rank and badge, show alert dialog of rank info -----
+        rankLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AppHelper().rankInfo(UserProfileActivity.this);
             }
         });
     }
