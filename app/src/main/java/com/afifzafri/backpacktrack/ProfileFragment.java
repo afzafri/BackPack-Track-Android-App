@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,7 @@ public class ProfileFragment extends Fragment {
         final TextView textCountry = (TextView) view.findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
         final TextView textWebsite = (TextView) view.findViewById(R.id.textWebsite);
+        final LinearLayout rankLayout = (LinearLayout) view.findViewById(R.id.rankLayout);
         final ImageView badge = (ImageView) view.findViewById(R.id.badge);
         final TextView textRank = (TextView) view.findViewById(R.id.textRank);
         final TextView textTotal = (TextView) view.findViewById(R.id.textTotal);
@@ -272,6 +274,14 @@ public class ProfileFragment extends Fragment {
                     intentPage.putExtra("caption", textName.getText().toString());
                     startActivity(intentPage);
                 }
+            }
+        });
+
+        // ----- Click user rank and badge, show alert dialog of rank info -----
+        rankLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AppHelper().rankInfo(getActivity());
             }
         });
 

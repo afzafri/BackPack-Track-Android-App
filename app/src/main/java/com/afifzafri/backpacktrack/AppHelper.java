@@ -1,6 +1,8 @@
 package com.afifzafri.backpacktrack;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
@@ -221,5 +223,20 @@ public class AppHelper {
                 }
             }
         }
+    }
+
+    public void rankInfo(Context ctx)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        builder.setMessage("Look at this dialog!")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //do things
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
