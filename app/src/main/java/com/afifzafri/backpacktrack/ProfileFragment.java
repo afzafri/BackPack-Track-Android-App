@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -85,6 +86,7 @@ public class ProfileFragment extends Fragment {
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
         final FrameLayout loadNotiFrame = (FrameLayout) view.findViewById(R.id.loadNotiFrame);
         final CardView cardNotification = (CardView) view.findViewById(R.id.cardNotification);
+        final Button itineraryBtn = (Button) view.findViewById(R.id.itineraryBtn);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -282,6 +284,17 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 new AppHelper().rankInfo(getActivity());
+            }
+        });
+
+        // ----- Click view all itineraries button, open user itineraries activity -----
+        itineraryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentPage = new Intent(getActivity(), UserItinerariesActivity.class);
+                intentPage.putExtra("user_id", user_id);
+                intentPage.putExtra("user_name", textName.getText().toString());
+                startActivity(intentPage);
             }
         });
 
