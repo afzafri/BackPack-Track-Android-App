@@ -40,7 +40,6 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         public TextView itinerary_country;
         public TextView itinerary_duration;
         public TextView itinerary_totalbudget;
-        public TextView itinerary_user;
         public TextView itinerary_date;
         public CardView mCardView;
         public ImageButton activityBtn;
@@ -62,9 +61,6 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
             itinerary_totalbudget = (TextView) v.findViewById(R.id.itinerary_totalbudget);
             this.itinerary_totalbudget = itinerary_totalbudget;
-
-            itinerary_user = (TextView) v.findViewById(R.id.itinerary_user);
-            this.itinerary_user = itinerary_user;
 
             itinerary_date = (TextView) v.findViewById(R.id.itinerary_date);
             this.itinerary_date = itinerary_date;
@@ -120,9 +116,6 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
         // Set itinerary total budget
         holder.itinerary_totalbudget.setText(itinerariesList.get(position).getTotalBudget());
-
-        // Set itinerary user name
-        holder.itinerary_user.setText(itinerariesList.get(position).getUser());
 
         // Set itinerary date
         String crdate = itinerariesList.get(position).getDate();

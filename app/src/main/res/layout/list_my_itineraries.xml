@@ -38,16 +38,6 @@
                 android:paddingRight="15dp">
 
                 <TextView
-                    android:id="@+id/itinerary_user"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_person_outline_grey_24dp"
-                    android:gravity="center_vertical"
-                    android:text="user"
-                    android:textStyle="italic" />
-
-                <TextView
                     android:id="@+id/itinerary_country"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
