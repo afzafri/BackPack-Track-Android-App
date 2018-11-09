@@ -32,9 +32,6 @@ public class HomeFragment extends Fragment {
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         String name = sharedpreferences.getString("name", "");
 
-        TextView user_name = (TextView) view.findViewById(R.id.user_name);
-        user_name.setText(name);
-
         return view;
     }
 
