@@ -36,13 +36,16 @@ import java.util.Map;
 public class HomeFragment extends Fragment {
 
     // initialize adapter and data structure here
+    private ListTopContributorsAdapter contributorsAdapter;
     private ListPopularCountriesAdapter countriesAdapter;
     private ListPopularItinerariesAdapter itinerariesAdapter;
     // list Array
+    private List<UsersModel> contributorsList;
     private List<CountriesModel> countriesList;
     private List<PopularItinerariesModel> itinerariesList;
 
     // Recyclerviews
+    private RecyclerView contributorsRecycler;
     private RecyclerView countriesRecycler;
     private RecyclerView itinerariesRecycler;
     private LinearLayoutManager mLayoutManager;
@@ -62,6 +65,25 @@ public class HomeFragment extends Fragment {
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
+
+        // ----- List Popular Countries -----
+        contributorsList = new ArrayList<>();
+        contributorsAdapter = new ListTopContributorsAdapter(contributorsList);
+
+        contributorsRecycler = (RecyclerView) view.findViewById(R.id.listTopContributors);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        contributorsRecycler.setLayoutManager(mLayoutManager);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        contributorsRecycler.setHasFixedSize(true);
+        contributorsRecycler.setNestedScrollingEnabled(false);
+
+        // specify an adapter (see also next example)
+        contributorsRecycler.setAdapter(contributorsAdapter);
+
+        // create a function for the load user's popular itineraries list
+        loadTopContributors(access_token, view);
 
 
         // ----- List Popular Countries -----
@@ -104,6 +126,70 @@ public class HomeFragment extends Fragment {
         loadPopularItineraries(access_token, view);
 
         return view;
+    }
+
+    private void loadTopContributors(final String access_token, View view) {
+        // get UI elements
+        final FrameLayout loadUserFrame = (FrameLayout) view.findViewById(R.id.loadUserFrame);
+
+        // show loading spinner
+        loadUserFrame.setVisibility(View.VISIBLE);
+
+        // Request a string response from the provided URL.
+        JsonArrayRequest popularListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listTopContributors", null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        try {
+
+                            for(int i=0;i<response.length();i++)
+                            {
+                                JSONObject popular = response.getJSONObject(i);
+                                String total_itineraries = popular.getString("totalitineraries");
+                                JSONObject user = popular.getJSONObject("user");
+                                String user_id = user.getString("id");
+                                String user_name = user.getString("name");
+                                String user_username = user.getString("username");
+                                String user_country = user.getString("country_name");
+                                String user_avatar = user.getString("avatar_url");
+                                JSONObject rankdata = popular.getJSONObject("rank");
+                                String user_rank = rankdata.getString("rank");
+                                String user_badge = rankdata.getString("badge");
+
+                                // insert data into array
+                                contributorsList.add(new UsersModel(user_id, user_name, user_username, user_country, user_avatar, total_itineraries, user_rank, user_badge));
+
+                                contributorsAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        loadUserFrame.setVisibility(View.GONE);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getBaseContext(), "Load top contributors Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
+                loadUserFrame.setVisibility(View.GONE);
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(popularListRequest);
     }
 
     private void loadPopularCountries(final String access_token, View view) {
