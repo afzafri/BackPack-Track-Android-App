@@ -103,7 +103,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserItinerariesActivity"></activity>
+        <activity android:name=".UserItinerariesActivity" />
+        <activity
+            android:name=".CurrencyCalculatorActivity"
+            android:label="Currency Calculator" />
     </application>
 
 </manifest>
