@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 public class ListTopContributorsAdapter extends RecyclerView.Adapter<ListTopContributorsAdapter.MyViewHolder> {
 
     private List<UsersModel> usersList;
@@ -78,7 +80,10 @@ public class ListTopContributorsAdapter extends RecyclerView.Adapter<ListTopCont
         // - replace the contents of the view with that element
 
         // Set user avatar
-        Picasso.get().load(usersList.get(position).getAvatar()).into(holder.user_avatar);
+        Picasso.get()
+                .load(usersList.get(position).getAvatar())
+                .transform(new CropCircleTransformation())
+                .into(holder.user_avatar);
 
         // Set user name
         holder.user_name.setText(usersList.get(position).getName());
