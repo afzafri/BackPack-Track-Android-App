@@ -83,6 +83,7 @@ public class ProfileFragment extends Fragment {
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
         final TextView textCountComments = (TextView) view.findViewById(R.id.textCountComments);
         final TextView textCountLikes = (TextView) view.findViewById(R.id.textCountLikes);
+        final LinearLayout profileLayout = (LinearLayout) view.findViewById(R.id.profileLayout);
         final FrameLayout loadProfileFrame = (FrameLayout) view.findViewById(R.id.loadProfileFrame);
         final FrameLayout loadNotiFrame = (FrameLayout) view.findViewById(R.id.loadNotiFrame);
         final CardView cardNotification = (CardView) view.findViewById(R.id.cardNotification);
@@ -168,6 +169,7 @@ public class ProfileFragment extends Fragment {
                             if(isAdded()) {
                                 Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
                             }
+                            profileLayout.setVisibility(View.VISIBLE);
                             loadProfileFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {

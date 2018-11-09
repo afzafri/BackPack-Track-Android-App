@@ -85,6 +85,7 @@ public class UserProfileActivity extends AppCompatActivity {
         final TextView textTotal = (TextView) findViewById(R.id.textTotal);
         final ImageView avatar_pic = (ImageView) findViewById(R.id.avatar_pic);
         final Button itineraryBtn = (Button) findViewById(R.id.itineraryBtn);
+        final LinearLayout profileLayout = (LinearLayout) findViewById(R.id.profileLayout);
         final FrameLayout loadProfileFrame = (FrameLayout) findViewById(R.id.loadProfileFrame);
 
         // show loading spinner
@@ -154,6 +155,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                     .into(badge);
 
                             Toast.makeText(getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
+                            profileLayout.setVisibility(View.VISIBLE);
                             loadProfileFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {
