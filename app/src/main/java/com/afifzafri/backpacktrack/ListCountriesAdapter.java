@@ -25,6 +25,7 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
         public TextView mTextView;
         public ImageView mImageView;
         public CardView mCardView;
+        public TextView total_itineraries;
         public CountriesModel currentItem;
 
         public MyViewHolder(View v) {
@@ -37,6 +38,9 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
 
             mCardView = (CardView) v.findViewById(R.id.country_card);
             this.mCardView = mCardView;
+
+            total_itineraries = (TextView) v.findViewById(R.id.total_itineraries);
+            this.total_itineraries = total_itineraries;
         }
     }
 
@@ -71,6 +75,9 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
 
         // Hide country id into image
         holder.mImageView.setTag(countriesList.get(position).getId());
+
+        // Set total itineraries
+        holder.total_itineraries.setText(countriesList.get(position).getTotalItineraries());
 
         // get current position item data
         holder.currentItem = countriesList.get(position);

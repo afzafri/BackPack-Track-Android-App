@@ -183,13 +183,15 @@ public class CountryItinerariesFragment extends Fragment {
 
                             for(int i=0;i<countries.length();i++)
                             {
-                                JSONObject country = countries.getJSONObject(i);
-                                String name = country.getString("name");
-                                String code = country.getString("code");
-                                String id = country.getString("id");
+                                JSONObject data = countries.getJSONObject(i);
+                                String total_itineraries = data.getString("totalitineraries");
+                                JSONObject country = data.getJSONObject("country");
+                                String country_name = country.getString("name");
+                                String country_code = country.getString("code");
+                                String country_id = country.getString("id");
 
                                 // insert data into array
-                                countriesList.add(new CountriesModel(name, code, id, "0"));
+                                countriesList.add(new CountriesModel(country_name, country_code, country_id, total_itineraries));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -269,13 +271,15 @@ public class CountryItinerariesFragment extends Fragment {
 
                             for(int i=0;i<countries.length();i++)
                             {
-                                JSONObject country = countries.getJSONObject(i);
-                                String name = country.getString("name");
-                                String code = country.getString("code");
-                                String id = country.getString("id");
+                                JSONObject data = countries.getJSONObject(i);
+                                String total_itineraries = data.getString("totalitineraries");
+                                JSONObject country = data.getJSONObject("country");
+                                String country_name = country.getString("name");
+                                String country_code = country.getString("code");
+                                String country_id = country.getString("id");
 
                                 // insert data into array
-                                countriesList.add(new CountriesModel(name, code, id, "0"));
+                                countriesList.add(new CountriesModel(country_name, country_code, country_id, total_itineraries));
 
                                 mAdapter.notifyDataSetChanged();
                             }
