@@ -8,21 +8,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <FrameLayout
-        android:id="@+id/loadingFrame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?android:attr/colorBackground"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="106dp"
-            android:layout_height="107dp"
-            android:layout_gravity="center" />
-    </FrameLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -41,6 +26,19 @@
                 app:cardCornerRadius="5dp"
                 app:cardElevation="5dp"
                 tools:layout_editor_absoluteX="8dp">
+
+                <FrameLayout
+                    android:id="@+id/loadProfileFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -224,7 +222,6 @@
                     android:visibility="gone">
 
                     <ProgressBar
-                        android:id="@+id/deleteLoading"
                         style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -334,7 +331,6 @@
                     android:visibility="gone">
 
                     <ProgressBar
-                        android:id="@+id/loading"
                         style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

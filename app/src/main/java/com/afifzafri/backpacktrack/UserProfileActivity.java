@@ -85,10 +85,10 @@ public class UserProfileActivity extends AppCompatActivity {
         final TextView textTotal = (TextView) findViewById(R.id.textTotal);
         final ImageView avatar_pic = (ImageView) findViewById(R.id.avatar_pic);
         final Button itineraryBtn = (Button) findViewById(R.id.itineraryBtn);
-        final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
+        final FrameLayout loadProfileFrame = (FrameLayout) findViewById(R.id.loadProfileFrame);
 
         // show loading spinner
-        loadingFrame.setVisibility(View.VISIBLE);
+        loadProfileFrame.setVisibility(View.VISIBLE);
 
         // ----- Fetch article data and display -----
         // Request a string response from the provided URL.
@@ -154,12 +154,12 @@ public class UserProfileActivity extends AppCompatActivity {
                                     .into(badge);
 
                             Toast.makeText(getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
-                            loadingFrame.setVisibility(View.GONE); // hide loading spinner
+                            loadProfileFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {
                             e.printStackTrace();
 
-                            loadingFrame.setVisibility(View.GONE);
+                            loadProfileFrame.setVisibility(View.GONE);
                         }
 
                     }
@@ -167,7 +167,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Profile not loaded! Please check your connection.", Toast.LENGTH_SHORT).show();
-                loadingFrame.setVisibility(View.GONE);
+                loadProfileFrame.setVisibility(View.GONE);
             }
         })
         {

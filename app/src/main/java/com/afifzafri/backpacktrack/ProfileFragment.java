@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
         final ImageView avatar_pic = (ImageView) view.findViewById(R.id.avatar_pic);
         final TextView textCountComments = (TextView) view.findViewById(R.id.textCountComments);
         final TextView textCountLikes = (TextView) view.findViewById(R.id.textCountLikes);
-        final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
+        final FrameLayout loadProfileFrame = (FrameLayout) view.findViewById(R.id.loadProfileFrame);
         final FrameLayout loadNotiFrame = (FrameLayout) view.findViewById(R.id.loadNotiFrame);
         final CardView cardNotification = (CardView) view.findViewById(R.id.cardNotification);
         final Button itineraryBtn = (Button) view.findViewById(R.id.itineraryBtn);
@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
 
         // ----- Fetch user data and display the profile -----
         // show loading spinner
-        loadingFrame.setVisibility(View.VISIBLE);
+        loadProfileFrame.setVisibility(View.VISIBLE);
         // Request a string response from the provided URL.
         JsonObjectRequest profileRequest = new JsonObjectRequest(Request.Method.GET, AppHelper.baseurl + "/api/user", null,
                 new Response.Listener<JSONObject>() {
@@ -168,11 +168,11 @@ public class ProfileFragment extends Fragment {
                             if(isAdded()) {
                                 Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
                             }
-                            loadingFrame.setVisibility(View.GONE); // hide loading spinner
+                            loadProfileFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            loadingFrame.setVisibility(View.GONE);
+                            loadProfileFrame.setVisibility(View.GONE);
                         }
 
                     }
@@ -183,7 +183,7 @@ public class ProfileFragment extends Fragment {
                 if(isAdded()) {
                     Toast.makeText(getActivity().getApplicationContext(), "Profile data not loaded! Please check your connection.", Toast.LENGTH_SHORT).show();
                 }
-                loadingFrame.setVisibility(View.GONE);
+                loadProfileFrame.setVisibility(View.GONE);
             }
         })
         {
