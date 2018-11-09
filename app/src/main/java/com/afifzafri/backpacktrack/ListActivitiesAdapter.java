@@ -206,6 +206,7 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
                                                 // remove item from array and recyclerview
                                                 activitiesList.remove(position);
                                                 notifyItemRemoved(position);
+                                                notifyItemRangeChanged(position, activitiesList.size());
                                             }
                                             else if(code == 400)
                                             {

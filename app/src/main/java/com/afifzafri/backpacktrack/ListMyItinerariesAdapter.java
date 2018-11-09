@@ -191,6 +191,7 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
                                                 // remove item from array and recyclerview
                                                 itinerariesList.remove(position);
                                                 notifyItemRemoved(position);
+                                                notifyItemRangeChanged(position, itinerariesList.size());
                                             }
                                             else if(code == 400)
                                             {
