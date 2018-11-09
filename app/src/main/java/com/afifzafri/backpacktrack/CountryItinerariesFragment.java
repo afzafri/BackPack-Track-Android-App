@@ -61,7 +61,7 @@ public class CountryItinerariesFragment extends Fragment {
     // initialize adapter and data structure here
     private ListCountriesAdapter mAdapter;
     // Countries list Array
-    private List<VisitedCountriesModel> countriesList;
+    private List<CountriesModel> countriesList;
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager  mLayoutManager;
@@ -189,7 +189,7 @@ public class CountryItinerariesFragment extends Fragment {
                                 String id = country.getString("id");
 
                                 // insert data into array
-                                countriesList.add(new VisitedCountriesModel(name, code, id));
+                                countriesList.add(new CountriesModel(name, code, id, "0"));
 
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -275,7 +275,7 @@ public class CountryItinerariesFragment extends Fragment {
                                 String id = country.getString("id");
 
                                 // insert data into array
-                                countriesList.add(new VisitedCountriesModel(name, code, id));
+                                countriesList.add(new CountriesModel(name, code, id, "0"));
 
                                 mAdapter.notifyDataSetChanged();
                             }

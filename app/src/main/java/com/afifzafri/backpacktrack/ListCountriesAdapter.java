@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdapter.MyViewHolder> {
 
-    private List<VisitedCountriesModel> countriesList;
+    private List<CountriesModel> countriesList;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -25,7 +25,7 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
         public TextView mTextView;
         public ImageView mImageView;
         public CardView mCardView;
-        public VisitedCountriesModel currentItem;
+        public CountriesModel currentItem;
 
         public MyViewHolder(View v) {
             super(v);
@@ -41,7 +41,7 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListCountriesAdapter(List<VisitedCountriesModel> countriesList) {
+    public ListCountriesAdapter(List<CountriesModel> countriesList) {
         this.countriesList = countriesList;
     }
 
