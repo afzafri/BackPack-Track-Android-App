@@ -36,10 +36,14 @@ import java.util.Map;
 public class HomeFragment extends Fragment {
 
     // initialize adapter and data structure here
+    private ListPopularCountriesAdapter countriesAdapter;
     private ListPopularItinerariesAdapter itinerariesAdapter;
     // list Array
+    private List<CountriesModel> countriesList;
     private List<PopularItinerariesModel> itinerariesList;
 
+    // Recyclerviews
+    private RecyclerView countriesRecycler;
     private RecyclerView itinerariesRecycler;
     private LinearLayoutManager mLayoutManager;
 
@@ -58,6 +62,26 @@ public class HomeFragment extends Fragment {
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
+
+
+        // ----- List Popular Countries -----
+        countriesList = new ArrayList<>();
+        countriesAdapter = new ListPopularCountriesAdapter(countriesList);
+
+        countriesRecycler = (RecyclerView) view.findViewById(R.id.listPopularCountries);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        countriesRecycler.setLayoutManager(mLayoutManager);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        countriesRecycler.setHasFixedSize(true);
+
+        // specify an adapter (see also next example)
+        countriesRecycler.setAdapter(countriesAdapter);
+
+        // create a function for the load user's popular itineraries list
+        loadPopularCountries(access_token, view);
+
 
         // ----- List Popular Itineraries -----
         itinerariesList = new ArrayList<>();
@@ -78,6 +102,65 @@ public class HomeFragment extends Fragment {
         loadPopularItineraries(access_token, view);
 
         return view;
+    }
+
+    private void loadPopularCountries(final String access_token, View view) {
+        // get UI elements
+        final FrameLayout loadCountriesFrame = (FrameLayout) view.findViewById(R.id.loadCountriesFrame);
+
+        // show loading spinner
+        loadCountriesFrame.setVisibility(View.VISIBLE);
+
+        // Request a string response from the provided URL.
+        JsonArrayRequest popularListRequest = new JsonArrayRequest(Request.Method.GET, AppHelper.baseurl + "/api/listPopularCountries", null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        try {
+
+                            for(int i=0;i<response.length();i++)
+                            {
+                                JSONObject popular = response.getJSONObject(i);
+                                String total_itineraries = popular.getString("totalitineraries");
+                                JSONObject country = popular.getJSONObject("country");
+                                String country_name = country.getString("name");
+                                String country_code = country.getString("code");
+                                String country_id = country.getString("id");
+
+                                // insert data into array
+                                countriesList.add(new CountriesModel(country_name, country_code, country_id, total_itineraries));
+
+                                countriesAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        loadCountriesFrame.setVisibility(View.GONE);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(isAdded()) {
+                    Toast.makeText(getActivity().getBaseContext(), "Load popular countries Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
+                }
+                loadCountriesFrame.setVisibility(View.GONE);
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer "+access_token);
+
+                return params;
+            }
+        };
+
+        // Add the request to the VolleySingleton.
+        VolleySingleton.getInstance(getActivity().getBaseContext()).addToRequestQueue(popularListRequest);
     }
 
     private void loadPopularItineraries(final String access_token, View view) {
