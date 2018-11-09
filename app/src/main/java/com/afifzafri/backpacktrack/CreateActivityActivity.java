@@ -26,6 +26,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -343,7 +344,7 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Create new activity failed! Please check your connection." + error.toString(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Create new activity failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                                     createBtn.setEnabled(true);
                                     loadingFrame.setVisibility(View.GONE);
                                 }
@@ -384,6 +385,12 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                                     return params;
                                 }
                             };
+
+                            // set new timeout, fix double request bug if network connection is slow
+                            multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                                    0,
+                                    -1,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
                             VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(multipartRequest);
 

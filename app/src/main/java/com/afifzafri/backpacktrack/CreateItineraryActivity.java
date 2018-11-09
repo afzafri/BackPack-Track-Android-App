@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -210,6 +211,12 @@ public class CreateItineraryActivity extends AppCompatActivity {
                                     return params;
                                 }
                             };
+
+                            // set new timeout, fix double request bug if network connection is slow
+                            createRequest.setRetryPolicy(new DefaultRetryPolicy(
+                                    0,
+                                    -1,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
                             // Add the request to the VolleySingleton.
                             VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(createRequest);
