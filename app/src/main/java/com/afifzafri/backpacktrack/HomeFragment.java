@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         countriesRecycler.setHasFixedSize(true);
+        countriesRecycler.setNestedScrollingEnabled(false);
 
         // specify an adapter (see also next example)
         countriesRecycler.setAdapter(countriesAdapter);
@@ -94,6 +95,7 @@ public class HomeFragment extends Fragment {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         itinerariesRecycler.setHasFixedSize(true);
+        itinerariesRecycler.setNestedScrollingEnabled(false);
 
         // specify an adapter (see also next example)
         itinerariesRecycler.setAdapter(itinerariesAdapter);
