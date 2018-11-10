@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
-public class CurrencyConverterActivity extends AppCompatActivity {
+public class WebviewWidgetActivity extends AppCompatActivity {
 
     private WebView webView;
 
@@ -18,9 +18,16 @@ public class CurrencyConverterActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_currency_converter);
+        setContentView(R.layout.activity_webview_widget);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
+
+        // get data pass through intent
+        Bundle extras = getIntent().getExtras();
+        final String title = extras.getString("title");
+        final String widget = extras.getString("widget");
+
+        setTitle(title); // set actionbar title
 
         // show loading spinner
         final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
@@ -46,7 +53,7 @@ public class CurrencyConverterActivity extends AppCompatActivity {
         });
 
         // widget url
-        webView.loadUrl(AppHelper.baseurl + "/currencyconverter");
+        webView.loadUrl(AppHelper.baseurl + "/" + widget);
 
     }
 

@@ -126,13 +126,28 @@ public class HomeFragment extends Fragment {
         // create a function for the load user's popular itineraries list
         loadPopularItineraries(access_token, view);
 
-        // ----- Launch currency calculator activity -----
+        // ----- Launch webview widgets activity -----
         ImageButton currencyBtn = (ImageButton) view.findViewById(R.id.currencyBtn);
         currencyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isAdded()) {
-                    Intent intentPage = new Intent(getActivity(), CurrencyConverterActivity.class);
+                    Intent intentPage = new Intent(getActivity(), WebviewWidgetActivity.class);
+                    intentPage.putExtra("title", "Currency Converter");
+                    intentPage.putExtra("widget", "currencyconverter");
+                    startActivity(intentPage);
+                }
+            }
+        });
+
+        ImageButton weatherBtn = (ImageButton) view.findViewById(R.id.weatherBtn);
+        weatherBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isAdded()) {
+                    Intent intentPage = new Intent(getActivity(), WebviewWidgetActivity.class);
+                    intentPage.putExtra("title", "Weather Update");
+                    intentPage.putExtra("widget", "weatherupdate");
                     startActivity(intentPage);
                 }
             }
