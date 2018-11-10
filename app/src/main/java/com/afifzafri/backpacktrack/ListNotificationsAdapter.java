@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
