@@ -127,8 +127,8 @@ public class HomeFragment extends Fragment {
         loadPopularItineraries(access_token, view);
 
         // ----- Launch currency calculator activity -----
-        ImageButton converterBtn = (ImageButton) view.findViewById(R.id.converterBtn);
-        converterBtn.setOnClickListener(new View.OnClickListener() {
+        ImageButton currencyBtn = (ImageButton) view.findViewById(R.id.currencyBtn);
+        currencyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isAdded()) {
