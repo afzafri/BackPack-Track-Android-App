@@ -92,7 +92,7 @@ public class ListTopContributorsAdapter extends RecyclerView.Adapter<ListTopCont
         holder.user_name.setTag(usersList.get(position).getId());
 
         // Set user username
-        holder.user_username.setText(usersList.get(position).getUsername());
+        holder.user_username.setText("@" + usersList.get(position).getUsername());
 
         // set user badge
         Picasso.get().load(usersList.get(position).getBadge()).into(holder.user_badge);
