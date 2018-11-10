@@ -6,16 +6,15 @@ import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 public class CurrencyConverterActivity extends AppCompatActivity {
 
     private WebView webView;
 
-
-    Activity activity ;
-    private ProgressDialog progDailog;
 
     @SuppressLint("NewApi")
     @Override
@@ -25,17 +24,11 @@ public class CurrencyConverterActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 
-        activity = this;
-
-        progDailog = ProgressDialog.show(activity, "Loading","Please wait...", true);
-        progDailog.setCancelable(false);
-
-
+        // show loading spinner
+        final FrameLayout loadingFrame = (FrameLayout) findViewById(R.id.loadingFrame);
+        loadingFrame.setVisibility(View.VISIBLE);
 
         webView = (WebView) findViewById(R.id.webview_content);
-
-
-
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
@@ -43,14 +36,14 @@ public class CurrencyConverterActivity extends AppCompatActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                progDailog.show();
+                loadingFrame.setVisibility(View.VISIBLE);
                 view.loadUrl(url);
 
                 return true;
             }
             @Override
             public void onPageFinished(WebView view, final String url) {
-                progDailog.dismiss();
+                loadingFrame.setVisibility(View.GONE);
             }
         });
 

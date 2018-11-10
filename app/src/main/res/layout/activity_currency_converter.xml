@@ -9,5 +9,21 @@
     <WebView
         android:id="@+id/webview_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/loadingFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/colorBackground"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="106dp"
+            android:layout_height="107dp"
+            android:layout_gravity="center" />
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>
