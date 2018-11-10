@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -127,7 +128,7 @@ public class HomeFragment extends Fragment {
         loadPopularItineraries(access_token, view);
 
         // ----- Launch currency calculator activity -----
-        Button converterBtn = view.findViewById(R.id.converterBtn);
+        ImageButton converterBtn = (ImageButton) view.findViewById(R.id.converterBtn);
         converterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
