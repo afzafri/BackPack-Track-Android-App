@@ -105,8 +105,8 @@
         </activity>
         <activity android:name=".UserItinerariesActivity" />
         <activity
-            android:name=".CurrencyCalculatorActivity"
-            android:label="Currency Calculator" />
+            android:name=".CurrencyConverterActivity"
+            android:label="Currency Converter" />
     </application>
 
 </manifest>

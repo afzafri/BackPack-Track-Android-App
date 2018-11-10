@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class CurrencyCalculatorActivity extends AppCompatActivity {
+public class CurrencyConverterActivity extends AppCompatActivity {
 
     private WebView webView;
 
@@ -21,7 +21,7 @@ public class CurrencyCalculatorActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_currency_calculator);
+        setContentView(R.layout.activity_currency_converter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // show back navigation
 

@@ -198,11 +198,11 @@ tools:context=".HomeFragment">
         </android.support.v7.widget.CardView>
 
         <Button
-            android:id="@+id/calculatorBtn"
+            android:id="@+id/converterBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Currency Calculator" />
+            android:text="Currency Converter" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

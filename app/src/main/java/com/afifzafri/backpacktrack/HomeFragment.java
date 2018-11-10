@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -128,12 +127,12 @@ public class HomeFragment extends Fragment {
         loadPopularItineraries(access_token, view);
 
         // ----- Launch currency calculator activity -----
-        Button calculatorBtn = view.findViewById(R.id.calculatorBtn);
-        calculatorBtn.setOnClickListener(new View.OnClickListener() {
+        Button converterBtn = view.findViewById(R.id.converterBtn);
+        converterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isAdded()) {
-                    Intent intentPage = new Intent(getActivity(), CurrencyCalculatorActivity.class);
+                    Intent intentPage = new Intent(getActivity(), CurrencyConverterActivity.class);
                     startActivity(intentPage);
                 }
             }
