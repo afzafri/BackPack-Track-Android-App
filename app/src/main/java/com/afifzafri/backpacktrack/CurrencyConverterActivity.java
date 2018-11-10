@@ -54,7 +54,8 @@ public class CurrencyConverterActivity extends AppCompatActivity {
             }
         });
 
-        webView.loadUrl("https://www.fxexchangerate.com/m/");
+        // widget url
+        webView.loadUrl(AppHelper.baseurl + "/currencyconverter");
 
     }
 
