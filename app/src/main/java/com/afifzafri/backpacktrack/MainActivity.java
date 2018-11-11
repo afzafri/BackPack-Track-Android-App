@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                     setTitle(getString(R.string.title_itineraries));
                     break;
                 case R.id.navigation_create:
-                    fragment = new MyItineraryFragment();
+                    fragment = new MyItinerariesFragment();
                     setTitle(getString(R.string.title_create));
                     break;
                 case R.id.navigation_profile:

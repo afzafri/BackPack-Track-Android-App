@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyItineraryFragment extends Fragment {
+public class MyItinerariesFragment extends Fragment {
 
     // for swipe to refresh widget
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -58,7 +58,7 @@ public class MyItineraryFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
 
-    public MyItineraryFragment() {
+    public MyItinerariesFragment() {
         // Required empty public constructor
     }
 
@@ -67,7 +67,7 @@ public class MyItineraryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_my_itinerary, container, false);
+        final View view = inflater.inflate(R.layout.fragment_my_itineraries, container, false);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
