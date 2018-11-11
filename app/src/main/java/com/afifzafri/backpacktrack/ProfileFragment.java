@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,9 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
+
+    // for swipe to refresh widget
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private TextView textUsername;
 
@@ -318,6 +322,20 @@ public class ProfileFragment extends Fragment {
 
         // create a function for the load user's popular itineraries list
         loadPopularList(user_id, access_token, view);
+
+        // refresh fragment when perform swipe to refresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(currentFragment).attach(currentFragment).commit();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
 
         return view;
     }
