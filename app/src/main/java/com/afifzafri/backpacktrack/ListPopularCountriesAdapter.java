@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
+
 public class ListPopularCountriesAdapter extends RecyclerView.Adapter<ListPopularCountriesAdapter.MyViewHolder> {
 
     private List<CountriesModel> countriesList;
@@ -22,7 +24,6 @@ public class ListPopularCountriesAdapter extends RecyclerView.Adapter<ListPopula
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView country_name;
         public ImageView country_flag;
         public TextView total_itineraries;
         public LinearLayout popular_item;
@@ -30,8 +31,6 @@ public class ListPopularCountriesAdapter extends RecyclerView.Adapter<ListPopula
 
         public MyViewHolder(View v) {
             super(v);
-            country_name = (TextView) v.findViewById(R.id.country_name);
-            this.country_name = country_name;
 
             country_flag = (ImageView) v.findViewById(R.id.country_flag);
             this.country_flag = country_flag;
@@ -68,10 +67,9 @@ public class ListPopularCountriesAdapter extends RecyclerView.Adapter<ListPopula
 
         // Set country flag
         String flagurl = "https://www.countryflags.io/"+countriesList.get(position).getCode()+"/flat/64.png";
-        Picasso.get().load(flagurl).into(holder.country_flag);
-
-        // Set country name
-        holder.country_name.setText(countriesList.get(position).getName());
+        Picasso.get()
+                .load(flagurl)
+                .into(holder.country_flag);
 
         // Hide country id into image
         holder.country_flag.setTag(countriesList.get(position).getId());

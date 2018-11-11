@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         final String access_token = sharedpreferences.getString("access_token", "");
 
-        // ----- List Popular Countries -----
+        // ----- List Top Contributors -----
         contributorsList = new ArrayList<>();
         contributorsAdapter = new ListTopContributorsAdapter(contributorsList);
 
@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment {
 
         countriesRecycler = (RecyclerView) view.findViewById(R.id.listPopularCountries);
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         countriesRecycler.setLayoutManager(mLayoutManager);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
