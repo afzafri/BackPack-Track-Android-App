@@ -152,8 +152,8 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 if(isAdded()) {
                     Intent intentPage = new Intent(getActivity(), WebviewWidgetActivity.class);
-                    intentPage.putExtra("title", "Weather Update");
-                    intentPage.putExtra("widget", "weatherupdate");
+                    intentPage.putExtra("title", "Weather Forecast");
+                    intentPage.putExtra("widget", "weatherforecast");
                     startActivity(intentPage);
                 }
             }

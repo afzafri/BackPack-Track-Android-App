@@ -67,7 +67,7 @@
                         android:backgroundTint="@color/colorAccent"
                         android:padding="10dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/weatherupdate" />
+                        android:src="@drawable/weatherforecast" />
                 </LinearLayout>
 
                 <android.support.v7.widget.CardView
