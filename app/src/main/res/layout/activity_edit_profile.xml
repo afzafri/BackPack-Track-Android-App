@@ -58,7 +58,6 @@
                         android:textStyle="bold" />
 
                     <View
-                        android:id="@+id/divider2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?android:attr/listDivider" />
@@ -134,11 +133,10 @@
                         android:inputType="textEmailAddress" />
 
                     <View
-                        android:id="@+id/divider3"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:background="?android:attr/listDivider" />
 
                     <Button
@@ -177,7 +175,6 @@
                         android:textStyle="bold" />
 
                     <View
-                        android:id="@+id/divider3"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?android:attr/listDivider" />
@@ -210,7 +207,6 @@
                         android:inputType="textPassword" />
 
                     <View
-                        android:id="@+id/divider4"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginBottom="5dp"
@@ -253,7 +249,6 @@
                         android:textStyle="bold" />
 
                     <View
-                        android:id="@+id/divider4"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?android:attr/listDivider" />
@@ -261,6 +256,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:layout_margin="8dp">
 
                         <TextView
@@ -275,8 +271,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="4dp"
-                            app:srcCompat="@drawable/ic_add_a_photo_black_24dp"
-                            android:backgroundTint="@color/colorAccent"/>
+                            android:backgroundTint="@color/colorAccent"
+                            app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
                     </LinearLayout>
 
                     <ImageView
@@ -286,11 +282,10 @@
                         android:layout_margin="8dp" />
 
                     <View
-                        android:id="@+id/divider4"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:background="?android:attr/listDivider" />
 
                     <Button
