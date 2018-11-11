@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,9 @@ import java.util.List;
 import java.util.Map;
 
 public class UserProfileActivity extends AppCompatActivity {
+
+    // for swipe to refresh widget
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private TextView textUsername;
     private String user_id;
@@ -234,6 +238,21 @@ public class UserProfileActivity extends AppCompatActivity {
                 new AppHelper().rankInfo(UserProfileActivity.this);
             }
         });
+
+        // refresh fragment when perform swipe to refresh
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+
+                        finish();
+                        startActivity(getIntent());
+
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
     }
 
     private void loadPopularList(String user_id, final String access_token) {
