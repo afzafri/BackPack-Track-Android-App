@@ -25,11 +25,8 @@ public class ListTopContributorsAdapter extends RecyclerView.Adapter<ListTopCont
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public ImageView user_avatar;
-        public TextView user_name;
         public TextView user_username;
         public ImageView user_badge;
-        public TextView user_rank;
-        public TextView total_itineraries;
         public LinearLayout popular_item;
 
         public MyViewHolder(View v) {
@@ -37,20 +34,11 @@ public class ListTopContributorsAdapter extends RecyclerView.Adapter<ListTopCont
             user_avatar = (ImageView) v.findViewById(R.id.user_avatar);
             this.user_avatar = user_avatar;
 
-            user_name = (TextView) v.findViewById(R.id.user_name);
-            this.user_name = user_name;
-
             user_username = (TextView) v.findViewById(R.id.user_username);
             this.user_username = user_username;
 
             user_badge = (ImageView) v.findViewById(R.id.user_badge);
             this.user_badge = user_badge;
-
-            user_rank = (TextView) v.findViewById(R.id.user_rank);
-            this.user_rank = user_rank;
-
-            total_itineraries = (TextView) v.findViewById(R.id.total_itineraries);
-            this.total_itineraries = total_itineraries;
 
             popular_item = (LinearLayout) v.findViewById(R.id.popular_item);
             this.popular_item = popular_item;
@@ -84,24 +72,14 @@ public class ListTopContributorsAdapter extends RecyclerView.Adapter<ListTopCont
                 .load(usersList.get(position).getAvatar())
                 .transform(new CropCircleTransformation())
                 .into(holder.user_avatar);
-
-        // Set user name
-        holder.user_name.setText(usersList.get(position).getName());
-
         // set user id tag
-        holder.user_name.setTag(usersList.get(position).getId());
+        holder.user_username.setTag(usersList.get(position).getId());
 
         // Set user username
         holder.user_username.setText("@" + usersList.get(position).getUsername());
 
         // set user badge
         Picasso.get().load(usersList.get(position).getBadge()).into(holder.user_badge);
-
-        // Set user rank
-        holder.user_rank.setText(usersList.get(position).getRank());
-
-        // Set user total itineraries
-        holder.total_itineraries.setText(usersList.get(position).getTotalItineraries());
 
         // when card is clicked, get id
         holder.popular_item.setOnClickListener(new View.OnClickListener() {

@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
 
         contributorsRecycler = (RecyclerView) view.findViewById(R.id.listTopContributors);
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         contributorsRecycler.setLayoutManager(mLayoutManager);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
