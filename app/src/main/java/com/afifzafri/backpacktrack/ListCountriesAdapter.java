@@ -67,7 +67,7 @@ public class ListCountriesAdapter extends RecyclerView.Adapter<ListCountriesAdap
         // - replace the contents of the view with that element
 
         // Set country flag
-        String flagurl = "https://www.countryflags.io/"+countriesList.get(position).getCode()+"/shiny/64.png";
+        String flagurl = AppHelper.baseurl+"/images/flags/shiny/64/"+countriesList.get(position).getCode()+".png";
         Picasso.get().load(flagurl).into(holder.mImageView);
 
         // Set country name
