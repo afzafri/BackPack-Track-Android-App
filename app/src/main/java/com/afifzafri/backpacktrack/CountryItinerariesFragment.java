@@ -174,7 +174,7 @@ public class CountryItinerariesFragment extends Fragment {
                                 // something
                                 // check if activity have been attach to the fragment
                                 if(isAdded()) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity().getApplicationContext(), "No countries available", Toast.LENGTH_SHORT).show();
                                 }
                                 itShouldLoadMore = false;
                                 loadingFrame.setVisibility(View.GONE);
@@ -197,11 +197,6 @@ public class CountryItinerariesFragment extends Fragment {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
-
-                        // check if activity have been attach to the fragment
-                        if(isAdded()) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
                         }
                         loadingFrame.setVisibility(View.GONE);
 
@@ -285,11 +280,6 @@ public class CountryItinerariesFragment extends Fragment {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
-
-                        // check if activity have been attach to the fragment
-                        if(isAdded()) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Load more countries success!", Toast.LENGTH_SHORT).show();
                         }
                         loadMoreSpin.setVisibility(View.GONE);
                     }

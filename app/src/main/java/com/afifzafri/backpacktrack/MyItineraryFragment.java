@@ -176,7 +176,7 @@ public class MyItineraryFragment extends Fragment {
                                 // something
                                 // check if activity have been attach to the fragment
                                 if(isAdded()) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity().getApplicationContext(), "No itineraries available", Toast.LENGTH_SHORT).show();
                                 }
                                 itShouldLoadMore = false;
                                 loadingFrame.setVisibility(View.GONE);
@@ -208,11 +208,6 @@ public class MyItineraryFragment extends Fragment {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
-
-                        // check if activity have been attach to the fragment
-                        if(isAdded()) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Load itineraries Success!", Toast.LENGTH_SHORT).show();
                         }
                         loadingFrame.setVisibility(View.GONE);
 
@@ -306,11 +301,6 @@ public class MyItineraryFragment extends Fragment {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
-
-                        // check if activity have been attach to the fragment
-                        if(isAdded()) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Load more itineraries success!", Toast.LENGTH_SHORT).show();
                         }
                         loadMoreSpin.setVisibility(View.GONE);
                     }

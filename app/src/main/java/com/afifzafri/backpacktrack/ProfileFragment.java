@@ -169,10 +169,6 @@ public class ProfileFragment extends Fragment {
                                         .into(badge);
                             }
 
-                            // check if activity have been attach to the fragment
-                            if(isAdded()) {
-                                Toast.makeText(getActivity().getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
-                            }
                             profileLayout.setVisibility(View.VISIBLE);
                             loadProfileFrame.setVisibility(View.GONE); // hide loading spinner
 
