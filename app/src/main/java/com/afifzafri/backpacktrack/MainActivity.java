@@ -29,11 +29,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigation_itineraries:
                     fragment = new CountryItinerariesFragment();
-                    setTitle(getString(R.string.title_itineraries));
+                    setTitle("Itineraries by Country");
                     break;
                 case R.id.navigation_create:
                     fragment = new MyItinerariesFragment();
-                    setTitle(getString(R.string.title_create));
+                    setTitle("My Itineraries");
                     break;
                 case R.id.navigation_profile:
                     fragment = new ProfileFragment();
