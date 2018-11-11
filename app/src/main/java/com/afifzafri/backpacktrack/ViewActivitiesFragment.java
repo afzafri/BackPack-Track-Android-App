@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +49,8 @@ public class ViewActivitiesFragment extends Fragment {
     private LinearLayoutManager mLayoutManager;
 
     private TextView itinerary_user;
-    private TextView itinerary_country;
+    private ImageView country_pin;
+    private ImageView country_flag;
     private ImageButton likeBtn;
     private TextView itinerary_likes;
     private TextView leftB;
@@ -74,7 +77,8 @@ public class ViewActivitiesFragment extends Fragment {
 
         // elements
         itinerary_user = (TextView) view.findViewById(R.id.itinerary_user);
-        itinerary_country = (TextView) view.findViewById(R.id.itinerary_country);
+        country_pin = (ImageView) view.findViewById(R.id.country_pin);
+        country_flag = (ImageView) view.findViewById(R.id.country_flag);
         likeBtn = (ImageButton) view.findViewById(R.id.likeBtn);
         itinerary_likes = (TextView) view.findViewById(R.id.itinerary_likes);
         leftB = (TextView) view.findViewById(R.id.leftB);
@@ -156,14 +160,14 @@ public class ViewActivitiesFragment extends Fragment {
         });
 
         // --- COUNTRY ---
-        itinerary_country.setOnClickListener(new View.OnClickListener() {
+        country_flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // check if activity have been attach to the fragment
                 if(isAdded()) {
                     Intent intentPage = new Intent(getActivity(), CountryItinerariesActivity.class);
-                    intentPage.putExtra("country_id", itinerary_country.getTag().toString());
-                    intentPage.putExtra("country_name", itinerary_country.getText().toString());
+                    intentPage.putExtra("country_id", country_flag.getTag().toString());
+                    intentPage.putExtra("country_name", country_pin.getTag().toString());
                     startActivity(intentPage);
                 }
             }
@@ -207,13 +211,16 @@ public class ViewActivitiesFragment extends Fragment {
                             JSONObject country = response.getJSONObject("country");
                             String country_id = country.getString("id");
                             String country_name = country.getString("name");
+                            String country_code = country.getString("code");
                             String totallikes = response.getString("totallikes");
                             Boolean isLiked = response.getBoolean("isLiked");
 
                             itinerary_user.setText("@"+user_username);
                             itinerary_user.setTag(user_id);
-                            itinerary_country.setText(country_name);
-                            itinerary_country.setTag(country_id);
+                            country_pin.setTag(country_name);
+                            String flagurl = AppHelper.baseurl+"/images/flags/flat/64/"+country_code+".png";
+                            Picasso.get().load(flagurl).into(country_flag);
+                            country_flag.setTag(country_id);
                             itinerary_likes.setText(totallikes);
 
                             if(isLiked) {
