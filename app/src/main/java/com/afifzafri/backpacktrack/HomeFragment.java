@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView countriesRecycler;
     private RecyclerView itinerariesRecycler;
     private LinearLayoutManager mLayoutManager;
+    private SpanningLinearLayoutManager spanLayoutManager;
 
 
     public HomeFragment() {
@@ -73,8 +74,8 @@ public class HomeFragment extends Fragment {
 
         contributorsRecycler = (RecyclerView) view.findViewById(R.id.listTopContributors);
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        contributorsRecycler.setLayoutManager(mLayoutManager);
+        spanLayoutManager = new SpanningLinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        contributorsRecycler.setLayoutManager(spanLayoutManager);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         contributorsRecycler.setHasFixedSize(true);
@@ -93,8 +94,8 @@ public class HomeFragment extends Fragment {
 
         countriesRecycler = (RecyclerView) view.findViewById(R.id.listPopularCountries);
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        countriesRecycler.setLayoutManager(mLayoutManager);
+        spanLayoutManager = new SpanningLinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        countriesRecycler.setLayoutManager(spanLayoutManager);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         countriesRecycler.setHasFixedSize(true);
