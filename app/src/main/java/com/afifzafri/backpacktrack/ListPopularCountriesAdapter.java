@@ -66,7 +66,7 @@ public class ListPopularCountriesAdapter extends RecyclerView.Adapter<ListPopula
         // - replace the contents of the view with that element
 
         // Set country flag
-        String flagurl = "https://www.countryflags.io/"+countriesList.get(position).getCode()+"/flat/64.png";
+        String flagurl = "https://www.countryflags.io/"+countriesList.get(position).getCode()+"/shiny/64.png";
         Picasso.get()
                 .load(flagurl)
                 .into(holder.country_flag);
