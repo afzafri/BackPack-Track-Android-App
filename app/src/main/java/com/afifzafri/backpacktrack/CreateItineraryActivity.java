@@ -84,14 +84,13 @@ public class CreateItineraryActivity extends AppCompatActivity {
                         ArrayAdapter<String> countriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, countrieslist);
                         countryselect.setAdapter(countriesAdapter);
 
-                        Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
                         loadingFrame.setVisibility(View.GONE);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Load Countries Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Load Countries Failed! Please check your connection", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
             }
         });
