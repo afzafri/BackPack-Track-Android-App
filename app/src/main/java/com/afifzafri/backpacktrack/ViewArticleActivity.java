@@ -75,7 +75,6 @@ public class ViewArticleActivity extends AppCompatActivity {
                             // to display HTML content, use webview
                             webview_content.loadDataWithBaseURL(null, content, "text/html", "utf-8", null);
 
-                            Toast.makeText(getApplicationContext(), "Article loaded!", Toast.LENGTH_SHORT).show();
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {

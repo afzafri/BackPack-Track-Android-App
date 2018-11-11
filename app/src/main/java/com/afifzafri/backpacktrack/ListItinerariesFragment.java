@@ -205,7 +205,7 @@ public class ListItinerariesFragment extends Fragment {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
                                 if(isAdded()) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity().getApplicationContext(), "No itineraries available", Toast.LENGTH_SHORT).show();
                                 }
                                 itShouldLoadMore = false;
                                 loadingFrame.setVisibility(View.GONE);
@@ -242,9 +242,6 @@ public class ListItinerariesFragment extends Fragment {
                             e.printStackTrace();
                         }
 
-                        if(isAdded()) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Load itineraries Success!", Toast.LENGTH_SHORT).show();
-                        }
                         loadingFrame.setVisibility(View.GONE);
 
                     }
@@ -340,9 +337,6 @@ public class ListItinerariesFragment extends Fragment {
                             e.printStackTrace();
                         }
 
-                        if(isAdded()) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Load more itineraries success!", Toast.LENGTH_SHORT).show();
-                        }
                         loadMoreSpin.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {

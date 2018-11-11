@@ -173,7 +173,7 @@ public class MyActivitiesActivity extends AppCompatActivity {
                             if (activities.length() <= 0) {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
-                                Toast.makeText(getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "No activities available", Toast.LENGTH_SHORT).show();
                                 itShouldLoadMore = false;
                                 loadingFrame.setVisibility(View.GONE);
                                 return; // return will end the program at this point
@@ -205,7 +205,6 @@ public class MyActivitiesActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        Toast.makeText(getApplicationContext(), "Load activities Success!", Toast.LENGTH_SHORT).show();
                         loadingFrame.setVisibility(View.GONE);
 
                     }
@@ -260,7 +259,7 @@ public class MyActivitiesActivity extends AppCompatActivity {
                             if (activities.length() <= 0) {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
-                                Toast.makeText(getApplicationContext(), "No more activitites available", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "No more activities available", Toast.LENGTH_SHORT).show();
                                 itShouldLoadMore = false;
                                 loadMoreSpin.setVisibility(View.GONE);
                                 return; // return will end the program at this point
@@ -292,7 +291,6 @@ public class MyActivitiesActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        Toast.makeText(getApplicationContext(), "Load more activitites success!", Toast.LENGTH_SHORT).show();
                         loadMoreSpin.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {

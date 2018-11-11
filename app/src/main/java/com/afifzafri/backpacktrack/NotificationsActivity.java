@@ -117,12 +117,12 @@ public class NotificationsActivity extends AppCompatActivity {
                             if (comments_data.length() <= 0 && likes_data.length() <= 0) {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
-                                Toast.makeText(getApplicationContext(), "no notification available", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "No notification available", Toast.LENGTH_SHORT).show();
                                 loadingFrame.setVisibility(View.GONE);
                                 return; // return will end the program at this point
                             }
 
-                            // insert comments into db
+                            // insert comments into list
                             for(int i=0;i<comments_data.length();i++)
                             {
                                 JSONObject comment = comments_data.getJSONObject(i);
@@ -149,7 +149,7 @@ public class NotificationsActivity extends AppCompatActivity {
                                 notificationsList.add(new NotificationsModel(id, date_time, user_id, user_name, user_username, user_avatar, itinerary_id, itinerary_title, itinerary_user_id, "comment"));
                             }
 
-                            // insert likes into db
+                            // insert likes into list
                             for(int i=0;i<likes_data.length();i++)
                             {
                                 JSONObject like = likes_data.getJSONObject(i);
@@ -185,7 +185,6 @@ public class NotificationsActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        Toast.makeText(getApplicationContext(), "Load notifications Success!", Toast.LENGTH_SHORT).show();
                         loadingFrame.setVisibility(View.GONE);
 
                     }

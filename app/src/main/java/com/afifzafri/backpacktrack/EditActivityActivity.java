@@ -180,7 +180,6 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
                                 new AppHelper().setSpinText(spinnerBudget, budgettype_type);
                             }
 
-                            Toast.makeText(getApplicationContext(), "Activity data loaded!", Toast.LENGTH_SHORT).show();
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {

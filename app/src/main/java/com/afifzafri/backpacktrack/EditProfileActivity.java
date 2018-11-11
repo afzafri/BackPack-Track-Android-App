@@ -100,7 +100,6 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                         ArrayAdapter<String> countriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, countrieslist);
                         countryselect.setAdapter(countriesAdapter);
 
-                        //Toast.makeText(getApplicationContext(), "Load Countries Success!", Toast.LENGTH_SHORT).show();
                         loadingFrame.setVisibility(View.GONE);
 
                     }
@@ -151,7 +150,6 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             editWebsite.setText(website);
                             editEmail.setText(email);
 
-                            Toast.makeText(getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
 
                         } catch (JSONException e) {
