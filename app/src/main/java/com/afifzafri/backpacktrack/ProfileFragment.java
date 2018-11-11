@@ -423,14 +423,6 @@ public class ProfileFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            // ----- Refresh Page -----
-            case R.id.action_refresh:
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.detach(this).attach(this).commit();
-
-                return true;
-
             // share profile
             case R.id.action_share:
 
