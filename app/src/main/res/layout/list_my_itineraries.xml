@@ -8,6 +8,8 @@
         android:id="@+id/itinerary_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -101,14 +103,6 @@
                 android:orientation="horizontal"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
-
-                <ImageButton
-                    android:id="@+id/activityBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@android:color/holo_green_light"
-                    app:srcCompat="@drawable/ic_note_add_black_24dp" />
 
                 <ImageButton
                     android:id="@+id/editBtn"

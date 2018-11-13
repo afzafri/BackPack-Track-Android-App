@@ -42,7 +42,6 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         public TextView itinerary_totalbudget;
         public TextView itinerary_date;
         public CardView mCardView;
-        public ImageButton activityBtn;
         public ImageButton editBtn;
         public ImageButton deleteBtn;
         public FrameLayout deleteFrame;
@@ -67,9 +66,6 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
 
             mCardView = (CardView) v.findViewById(R.id.itinerary_card);
             this.mCardView = mCardView;
-
-            activityBtn = (ImageButton) v.findViewById(R.id.activityBtn);
-            this.activityBtn = activityBtn;
 
             editBtn = (ImageButton) v.findViewById(R.id.editBtn);
             this.editBtn = editBtn;
@@ -124,8 +120,8 @@ public class ListMyItinerariesAdapter extends RecyclerView.Adapter<ListMyItinera
         // get current position item data
         holder.currentItem = itinerariesList.get(position);
 
-        // add activity button clicked, open add activity
-        holder.activityBtn.setOnClickListener(new View.OnClickListener() {
+        // add card clicked, open add activity
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 // redirect to create activity page
                 Intent intentPage = new Intent(v.getContext(), MyActivitiesActivity.class);
