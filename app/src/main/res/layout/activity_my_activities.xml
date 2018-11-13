@@ -43,13 +43,15 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/createFab"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="15dp"
             android:clickable="true"
+            android:scaleType="center"
             android:src="@drawable/ic_playlist_add_white_24dp"
-            app:backgroundTint="@color/colorPrimaryDark" />
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:fabSize="normal" />
     </FrameLayout>
 
     <FrameLayout
