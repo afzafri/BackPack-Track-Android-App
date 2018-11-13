@@ -43,6 +43,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private TextView textUsername;
     private String user_id;
+    private boolean avatarStatus;
 
     // initialize adapter and data structure here
     private ListPopularItinerariesAdapter mAdapter;
@@ -61,6 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // declare variables
         user_id = null;
+        avatarStatus = false;
 
         // If activity start from other intent get data pass through intent
         Bundle extras = getIntent().getExtras();
@@ -147,6 +149,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                         .transform(new BorderedCircleTransformation(getResources().getColor(R.color.colorPrimary),5))
                                         .into(avatar_pic);
                                 avatar_pic.setTag(avatar_url); // store url into tag, used for retrieve later
+                                avatarStatus = true; // if have avatar, set true, for launching full screen activity
                             } else {
                                 Picasso.get()
                                         .load(R.drawable.avatar)
@@ -212,11 +215,14 @@ public class UserProfileActivity extends AppCompatActivity {
         avatar_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // open fullscreen image activity
-                Intent intentPage = new Intent(UserProfileActivity.this, ImageFullscreenActivity.class);
-                intentPage.putExtra("image_url", avatar_pic.getTag().toString());
-                intentPage.putExtra("caption", textName.getText().toString());
-                startActivity(intentPage);
+                // check if avatar available
+                if(avatarStatus) {
+                    // open fullscreen image activity
+                    Intent intentPage = new Intent(UserProfileActivity.this, ImageFullscreenActivity.class);
+                    intentPage.putExtra("image_url", avatar_pic.getTag().toString());
+                    intentPage.putExtra("caption", textName.getText().toString());
+                    startActivity(intentPage);
+                }
             }
         });
 

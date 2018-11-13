@@ -54,6 +54,7 @@ public class ProfileFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private TextView textUsername;
+    private boolean avatarStatus;
 
     // initialize adapter and data structure here
     private ListPopularItinerariesAdapter mAdapter;
@@ -93,6 +94,7 @@ public class ProfileFragment extends Fragment {
         final FrameLayout loadNotiFrame = (FrameLayout) view.findViewById(R.id.loadNotiFrame);
         final CardView cardNotification = (CardView) view.findViewById(R.id.cardNotification);
         final Button itineraryBtn = (Button) view.findViewById(R.id.itineraryBtn);
+        avatarStatus = false;
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -156,6 +158,7 @@ public class ProfileFragment extends Fragment {
                                             .into(avatar_pic);
                                 }
                                 avatar_pic.setTag(avatar_url); // store url into tag, used for retrieve later
+                                avatarStatus = true; // if have avatar, set true, for launching full screen activity
                             } else {
                                 Picasso.get()
                                         .load(R.drawable.avatar)
@@ -272,12 +275,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // open fullscreen image activity
-                // check if activity have been attach to the fragment
-                if(isAdded()) {
-                    Intent intentPage = new Intent(getActivity(), ImageFullscreenActivity.class);
-                    intentPage.putExtra("image_url", avatar_pic.getTag().toString());
-                    intentPage.putExtra("caption", textName.getText().toString());
-                    startActivity(intentPage);
+                // check if avatar available
+                if(avatarStatus) {
+                    // check if activity have been attach to the fragment
+                    if(isAdded()) {
+                        Intent intentPage = new Intent(getActivity(), ImageFullscreenActivity.class);
+                        intentPage.putExtra("image_url", avatar_pic.getTag().toString());
+                        intentPage.putExtra("caption", textName.getText().toString());
+                        startActivity(intentPage);
+                    }
                 }
             }
         });
