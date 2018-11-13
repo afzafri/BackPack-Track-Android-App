@@ -82,6 +82,7 @@ public class UserProfileActivity extends AppCompatActivity {
         final TextView textBio = (TextView) findViewById(R.id.textBio);
         final TextView textCountry = (TextView) findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) findViewById(R.id.textEmail);
+        final LinearLayout weblayout = (LinearLayout) findViewById(R.id.webLayout);
         final TextView textWebsite = (TextView) findViewById(R.id.textWebsite);
         final LinearLayout rankLayout = (LinearLayout) findViewById(R.id.rankLayout);
         final ImageView badge = (ImageView) findViewById(R.id.badge);
@@ -135,7 +136,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                 textBio.setVisibility(View.GONE);
                             }
                             if(website == null || website.isEmpty() || website == "null") {
-                                textWebsite.setVisibility(View.GONE);
+                                weblayout.setVisibility(View.GONE);
                             }
 
                             // set avatar image using Picasso library

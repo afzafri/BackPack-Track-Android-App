@@ -48,7 +48,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <FrameLayout
                             android:layout_width="wrap_content"
@@ -187,6 +187,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/webLayout"
                                 android:layout_width="fill_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
