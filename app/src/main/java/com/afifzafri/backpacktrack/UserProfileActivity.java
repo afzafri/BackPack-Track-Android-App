@@ -158,7 +158,6 @@ public class UserProfileActivity extends AppCompatActivity {
                                     .load(user_badge)
                                     .into(badge);
 
-                            Toast.makeText(getApplicationContext(), "Profile data loaded!", Toast.LENGTH_SHORT).show();
                             profileLayout.setVisibility(View.VISIBLE);
                             loadProfileFrame.setVisibility(View.GONE); // hide loading spinner
 
