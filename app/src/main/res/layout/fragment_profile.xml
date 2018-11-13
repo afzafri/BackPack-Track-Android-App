@@ -189,11 +189,13 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/webLayout"
                                 android:layout_width="fill_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="visible">
 
                                 <TextView
                                     android:id="@+id/textWebsite"

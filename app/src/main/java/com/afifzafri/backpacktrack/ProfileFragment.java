@@ -79,6 +79,7 @@ public class ProfileFragment extends Fragment {
         final TextView textBio = (TextView) view.findViewById(R.id.textBio);
         final TextView textCountry = (TextView) view.findViewById(R.id.textCountry);
         final TextView textEmail = (TextView) view.findViewById(R.id.textEmail);
+        final LinearLayout weblayout = (LinearLayout) view.findViewById(R.id.webLayout);
         final TextView textWebsite = (TextView) view.findViewById(R.id.textWebsite);
         final LinearLayout rankLayout = (LinearLayout) view.findViewById(R.id.rankLayout);
         final ImageView badge = (ImageView) view.findViewById(R.id.badge);
@@ -142,7 +143,7 @@ public class ProfileFragment extends Fragment {
                                 textBio.setVisibility(View.GONE);
                             }
                             if(website == null || website.isEmpty() || website == "null") {
-                                textWebsite.setVisibility(View.GONE);
+                                weblayout.setVisibility(View.GONE);
                             }
 
                             // set avatar image using Picasso library
