@@ -146,8 +146,12 @@ public class EditProfileActivity extends AppCompatActivity implements IPickResul
                             editPhone.setText(phone);
                             editAddress.setText(address);
                             countryselect.setText(country_name);
-                            editBio.setText(bio);
-                            editWebsite.setText(website);
+                            if(bio != "null") {
+                                editBio.setText(bio);
+                            }
+                            if(website != "null") {
+                                editWebsite.setText(website);
+                            }
                             editEmail.setText(email);
 
                             loadingFrame.setVisibility(View.GONE); // hide loading spinner
