@@ -215,7 +215,11 @@ public class ViewActivitiesFragment extends Fragment {
                             String totallikes = response.getString("totallikes");
                             Boolean isLiked = response.getBoolean("isLiked");
 
-                            itinerary_user.setText("@"+user_username);
+                            String newusername = "@"+user_username;
+                            if(newusername.length() > 9) {
+                                itinerary_user.setTextSize(10);
+                            }
+                            itinerary_user.setText(newusername);
                             itinerary_user.setTag(user_id);
                             country_pin.setTag(country_name);
                             String flagurl = AppHelper.baseurl+"/images/flags/flat/64/"+country_code+".png";
