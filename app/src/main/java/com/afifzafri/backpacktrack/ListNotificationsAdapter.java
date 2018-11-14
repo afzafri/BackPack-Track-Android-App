@@ -93,7 +93,12 @@ public class ListNotificationsAdapter extends RecyclerView.Adapter<ListNotificat
             holder.typeIcon.setImageResource(R.drawable.ic_favorite_red_24dp);
         }
 
-        holder.notification_name.setText(notificationsList.get(position).getUserFName());
+        // if name too long, cut off the name, and add ellipsis
+        String name = notificationsList.get(position).getUserFName();
+        if(name.length() > 15) {
+            name = name.substring(0,12) + "...";
+        }
+        holder.notification_name.setText(name);
 
         holder.notification_name.setTag(notificationsList.get(position).getUserId());
 
