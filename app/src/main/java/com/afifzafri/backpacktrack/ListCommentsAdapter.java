@@ -109,7 +109,12 @@ public class ListCommentsAdapter extends RecyclerView.Adapter<ListCommentsAdapte
         // - replace the contents of the view with that element
 
         // Set data to display
-        holder.comment_name.setText(commentsList.get(position).getUserFName());
+        // if name too long, cut off the name, and add ellipsis
+        String name = commentsList.get(position).getUserFName();
+        if(name.length() > 15) {
+            name = name.substring(0,12) + "...";
+        }
+        holder.comment_name.setText(name);
 
         holder.comment_name.setTag(commentsList.get(position).getUserId());
 
