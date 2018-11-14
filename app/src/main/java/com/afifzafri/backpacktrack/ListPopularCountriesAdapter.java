@@ -13,8 +13,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-
 public class ListPopularCountriesAdapter extends RecyclerView.Adapter<ListPopularCountriesAdapter.MyViewHolder> {
 
     private List<CountriesModel> countriesList;
