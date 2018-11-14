@@ -72,7 +72,12 @@ public class ListPopularItinerariesAdapter extends RecyclerView.Adapter<ListPopu
 
         holder.itinerary_title.setTag(itinerariesList.get(position).getItineraryId());
 
-        holder.itinerary_user.setText(itinerariesList.get(position).getItineraryPosterName());
+        // if name too long, cut off the name, and add ellipsis
+        String name = itinerariesList.get(position).getItineraryPosterName();
+        if(name.length() > 15) {
+            name = name.substring(0,12) + "...";
+        }
+        holder.itinerary_user.setText(name);
 
         holder.itinerary_user.setTag(itinerariesList.get(position).getItineraryPosterId());
 
