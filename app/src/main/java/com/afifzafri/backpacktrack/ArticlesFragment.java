@@ -135,7 +135,7 @@ public class ArticlesFragment extends Fragment {
         return view;
     }
 
-    private void firstLoadData(View view, final String access_token) {
+    private void firstLoadData(final View view, final String access_token) {
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
@@ -165,7 +165,9 @@ public class ArticlesFragment extends Fragment {
                                 // something
                                 // check if activity have been attach to the fragment
                                 if(isAdded()) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "No article available", Toast.LENGTH_SHORT).show();
+                                    // if no data available, show background image to inform no data
+                                    FrameLayout emptyStateFrame = (FrameLayout) view.findViewById(R.id.emptyStateFrame);
+                                    emptyStateFrame.setVisibility(View.VISIBLE);
                                 }
                                 itShouldLoadMore = false;
                                 loadingFrame.setVisibility(View.GONE);
@@ -198,6 +200,9 @@ public class ArticlesFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 // check if activity have been attach to the fragment
                 if(isAdded()) {
+                    // show connection error icon and message
+                    FrameLayout dcFrame = (FrameLayout) view.findViewById(R.id.dcFrame);
+                    dcFrame.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity().getApplicationContext(), "Load Articles Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 }
                 loadingFrame.setVisibility(View.GONE);

@@ -69,7 +69,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/file/ic_cloud_off_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_notifications_none_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -81,7 +81,7 @@
                           <map>
                             <entry key="color" value="808080" />
                             <entry key="height" value="200" />
-                            <entry key="outputName" value="ic_cloud_off_grey_200dp" />
+                            <entry key="outputName" value="ic_notifications_none_grey_200dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="D:\Desktop\UiTM Tapah\Development\Other Files and Documents\svg\News-595b40b75ba036ed117d81af.svg" />
                             <entry key="width" value="200" />

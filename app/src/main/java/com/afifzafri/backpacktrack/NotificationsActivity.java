@@ -117,7 +117,9 @@ public class NotificationsActivity extends AppCompatActivity {
                             if (comments_data.length() <= 0 && likes_data.length() <= 0) {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
-                                Toast.makeText(getApplicationContext(), "No notification available", Toast.LENGTH_SHORT).show();
+                                // if no data available, show background image to inform no data
+                                FrameLayout emptyStateFrame = (FrameLayout) findViewById(R.id.emptyStateFrame);
+                                emptyStateFrame.setVisibility(View.VISIBLE);
                                 loadingFrame.setVisibility(View.GONE);
                                 return; // return will end the program at this point
                             }
@@ -191,6 +193,9 @@ public class NotificationsActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                // show connection error icon and message
+                FrameLayout dcFrame = (FrameLayout) findViewById(R.id.dcFrame);
+                dcFrame.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), "Load notifications Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 loadingFrame.setVisibility(View.GONE);
             }
