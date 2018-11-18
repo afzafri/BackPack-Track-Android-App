@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -40,6 +42,9 @@ import java.util.Map;
  * A simple {@link Fragment} subclass.
  */
 public class ViewActivitiesFragment extends Fragment {
+
+    // for swipe to refresh widget
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // initialize adapter and data structure here
     private ListDatesAdapter mAdapter;
@@ -188,6 +193,20 @@ public class ViewActivitiesFragment extends Fragment {
                 v.getContext().startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
         });
+
+        // --- refresh fragment when perform swipe to refresh ---
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(ViewActivitiesFragment.this).attach(ViewActivitiesFragment.this).commit();
+
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
 
         return view;
     }
