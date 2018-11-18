@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.github.vipulasri.timelineview.TimelineView;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.util.List;
 
 public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActivitiesAdapter.MyViewHolder> {
@@ -98,7 +100,7 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
         // - replace the contents of the view with that element
 
         // Set activity title
-        holder.activity_title.setText(activitiesList.get(position).getActivityTitle());
+        holder.activity_title.setText(StringEscapeUtils.unescapeJava(activitiesList.get(position).getActivityTitle()));
 
         // Set activity time
         holder.activity_time.setText(new AppHelper().convertTime(activitiesList.get(position).getTime().substring(0,5)));
@@ -110,7 +112,7 @@ public class ListViewActivitiesAdapter extends RecyclerView.Adapter<ListViewActi
         holder.activity_place.setText(activitiesList.get(position).getPlaceName());
 
         // Set activity description
-        holder.activity_description.setText(activitiesList.get(position).getDescription());
+        holder.activity_description.setText(StringEscapeUtils.unescapeJava(activitiesList.get(position).getDescription()));
         
         final String act_pic_url = activitiesList.get(position).getPicUrl();
         if(act_pic_url != null && !act_pic_url.isEmpty() && act_pic_url != "null") {

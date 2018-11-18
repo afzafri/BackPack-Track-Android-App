@@ -42,6 +42,7 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -362,8 +363,8 @@ public class CreateActivityActivity extends AppCompatActivity implements IPickRe
                                     Map<String, String> params = new HashMap<>();
                                     params.put("date", actDate);
                                     params.put("time", actTime);
-                                    params.put("activity", actTitle);
-                                    params.put("description", actDescription);
+                                    params.put("activity", StringEscapeUtils.escapeJava(actTitle)); // escape characters, for emoji etc
+                                    params.put("description", StringEscapeUtils.escapeJava(actDescription));
                                     params.put("place_name", actPlaceName);
                                     params.put("lat", actLat);
                                     params.put("lng", actLng);

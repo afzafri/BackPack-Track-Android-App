@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,7 +114,7 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
         // - replace the contents of the view with that element
 
         // Set activity title
-        holder.activity_title.setText(activitiesList.get(position).getActivityTitle());
+        holder.activity_title.setText(StringEscapeUtils.unescapeJava(activitiesList.get(position).getActivityTitle()));
 
         // Set activity date
         holder.activity_date.setText(new AppHelper().convertDate(activitiesList.get(position).getDate()));
@@ -128,7 +129,7 @@ public class ListActivitiesAdapter extends RecyclerView.Adapter<ListActivitiesAd
         holder.activity_place.setText(activitiesList.get(position).getPlaceName());
 
         // Set activity description
-        holder.activity_description.setText(activitiesList.get(position).getDescription());
+        holder.activity_description.setText(StringEscapeUtils.unescapeJava(activitiesList.get(position).getDescription()));
         
         final String act_pic_url = activitiesList.get(position).getPicUrl();
         if(act_pic_url != null && !act_pic_url.isEmpty() && act_pic_url != "null") {

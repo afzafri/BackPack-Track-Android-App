@@ -39,4 +39,5 @@ dependencies {
     implementation 'com.github.vipulasri:timelineview:1.0.6'
     implementation 'com.google.android.gms:play-services-places:16.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation 'org.apache.commons:commons-text:1.6'
 }

@@ -42,6 +42,7 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +69,7 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
         Bundle extras = getIntent().getExtras();
         final String activity_id = extras.getString("activity_id");
         final String activity_title = extras.getString("activity_title");
-        setTitle("Edit Activity: " + activity_title);
+        setTitle("Edit Activity: " + StringEscapeUtils.unescapeJava(activity_title));
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -167,9 +168,9 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
                             // set values to the elements
                             editDate.setText(date);
                             editTime.setText(time.substring(0,5));
-                            editActivity.setText(activityTitle);
+                            editActivity.setText(StringEscapeUtils.unescapeJava(activityTitle));
                             editActivity.setTag(curitinerary_id);
-                            editDescription.setText(description);
+                            editDescription.setText(StringEscapeUtils.unescapeJava(description));
                             editPlaceName.setText(place_name);
                             editPlaceName.setTag(lat+","+lng);
                             editBudget.setText(budget);
@@ -430,8 +431,8 @@ public class EditActivityActivity extends AppCompatActivity implements IPickResu
                                     Map<String, String> params = new HashMap<>();
                                     params.put("date", actDate);
                                     params.put("time", actTime);
-                                    params.put("activity", actTitle);
-                                    params.put("description", actDescription);
+                                    params.put("activity", StringEscapeUtils.escapeJava(actTitle));
+                                    params.put("description", StringEscapeUtils.escapeJava(actDescription));
                                     params.put("place_name", actPlaceName);
                                     params.put("lat", actLat);
                                     params.put("lng", actLng);
