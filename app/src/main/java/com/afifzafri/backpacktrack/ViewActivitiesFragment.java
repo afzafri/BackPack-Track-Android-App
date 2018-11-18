@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -214,6 +215,7 @@ public class ViewActivitiesFragment extends Fragment {
                             String country_code = country.getString("code");
                             String totallikes = response.getString("totallikes");
                             Boolean isLiked = response.getBoolean("isLiked");
+                            String duration = response.getString("duration");
 
                             String newusername = "@"+user_username;
                             if(newusername.length() > 9) {
@@ -240,6 +242,14 @@ public class ViewActivitiesFragment extends Fragment {
                                 rightB.setTextColor(Color.GRAY);
                                 itinerary_likes.setTag("false");
                             }
+
+                            if(duration.equalsIgnoreCase("0D0N")) {
+                                if(isAdded()) {
+                                    // if no data available, show background image to inform no data
+                                    FrameLayout emptyStateFrame = (FrameLayout) view.findViewById(R.id.emptyStateFrame);
+                                    emptyStateFrame.setVisibility(View.VISIBLE);
+                                }
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -251,6 +261,9 @@ public class ViewActivitiesFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if(isAdded()) {
+                    // show connection error icon and message
+                    FrameLayout dcFrame = (FrameLayout) view.findViewById(R.id.dcFrame);
+                    dcFrame.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity().getApplicationContext(), "Load itinerary data Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 }
                 loadingFrame.setVisibility(View.GONE);
@@ -407,11 +420,6 @@ public class ViewActivitiesFragment extends Fragment {
                             JSONObject activities = response.getJSONObject("activities");
 
                             if (activities.length() <= 0) {
-                                // we need to check this, to make sure, our dataStructure JSonArray contains
-                                // something
-                                if(isAdded()) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "no data available", Toast.LENGTH_SHORT).show();
-                                }
                                 loadingFrame.setVisibility(View.GONE);
                                 return; // return will end the program at this point
                             }
@@ -461,9 +469,6 @@ public class ViewActivitiesFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(isAdded()) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Load activities Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
-                }
                 loadingFrame.setVisibility(View.GONE);
             }
         })
