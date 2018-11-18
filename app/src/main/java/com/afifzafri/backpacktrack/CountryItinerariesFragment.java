@@ -76,7 +76,7 @@ public class CountryItinerariesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_itineraries, container, false);
+        final View view = inflater.inflate(R.layout.fragment_country_itineraries, container, false);
 
         // read from SharedPreferences
         final SharedPreferences sharedpreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
