@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:context=".ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -87,6 +88,7 @@
                             android:layout_marginBottom="5dp"
                             android:gravity="center"
                             android:text="Name"
+                            android:textColor="?android:attr/colorForeground"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
@@ -107,7 +109,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginBottom="10dp"
-                            android:text="Bio" />
+                            android:text="Bio"
+                            android:textColor="?android:attr/colorForeground" />
 
                         <LinearLayout
                             android:id="@+id/rankLayout"

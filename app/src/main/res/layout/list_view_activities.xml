@@ -59,7 +59,8 @@
                 android:layout_weight="1"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="description" />
+                android:text="description"
+                android:textColor="?android:attr/colorForeground" />
 
             <LinearLayout
                 android:layout_width="match_parent"

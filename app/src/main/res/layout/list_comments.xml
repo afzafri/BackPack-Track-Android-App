@@ -54,6 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="3dp"
                         android:text="Name"
+                        android:textColor="?android:attr/colorForeground"
                         android:textStyle="bold" />
 
                     <TextView
@@ -84,7 +85,8 @@
                 android:id="@+id/comment_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comment" />
+                android:text="Comment"
+                android:textColor="?android:attr/colorForeground" />
 
             <ImageButton
                 android:id="@+id/deleteBtn"
