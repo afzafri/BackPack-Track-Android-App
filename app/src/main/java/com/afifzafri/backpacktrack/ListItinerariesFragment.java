@@ -3,6 +3,7 @@ package com.afifzafri.backpacktrack;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -176,7 +178,7 @@ public class ListItinerariesFragment extends Fragment {
         return view;
     }
 
-    private void firstLoadData(View view, final String access_token, String apiEndpoint) {
+    private void firstLoadData(final View view, final String access_token, String apiEndpoint) {
         // get UI elements
         final FrameLayout loadingFrame = (FrameLayout) view.findViewById(R.id.loadingFrame);
 
@@ -205,7 +207,9 @@ public class ListItinerariesFragment extends Fragment {
                                 // we need to check this, to make sure, our dataStructure JSonArray contains
                                 // something
                                 if(isAdded()) {
-                                    Toast.makeText(getActivity().getApplicationContext(), "No itineraries available", Toast.LENGTH_SHORT).show();
+                                    // if no data available, show background image to inform no data
+                                    FrameLayout emptyStateFrame = (FrameLayout) view.findViewById(R.id.emptyStateFrame);
+                                    emptyStateFrame.setVisibility(View.VISIBLE);
                                 }
                                 itShouldLoadMore = false;
                                 loadingFrame.setVisibility(View.GONE);
@@ -249,6 +253,9 @@ public class ListItinerariesFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if(isAdded()) {
+                    // show connection error icon and message
+                    FrameLayout dcFrame = (FrameLayout) view.findViewById(R.id.dcFrame);
+                    dcFrame.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity().getApplicationContext(), "Load itineraries Failed! Please check your connection.", Toast.LENGTH_SHORT).show();
                 }
                 loadingFrame.setVisibility(View.GONE);
