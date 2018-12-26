@@ -67,13 +67,22 @@ public class ListTopContributorsAdapter extends RecyclerView.Adapter<ListTopCont
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        // Set user avatar
-        Picasso.get()
-                .load(usersList.get(position).getAvatar())
-                .transform(new CropCircleTransformation())
-                .into(holder.user_avatar);
-        // set user id tag
-        holder.user_username.setTag(usersList.get(position).getId());
+        // set avatar image using Picasso library
+        String avatar_url = usersList.get(position).getAvatar();
+        if(avatar_url != null && !avatar_url.isEmpty() && avatar_url != "null") {
+            // Set user avatar
+            Picasso.get()
+                    .load(avatar_url)
+                    .transform(new CropCircleTransformation())
+                    .into(holder.user_avatar);
+            // set user id tag
+            holder.user_username.setTag(usersList.get(position).getId());
+        } else {
+            Picasso.get()
+                    .load(R.drawable.avatar)
+                    .transform(new CropCircleTransformation())
+                    .into(holder.user_avatar);
+        }
 
         // Set user username
         holder.user_username.setText("@" + usersList.get(position).getUsername());
